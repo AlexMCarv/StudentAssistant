@@ -27,7 +27,7 @@ public class ReadUNBCourses {
         String year = "2018";	
         String term = "FA";		//(FA|WI|SM)
         String level = "UG";	//(UG|GR)
-        String subject = "ECE";
+        String subject = "ECE";	//For all subjects, change this to anything that is not a course. Ex: 'ALL'
         String location = "FR";	//(FR|SJ|MO|...)
         
         //Get the web page
@@ -56,7 +56,6 @@ public class ReadUNBCourses {
         //Loop through rows
         Pattern p; Matcher m;
         for (int i=1; i<rows.size(); i++) {
-        //for (HtmlTableRow row : rows) {
         	HtmlTableRow row = rows.get(i);
         	String rowText = row.asText();
         	
@@ -68,7 +67,7 @@ public class ReadUNBCourses {
         		p = Pattern.compile("(\\d{6}).*"						//Course ID 	(6 digits)
         				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
         				+ "([A-z]{2}\\d\\d[A-z]).*"						//Section 		(Ex: FR01A)
-        				+ "\\s((?:M|T|W|Th|F)+)\\s.*"						//Days 			(Ex: MWF)
+        				+ "\\s((?:M|T|W|Th|F)+)\\s.*"					//Days 			(Ex: MWF)
         				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time 			(Ex: 08:30AM-9:20AM)
         				+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
     			m = p.matcher(rowText);
@@ -96,7 +95,7 @@ public class ReadUNBCourses {
     						keepGoing = false;
     					}
     					else {
-    						//Extra time
+    						//Extra class time
     						p = Pattern.compile("(Lab|Tutorial).*"					//Type
     								+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
     								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time
