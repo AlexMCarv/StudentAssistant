@@ -16,6 +16,7 @@ import com.gargoylesoftware.htmlunit.html.*;
 import java.util.logging.Level;
 import java.util.List;
 
+
 public class ReadUNBCourses {
     public static void main(String[] args) throws Exception {
         WebClient webClient = new WebClient();
