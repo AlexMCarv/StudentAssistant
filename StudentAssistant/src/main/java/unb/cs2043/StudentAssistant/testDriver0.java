@@ -1,3 +1,5 @@
+package unb.cs2043.StudentAssistant;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 /**@author Tye Shutty*/

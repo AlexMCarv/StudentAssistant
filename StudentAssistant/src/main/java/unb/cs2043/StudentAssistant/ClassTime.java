@@ -1,3 +1,5 @@
+package unb.cs2043.StudentAssistant;
+
 /**@author Tye Shutty*/
 //This is a skeleton class for testing, you can change it
 public class ClassTime implements Comparable{

@@ -1,3 +1,5 @@
+package unb.cs2043.StudentAssistant;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 /**@author Tye Shutty*/
