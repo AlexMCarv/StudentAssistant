@@ -7,9 +7,20 @@ package unb.cs2043.StudentAssistant;
 public class UNBCourseReaderTester {
 
 	public static void main(String[] args) {
-		UNBCourseReader reader = new UNBCourseReader("2018", "FA", "UG", "ECE", "FR");
+		UNBCourseReader reader = new UNBCourseReader("2018", "FA", "UG", "all", "FR");
 		
-		reader.loadData();
+		boolean success = reader.loadData();
+		
+		if (success) {
+			//Try to read result from the created file
+			Schedule courseList = UNBCourseReader.readFile("UNBCourses2018FAUGFR.list");
+			System.out.println(courseList);
+		}
+		else {
+			//Something went wrong!
+			System.out.println("Oh no! Something went wrong!");
+		}
+		
 	}
 
 }

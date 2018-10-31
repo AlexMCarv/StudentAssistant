@@ -2,6 +2,12 @@ package unb.cs2043.StudentAssistant;
 
 //Imports
 import java.util.logging.Level;
+import java.io.ObjectOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.MalformedURLException;
 import java.util.List;
 
@@ -131,7 +137,10 @@ public class UNBCourseReader {
         List<HtmlTableRow> rows = table.getRows();
         
         //Schedule
-        Schedule courseList = new Schedule("Course List");
+        Schedule courseList = new Schedule("UNB Course List: "+year+" "+term+" "+level+" "+location);
+        
+        
+        
         
         //Loop through rows
         Pattern p; Matcher m;
@@ -161,8 +170,8 @@ public class UNBCourseReader {
         				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
         				+ "([A-z]{2}\\d\\d[A-z]).*"						//Section 		(Ex: FR01A)
         				+ "\\s((?:M|T|W|Th|F)+)\\s.*"					//Days 			(Ex: MWF)
-        				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time 			(Ex: 08:30AM-9:20AM)
-        				+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
+        				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time 			(Ex: 08:30AM-9:20AM)
+        				+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
         		//Check if it is a lab course
         		if (row.getCell(5).asText().equals("") && i!=numRows-1 &&
         		nextRow.getCell(0).asText().matches("Lab|Tutorial")) {
@@ -193,8 +202,8 @@ public class UNBCourseReader {
         				
         				p = Pattern.compile("(Lab|Tutorial).*"					//Type
 								+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
-								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time
-								+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
+								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time
+								+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
 		    			m = p.matcher(nextRowText);
 		    			
 		    			if (m.find()) {
@@ -202,6 +211,8 @@ public class UNBCourseReader {
 		    				Day = m.group(2);
 		    				Time = m.group(3);
 		    				Location = m.group(4);
+		    				//If no location, set it as N/A
+		    				Location = Location==null?"N/A":Location;
 		    			}
     				}
     				else {
@@ -210,6 +221,8 @@ public class UNBCourseReader {
         				Day = row.getCells().get(5).asText();
         				Time = m.group(5);
         				Location = m.group(6);
+        				//If no location, set it as N/A
+	    				Location = Location==null?"N/A":Location;
     				}
     				
     				//Create objects and add them to the list
@@ -242,8 +255,8 @@ public class UNBCourseReader {
     						//Extra class time
     						p = Pattern.compile("(Lab|Tutorial).*"					//Type
     								+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
-    								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time
-    								+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
+    								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time
+    								+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
     		    			m = p.matcher(rowText);
     		    			
     		    			if (m.find()) {
@@ -252,6 +265,8 @@ public class UNBCourseReader {
     		    				Day = m.group(2);
     		    				Time = m.group(3);
     		    				Location = m.group(4);
+    		    				//If no location, set it as N/A
+    		    				Location = Location==null?"N/A":Location;
     		    				
     		    				//Create classTIme object and add it to the section
     		    				ClassTime other = new ClassTime(Type+" "+Day+" "+Time+" "+Location);
@@ -265,9 +280,47 @@ public class UNBCourseReader {
         
         webClient.close();
         
-        System.out.println(courseList);
+        //System.out.println(courseList);
+        
+        //Save to a file
+        if(!writeToFile(courseList)) {
+        	//File creation failed!
+        	return false;
+        }
         
 		return true;
+	}
+	
+	public static Schedule readFile(String fileName) {
+		
+		File file = new File(fileName);
+		ObjectInputStream objectStream = null;
+		try {
+			objectStream = new ObjectInputStream(new FileInputStream(file));
+		}
+		catch (IOException e) {
+			//Error finding file or Error opening stream
+			return null;
+		}
+		
+		//Read the course list from the file
+		Schedule courseList = null;
+		try {
+			courseList = (Schedule) objectStream.readObject();
+		}
+		catch (Exception e) {
+			//Error reading data
+		}
+		
+		//Close the stream
+		try {
+			objectStream.close();
+		}
+		catch (IOException e) {
+			//Error closing stream
+		}
+		
+		return courseList;
 	}
 	
 //======== PRIVATE METHODS =======
@@ -278,5 +331,42 @@ public class UNBCourseReader {
 				"&subject="+subject+"&location="+location;
 	}
 	
-	
+	private boolean writeToFile(Schedule courseList) {
+		boolean result = true;
+		
+		//Create a file, putting the parameters in the file name 
+		//so it will overwrite if file with those parameters already exists
+		String fileName = "UNBCourses"+year+term+level+location+".list";
+		File file = new File(fileName);
+		ObjectOutputStream objectStream = null;
+		try {
+			objectStream = new ObjectOutputStream(new FileOutputStream(file));
+		}
+		catch (IOException e) {
+			//Error creating file or Error opening stream
+			return false;
+		}
+		
+		//Write the course list to the file
+		try {
+			objectStream.writeObject(courseList);
+		}
+		catch (IOException e) {
+			//Error writing data
+			
+			//Try to delete the file:
+			file.delete();
+			result = false;
+		}
+		
+		//Close the stream
+		try {
+			objectStream.close();
+		}
+		catch (IOException e) {
+			//Error closing stream
+			return false;
+		}
+		return result;
+	}
 }
