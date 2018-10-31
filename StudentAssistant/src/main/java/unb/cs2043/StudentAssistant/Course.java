@@ -78,7 +78,7 @@ public class Course{
 		}
 		for(int x=0; x<sections.size();x++){
 			//automatically calls toString on Section object?
-			description+=sections.get(x);
+			description+="   "+sections.get(x);
 		}
 		return description;
 	}

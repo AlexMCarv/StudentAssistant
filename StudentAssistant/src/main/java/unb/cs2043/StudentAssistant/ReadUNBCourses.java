@@ -56,13 +56,25 @@ public class ReadUNBCourses {
         
         //Loop through rows
         Pattern p; Matcher m;
+        String Course="", Section="", Type="", Day="", Time="", Location="";
         for (int i=1; i<rows.size(); i++) {
+        	//Get current row
         	HtmlTableRow row = rows.get(i);
         	String rowText = row.asText();
         	
-        	//System.out.println(rowText);
+        	//Get next row (if not at the end)
+        	HtmlTableRow nextRow = null;
+        	String nextRowText = "";
+        	if (i!=numRows-1) {
+        		nextRow = rows.get(i+1);
+        		nextRowText = nextRow.asText();
+        	}
         	
-        	//Check if first row of a course
+        	//Flags for special cases
+        	boolean sameCourse = false;
+        	boolean labCourse = false;
+        	
+        	//Check if it is first row of a course section
         	if (row.getCell(0).asText().matches("\\d{6}")) {
 				
         		p = Pattern.compile("(\\d{6}).*"						//Course ID 	(6 digits)
@@ -70,19 +82,64 @@ public class ReadUNBCourses {
         				+ "([A-z]{2}\\d\\d[A-z]).*"						//Section 		(Ex: FR01A)
         				+ "\\s((?:M|T|W|Th|F)+)\\s.*"					//Days 			(Ex: MWF)
         				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time 			(Ex: 08:30AM-9:20AM)
-        				+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
-    			m = p.matcher(rowText);
+        				+ "\\s([A-Z]+\\d+)\\s");
+        		
+        		//Check if it is a lab course
+        		if (row.getCell(5).asText().equals("") && i!=numRows-1 &&
+        		nextRow.getCell(0).asText().matches("Lab|Tutorial")) {
+        			labCourse = true;
+        			
+        			//Lab courses have days, time, and location on next line (since they don't have any lecture)
+        			p = Pattern.compile("(\\d{6}).*"						//Course ID 	(6 digits)
+            				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
+            				+ "([A-z]{2}\\d\\d[A-z]).*");					//Section 		(Ex: FR01A)
+        			
+        		}
+        		m = p.matcher(rowText);
     			
     			if (m.find()) {
-    				//String Course = m.group(2);
-    				String Course = row.getCells().get(1).asText();
-    				String Section = m.group(3);
-    				String Type = "Lec";
-    				//String Day = m.group(4);
-    				String Day = row.getCells().get(5).asText();
-    				String Time = m.group(5);
-    				String Location = m.group(6);
-    				System.out.println(Course+"\t"+Section+"\t"+Type+"\t\t"+Day+"\t"+Time+"\t"+Location);
+    				
+    				//Check if still same course (new section)
+    				//System.out.println(Course+" ?= "+row.getCells().get(1).asText());
+    				if (Course.equals(row.getCells().get(1).asText())) {
+    					//Same section
+    					sameCourse = true;
+    				}
+    				
+    				Course = row.getCells().get(1).asText();
+    				Section = m.group(3);
+    				
+    				if (labCourse) {
+        				//Get values from next row
+    					i++;
+        				
+        				p = Pattern.compile("(Lab|Tutorial).*"					//Type
+								+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
+								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time
+								+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
+		    			m = p.matcher(nextRowText);
+		    			
+		    			if (m.find()) {
+		    				Type = m.group(1);
+		    				Day = m.group(2);
+		    				Time = m.group(3);
+		    				Location = m.group(4);
+		    			}
+    				}
+    				else {
+    					//Normal course
+        				Type = "Lec";
+        				Day = row.getCells().get(5).asText();
+        				Time = m.group(5);
+        				Location = m.group(6);
+    				}
+    				
+    				if (sameCourse) {
+    					System.out.println("\t\t"+Section+"\t"+Type+"\t\t"+Day+"\t"+Time+"\t"+Location);
+    				}
+    				else {
+    					System.out.println(Course+"\t"+Section+"\t"+Type+"\t\t"+Day+"\t"+Time+"\t"+Location);
+    				}
     				
     				//Loop until find next course
     				boolean keepGoing = true;

@@ -135,13 +135,26 @@ public class UNBCourseReader {
         
         //Loop through rows
         Pattern p; Matcher m;
+        String Course="", Section="", Type="", Day="", Time="", Location="";
+        Course course = null;
         for (int i=1; i<rows.size(); i++) {
+        	//Get current row
         	HtmlTableRow row = rows.get(i);
         	String rowText = row.asText();
         	
-        	//System.out.println(rowText);
+        	//Get next row (if not at the end)
+        	HtmlTableRow nextRow = null;
+        	String nextRowText = "";
+        	if (i!=numRows-1) {
+        		nextRow = rows.get(i+1);
+        		nextRowText = nextRow.asText();
+        	}
         	
-        	//Check if first row of a course
+        	//Flags for special cases
+        	boolean sameCourse = false;
+        	boolean labCourse = false;
+        	
+        	//Check if it is first row of a course section
         	if (row.getCell(0).asText().matches("\\d{6}")) {
 				
         		p = Pattern.compile("(\\d{6}).*"						//Course ID 	(6 digits)
@@ -150,20 +163,69 @@ public class UNBCourseReader {
         				+ "\\s((?:M|T|W|Th|F)+)\\s.*"					//Days 			(Ex: MWF)
         				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time 			(Ex: 08:30AM-9:20AM)
         				+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
-    			m = p.matcher(rowText);
+        		//Check if it is a lab course
+        		if (row.getCell(5).asText().equals("") && i!=numRows-1 &&
+        		nextRow.getCell(0).asText().matches("Lab|Tutorial")) {
+        			labCourse = true;
+        			
+        			//Lab courses have days, time, and location on next line (since they don't have any lecture)
+        			p = Pattern.compile("(\\d{6}).*"						//Course ID 	(6 digits)
+            				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
+            				+ "([A-z]{2}\\d\\d[A-z]).*");					//Section 		(Ex: FR01A)
+        			
+        		}
+        		m = p.matcher(rowText);
     			
     			if (m.find()) {
-    				//Pull values of this course
-    				String Course = row.getCells().get(1).asText();
-    				String Section = m.group(3);
-    				String Type = "Lec";
-    				String Day = row.getCells().get(5).asText();
-    				String Time = m.group(5);
-    				String Location = m.group(6);
-    				//System.out.println(Course+"\t"+Section+"\t"+Type+"\t\t"+Day+"\t"+Time+"\t"+Location);
     				
-    				//Create course object and add it to the list
-    				courseList.add(new Course());
+    				//Check if still same course (more than 1 section)
+    				if (Course.equals(row.getCells().get(1).asText())) {
+    					sameCourse = true;
+    				}
+    				
+    				//Pull values of this course
+    				Course = row.getCells().get(1).asText();
+    				Section = m.group(3);
+    				
+    				if (labCourse) {
+        				//Get values from next row
+    					i++;
+        				
+        				p = Pattern.compile("(Lab|Tutorial).*"					//Type
+								+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
+								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w).*"	//Time
+								+ "\\s([A-Z]+\\d+)\\s");						//Location 		(Ex: HC13)
+		    			m = p.matcher(nextRowText);
+		    			
+		    			if (m.find()) {
+		    				Type = m.group(1);
+		    				Day = m.group(2);
+		    				Time = m.group(3);
+		    				Location = m.group(4);
+		    			}
+    				}
+    				else {
+    					//Normal course
+        				Type = "Lec";
+        				Day = row.getCells().get(5).asText();
+        				Time = m.group(5);
+        				Location = m.group(6);
+    				}
+    				
+    				//Create objects and add them to the list
+    				ClassTime time = new ClassTime(Type+" "+Day+" "+Time+" "+Location);
+    				Section section = new Section(Section);
+    				section.add(time);
+    				if (sameCourse) {
+        				//Add section to previous course (not creating a new course)
+        				course.add(section);
+    				}
+    				else {
+    					//Create new course
+        				course = new Course(Course);
+        				course.add(section);
+        				courseList.add(course);
+    				}
     				
     				//Loop until find next course
     				boolean keepGoing = true;
@@ -191,21 +253,19 @@ public class UNBCourseReader {
     		    				Time = m.group(3);
     		    				Location = m.group(4);
     		    				
-    		    				if (!Type.equals("Tutorial")) {
-    		    					Type+="\t";
-    		    				}
-    		    				
-    		    				System.out.println("\t\t\t"+Type+"\t"+Day+"\t"+Time+"\t"+Location);
+    		    				//Create classTIme object and add it to the section
+    		    				ClassTime other = new ClassTime(Type+" "+Day+" "+Time+" "+Location);
+    		    				section.add(other);
     		    			}
     					}
     				}
-    				
     			}
         	}
-        	
         }
         
         webClient.close();
+        
+        System.out.println(courseList);
         
 		return true;
 	}

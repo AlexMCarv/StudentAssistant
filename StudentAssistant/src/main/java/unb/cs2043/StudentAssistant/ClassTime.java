@@ -2,7 +2,7 @@ package unb.cs2043.StudentAssistant;
 
 /**@author Tye Shutty*/
 //This is a skeleton class for testing, you can change it
-public class ClassTime implements Comparable{
+public class ClassTime implements Comparable<ClassTime>{
 	private String name;
 	public ClassTime(String name){
 		this.name=name;
@@ -11,11 +11,11 @@ public class ClassTime implements Comparable{
 		// System.out.println(2);
 		return name;
 	}
-	public int compareTo(Object two){
-		if(((ClassTime)two).getName().compareTo(name)>0){
+	public int compareTo(ClassTime two){
+		if(two.getName().compareTo(name)>0){
 			return 1;
 		}
-		else if(((ClassTime)two).getName().compareTo(name)<0){
+		else if(two.getName().compareTo(name)<0){
 			return -1;
 		}
 		else{

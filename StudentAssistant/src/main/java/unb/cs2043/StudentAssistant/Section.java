@@ -17,12 +17,17 @@ public class Section{
 		else{
 			//inserts into the list to maintain order from
 			// smallest to largest ClassTime
-			for(int x=0; x<classTimes.size();x++){
+			boolean added = false;
+			for(int x=0; x<classTimes.size() && !added;x++){
 				if(classTimes.get(x).compareTo(one)>0){
-					for(int y=classTimes.size();y>x;y--){
-						classTimes.set(y,classTimes.get(y-1));
-					}
+					/*This is not necessary, the add() method works as 
+					 * an insert on its own (see documentation) -Fred*/ 
+					//for(int y=classTimes.size()-1;y>x;y--){
+					//	classTimes.set(y,classTimes.get(y-1));
+					//}
 					classTimes.add(x,one);
+					//Your need to break out of the for loop otherwise you add it many times -Fred
+					added = true;
 				}
 			}
 		}
@@ -62,9 +67,9 @@ public class Section{
 		}
 		for(int x=0; x<classTimes.size();x++){
 			//automatically calls toString on ClassTime object?
-			description+=classTimes.get(x);
+			description+="      "+classTimes.get(x);
 			if(x+1<classTimes.size()){
-				description+=", ";
+				description+=",\n";
 			}
 		}
 		return description+"\n";
