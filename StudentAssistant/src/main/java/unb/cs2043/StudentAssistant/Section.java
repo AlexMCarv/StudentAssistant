@@ -1,8 +1,9 @@
 package unb.cs2043.StudentAssistant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 /**@author Tye Shutty*/
-public class Section{
+public class Section implements Serializable{
 	private String name;
 	private ArrayList<ClassTime> classTimes;
 	public Section(String name){

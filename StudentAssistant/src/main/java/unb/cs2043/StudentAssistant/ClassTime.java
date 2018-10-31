@@ -1,8 +1,10 @@
 package unb.cs2043.StudentAssistant;
 
+import java.io.Serializable;
+
 /**@author Tye Shutty*/
 //This is a skeleton class for testing, you can change it
-public class ClassTime implements Comparable<ClassTime>{
+public class ClassTime implements Comparable<ClassTime>, Serializable{
 	private String name;
 	public ClassTime(String name){
 		this.name=name;
