@@ -1,7 +1,6 @@
 package unb.cs2043.StudentAssistant;
 
 //Imports
-import java.util.logging.Level;
 import java.io.ObjectOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +25,7 @@ import com.gargoylesoftware.htmlunit.html.*;
 
 public class UNBCourseReader {
 	
-	private final String url = "http://es.unb.ca/apps/timetable/";
+	private final String URL = "http://es.unb.ca/apps/timetable/";
 	
 	private String year;
 	private String term;
@@ -100,7 +99,7 @@ public class UNBCourseReader {
 	which has all the courses from the specified term, year, etc.*/
 	public boolean loadData() {
 		//Turn warnings off (Warnings are only useful when testing a website. We just want data so turn it off.)
-        java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.OFF);
+        java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(java.util.logging.Level.OFF);
         
         //Get page
         WebClient webClient = new WebClient();
@@ -136,16 +135,35 @@ public class UNBCourseReader {
         //Get rows
         List<HtmlTableRow> rows = table.getRows();
         
-        //Schedule
         Schedule courseList = new Schedule("UNB Course List: "+year+" "+term+" "+level+" "+location);
+       	Matcher m;
+        String CourseName="", Section="", Type="", Day="", Time="", Location="";
+        Course courseObj = null;
+        //Flags for special cases
+    	boolean sameCourse = false;
+    	boolean labCourse = false;
         
+        //Regex Patterns
+        Pattern courseRowPattern = 
+        		Pattern.compile("(\\d{6}).*"					//Course ID 	(6 digits)
+				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
+				+ "([A-z]{2}\\d\\d[A-z]).*"						//Section 		(Ex: FR01A)
+				+ "\\s((?:M|T|W|Th|F)+)\\s.*"					//Days 			(Ex: MWF)
+				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time 			(Ex: 08:30AM-9:20AM)
+				+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
+        //Lab courses have days, time, and location on next line (since they don't have any lecture)
+        Pattern labCoursePattern = 
+        		Pattern.compile("(\\d{6}).*"					//Course ID 	(6 digits)
+				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
+				+ "([A-z]{2}\\d\\d[A-z]).*");					//Section 		(Ex: FR01A)
+        //Patern for extra class times (labs and tutorials)
+        Pattern classTimeRowPattern = 
+        		Pattern.compile("(Lab|Tutorial).*"				//Type
+				+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
+				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time
+				+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
         
-        
-        
-        //Loop through rows
-        Pattern p; Matcher m;
-        String Course="", Section="", Type="", Day="", Time="", Location="";
-        Course course = null;
+        //Loop through each row		
         for (int i=1; i<rows.size(); i++) {
         	//Get current row
         	HtmlTableRow row = rows.get(i);
@@ -159,52 +177,34 @@ public class UNBCourseReader {
         		nextRowText = nextRow.asText();
         	}
         	
-        	//Flags for special cases
-        	boolean sameCourse = false;
-        	boolean labCourse = false;
-        	
         	//Check if it is first row of a course section
         	if (row.getCell(0).asText().matches("\\d{6}")) {
 				
-        		p = Pattern.compile("(\\d{6}).*"						//Course ID 	(6 digits)
-        				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
-        				+ "([A-z]{2}\\d\\d[A-z]).*"						//Section 		(Ex: FR01A)
-        				+ "\\s((?:M|T|W|Th|F)+)\\s.*"					//Days 			(Ex: MWF)
-        				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time 			(Ex: 08:30AM-9:20AM)
-        				+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
         		//Check if it is a lab course
         		if (row.getCell(5).asText().equals("") && i!=numRows-1 &&
         		nextRow.getCell(0).asText().matches("Lab|Tutorial")) {
         			labCourse = true;
-        			
-        			//Lab courses have days, time, and location on next line (since they don't have any lecture)
-        			p = Pattern.compile("(\\d{6}).*"						//Course ID 	(6 digits)
-            				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
-            				+ "([A-z]{2}\\d\\d[A-z]).*");					//Section 		(Ex: FR01A)
-        			
+        			//Match lab course
+        			m = labCoursePattern.matcher(rowText);
         		}
-        		m = p.matcher(rowText);
-    			
+        		else {
+        			//Match normal course
+        			m = courseRowPattern.matcher(rowText);
+        		}
+        		
     			if (m.find()) {
-    				
     				//Check if still same course (more than 1 section)
-    				if (Course.equals(row.getCells().get(1).asText())) {
+    				if (CourseName.equals(row.getCells().get(1).asText())) {
     					sameCourse = true;
     				}
     				
-    				//Pull values of this course
-    				Course = row.getCells().get(1).asText();
+    				//Get values for this course
+    				CourseName = row.getCells().get(1).asText();
     				Section = m.group(3);
-    				
     				if (labCourse) {
         				//Get values from next row
     					i++;
-        				
-        				p = Pattern.compile("(Lab|Tutorial).*"					//Type
-								+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
-								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time
-								+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
-		    			m = p.matcher(nextRowText);
+		    			m = labCoursePattern.matcher(nextRowText);
 		    			
 		    			if (m.find()) {
 		    				Type = m.group(1);
@@ -212,7 +212,7 @@ public class UNBCourseReader {
 		    				Time = m.group(3);
 		    				Location = m.group(4);
 		    				//If no location, set it as N/A
-		    				Location = Location==null?"N/A":Location;
+		    				Location = Location == null ? "N/A" : Location;
 		    			}
     				}
     				else {
@@ -222,22 +222,22 @@ public class UNBCourseReader {
         				Time = m.group(5);
         				Location = m.group(6);
         				//If no location, set it as N/A
-	    				Location = Location==null?"N/A":Location;
+        				Location = Location == null ? "N/A" : Location;
     				}
     				
     				//Create objects and add them to the list
-    				ClassTime time = new ClassTime(Type+" "+Day+" "+Time+" "+Location);
-    				Section section = new Section(Section);
-    				section.add(time);
+    				ClassTime timeObj = new ClassTime(Type+" "+Day+" "+Time+" "+Location);
+    				Section sectionObj = new Section(Section);
+    				sectionObj.add(timeObj);
     				if (sameCourse) {
         				//Add section to previous course (not creating a new course)
-        				course.add(section);
+        				courseObj.add(sectionObj);
     				}
     				else {
     					//Create new course
-        				course = new Course(Course);
-        				course.add(section);
-        				courseList.add(course);
+        				courseObj = new Course(CourseName);
+        				courseObj.add(sectionObj);
+        				courseList.add(courseObj);
     				}
     				
     				//Loop until find next course
@@ -253,11 +253,7 @@ public class UNBCourseReader {
     					}
     					else {
     						//Extra class time
-    						p = Pattern.compile("(Lab|Tutorial).*"					//Type
-    								+ "\\s(M|T|W|Th|F)+\\s.*"						//Days
-    								+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time
-    								+ "(?:.*\\s([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
-    		    			m = p.matcher(rowText);
+    		    			m = classTimeRowPattern.matcher(rowText);
     		    			
     		    			if (m.find()) {
     		    				//Get values of this class time
@@ -266,11 +262,11 @@ public class UNBCourseReader {
     		    				Time = m.group(3);
     		    				Location = m.group(4);
     		    				//If no location, set it as N/A
-    		    				Location = Location==null?"N/A":Location;
+    		    				Location = Location == null ? "N/A" : Location;
     		    				
     		    				//Create classTIme object and add it to the section
-    		    				ClassTime other = new ClassTime(Type+" "+Day+" "+Time+" "+Location);
-    		    				section.add(other);
+    		    				ClassTime otherTimeObj = new ClassTime(Type+" "+Day+" "+Time+" "+Location);
+    		    				sectionObj.add(otherTimeObj);
     		    			}
     					}
     				}
@@ -291,6 +287,8 @@ public class UNBCourseReader {
 		return true;
 	}
 	
+	
+	//Read given file and return the Schedule object within it
 	public static Schedule readFile(String fileName) {
 		
 		File file = new File(fileName);
@@ -323,19 +321,22 @@ public class UNBCourseReader {
 		return courseList;
 	}
 	
+	
 //======== PRIVATE METHODS =======
+	
 	
 	//Builds the website url using the data.
 	private String getUrl() {
-		return url+"?term="+year+"/"+term+"&level="+level+
+		return URL+"?term="+year+"/"+term+"&level="+level+
 				"&subject="+subject+"&location="+location;
 	}
 	
+	//Writes the Schedule object to a file (create/overwrite file if needed)
 	private boolean writeToFile(Schedule courseList) {
 		boolean result = true;
 		
 		//Create a file, putting the parameters in the file name 
-		//so it will overwrite if file with those parameters already exists
+		//It will overwrite if file with those parameters already exists
 		String fileName = "UNBCourses"+year+term+level+location+".list";
 		File file = new File(fileName);
 		ObjectOutputStream objectStream = null;
