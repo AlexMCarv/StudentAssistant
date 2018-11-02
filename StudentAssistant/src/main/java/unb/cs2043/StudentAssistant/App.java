@@ -16,7 +16,7 @@ public class App extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception {
         
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main_Window.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
         primaryStage.setTitle("Student Schedule Assistant");
         primaryStage.setScene(new Scene(root, 400, 350));
         primaryStage.show();
