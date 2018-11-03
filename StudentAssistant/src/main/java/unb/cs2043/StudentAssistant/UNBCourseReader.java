@@ -12,6 +12,9 @@ import java.util.List;
 
 //Regex
 import java.util.regex.Pattern;
+
+import org.apache.commons.logging.LogFactory;
+
 import java.util.regex.Matcher;
 
 //HtmlUnit
@@ -429,7 +432,8 @@ public class UNBCourseReader {
 	
 	private static HtmlPage getHtmlPage(String url) {
 		//Turn warnings off (Warnings are only useful when testing a website. We just want data so turn it off.)
-        java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(java.util.logging.Level.OFF);
+		LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+		java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(java.util.logging.Level.OFF);
         
         //Get page
         WebClient webClient = new WebClient();

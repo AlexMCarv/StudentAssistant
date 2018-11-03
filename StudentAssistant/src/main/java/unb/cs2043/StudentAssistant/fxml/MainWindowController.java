@@ -45,6 +45,11 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);});
 	}
 	
+	@FXML
+	private void loadUNBData() {
+		openWindow("/fxml/LoadUNBCourses.fxml", "Load UNB Data", 350, 250);
+	}
+	
 	
 	private void closeWindow(ActionEvent event) {
 		Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -119,5 +124,6 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	
 	private void refresh() {createCourseList();}
+	
 	
 }

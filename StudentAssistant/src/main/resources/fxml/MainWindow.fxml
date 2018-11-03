@@ -19,6 +19,7 @@
             <MenuItem mnemonicParsing="false" text="New" />
             <MenuItem mnemonicParsing="false" text="Open…" />
             <Menu mnemonicParsing="false" text="Open Recent" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadUNBData" text="Load UNB Data..." />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Close" />
             <MenuItem mnemonicParsing="false" text="Save" />
