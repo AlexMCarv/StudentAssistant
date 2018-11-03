@@ -363,36 +363,43 @@ public class UNBCourseReader {
 	}
 	
 	
-	public static String[][][] getDropdownChoices() {
+	public static Choice[][] getDropdownChoices() {
 		
-		String[][][] choices = new String[3][][];
+		Choice[][] choices = new Choice[3][];
 		
 		HtmlPage page = getHtmlPage(URL);
 		
 		//Get Dropdowns (also called Selects)
-		HtmlSelect termSelect = (HtmlSelect)page.getElementById("term");
-		HtmlSelect levelSelect = (HtmlSelect)page.getElementById("level");
-		HtmlSelect locationSelect = (HtmlSelect)page.getElementById("location");
+		DomElement termElem = page.getElementById("term");
+		DomElement levelElem = page.getElementById("level");
+		DomElement locationElem = page.getElementById("location");
+		while (termElem==null || levelElem == null || locationElem == null) {
+			//Could not find the dropdown on the page, try again
+			termElem = page.getElementById("term");
+			levelElem = page.getElementById("level");
+			locationElem = page.getElementById("location");
+		}
+		HtmlSelect termSelect = (HtmlSelect)termElem;
+		HtmlSelect levelSelect = (HtmlSelect)levelElem;
+		HtmlSelect locationSelect = (HtmlSelect)locationElem;
 		
 		HtmlSelect[] selects = {termSelect, levelSelect, locationSelect};
 		int i=0;
 		for (HtmlSelect select: selects) {
 			
-			ArrayList<String[]> strOptions = new ArrayList<>();
+			ArrayList<Choice> choiceArrayList = new ArrayList<>();
 			
 			List<HtmlOption> options = select.getOptions();
 			for (HtmlOption option: options) {
 				//Don't add options starting with a dash (They are just labels)
 				if (option.getText().charAt(0)!='-') {
-					String[] textAndValues = new String[2];
-					textAndValues[0] = option.getText();
-					textAndValues[1] = option.getValueAttribute();
-					strOptions.add(textAndValues);
+					Choice choice = new Choice(option.getText(), option.getValueAttribute());
+					choiceArrayList.add(choice);
 				}
 			}
 			
-			String[][] strOptionsArray = new String[strOptions.size()][2];
-			choices[i++] = strOptions.toArray(strOptionsArray);
+			Choice[] choiceArray = new Choice[choiceArrayList.size()];
+			choices[i++] = choiceArrayList.toArray(choiceArray);
 		}
 		
 		return choices;
