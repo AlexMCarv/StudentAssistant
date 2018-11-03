@@ -1,7 +1,6 @@
 package unb.cs2043.StudentAssistant.fxml;
 
 import unb.cs2043.StudentAssistant.App;
-import unb.cs2043.StudentAssistant.Choice;
 import unb.cs2043.StudentAssistant.Schedule;
 import unb.cs2043.StudentAssistant.UNBCourseReader;
 

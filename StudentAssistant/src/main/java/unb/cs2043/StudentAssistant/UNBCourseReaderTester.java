@@ -1,5 +1,7 @@
 package unb.cs2043.StudentAssistant;
 
+import unb.cs2043.StudentAssistant.fxml.Choice;
+
 /**
  * Used to test the UNBCourseReader class.
  * @author frede

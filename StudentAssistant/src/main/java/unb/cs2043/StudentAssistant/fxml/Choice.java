@@ -1,7 +1,4 @@
-/**
- * 
- */
-package unb.cs2043.StudentAssistant;
+package unb.cs2043.StudentAssistant.fxml;
 
 /**
  * Class representing a choice used in a comboBoc (has a label and value)

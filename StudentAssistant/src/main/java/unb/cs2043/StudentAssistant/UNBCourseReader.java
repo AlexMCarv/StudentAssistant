@@ -1,6 +1,7 @@
 package unb.cs2043.StudentAssistant;
 
 //Imports
+import unb.cs2043.StudentAssistant.fxml.Choice;
 import java.io.ObjectOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,18 +10,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-//Regex
 import java.util.regex.Pattern;
-
-import org.apache.commons.logging.LogFactory;
-
 import java.util.regex.Matcher;
-
-//HtmlUnit
+import org.apache.commons.logging.LogFactory;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
-import com.gargoylesoftware.htmlunit.javascript.host.Console;
 
 /**
  * Allows reading course information from the UNB course timetable website 

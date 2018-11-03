@@ -50,12 +50,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		openWindow("/fxml/LoadUNBCourses.fxml", "Load UNB Data", 350, 250);
 	}
 	
-	
 	private void closeWindow(ActionEvent event) {
 		Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
 	    stage.close();
 	}
-	
 
 	private void openWindow(String path, String title, int width, int height) {
 		try {
