@@ -34,12 +34,17 @@ public class Course implements Serializable{
 		else{
 			//inserts into the list to maintain order from
 			// smallest to largest Section
-			for(int x=0; x<sections.size();x++){
+			boolean added = false;
+			for(int x=0; x<sections.size() && !added;x++){
 				if(sections.get(x).getName().compareTo(one.getName())>0){
-					for(int y=sections.size();y>x;y--){
-						sections.set(y,sections.get(y-1));
-					}
+					/*This is not necessary, the add() method works as 
+					 * an insert on its own (see documentation) -Fred*/ 
+//					for(int y=sections.size();y>x;y--){
+//						sections.set(y,sections.get(y-1));
+//					}
 					sections.add(x,one);
+					//Your need to break out of the for loop otherwise you add it many times -Fred
+					added = true;
 				}
 			}
 		}
