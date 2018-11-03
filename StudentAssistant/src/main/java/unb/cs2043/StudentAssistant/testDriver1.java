@@ -1,4 +1,4 @@
-package unb.cs2043.student_assistant;
+package unb.cs2043.StudentAssistant;
 //tests serialize
 /** @author Tye Shutty */
 public class testDriver1{

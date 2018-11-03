@@ -1,4 +1,4 @@
-package unb.cs2043.student_assistant;
+package unb.cs2043.StudentAssistant;
 
 import java.util.ArrayList;
 /**@author Tye Shutty*/

@@ -1,4 +1,4 @@
-package unb.cs2043.student_assistant;
+package unb.cs2043.StudentAssistant;
 //package naming convention https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html
 
 import java.io.Serializable;
