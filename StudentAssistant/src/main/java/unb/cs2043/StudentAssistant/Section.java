@@ -3,37 +3,63 @@ package unb.cs2043.StudentAssistant;
 import java.io.Serializable;
 import java.util.ArrayList;
 /**@author Tye Shutty*/
+//Allan, this class is your responsibility,
+//I just copied my methods from Course and pasted them here. -Tye
 public class Section implements Serializable{
+
 	private String name;
 	private ArrayList<ClassTime> classTimes;
+
 	public Section(String name){
 		this.name=name;
 		classTimes = new ArrayList<ClassTime>();
 	}
-	public void add(ClassTime one){
+
+	public ArrayList<ClassTime> copyList(){
+		return classTimes;
+	}
+	public ClassTime getClassTime(int index){
+		if(classTimes.size()>=index){
+			return classTimes.get(index);
+		}
+		return null;
+	}
+	public String getName(){
+		return name;
+	}
+	public boolean setName(String two){
+		name=two;
+		return true;
+	}
+
+	public int getSize(){
+		return classTimes.size();
+	}
+
+	public void add(Section one){
+		//edge cases
 		if(classTimes.isEmpty() ||
-		classTimes.get(classTimes.size()-1).compareTo(one)<=0){
+		classTimes.get(classTimes.size()-1).getName().compareTo(one.getName())<=0){
 			classTimes.add(one);
 		}
+		//general case
 		else{
-			//inserts into the list to maintain order from
-			// smallest to largest ClassTime
-			boolean added = false;
-			for(int x=0; x<classTimes.size() && !added;x++){
-				if(classTimes.get(x).compareTo(one)>0){
-					/*This is not necessary, the add() method works as 
-					 * an insert on its own (see documentation) -Fred*/ 
-					//for(int y=classTimes.size()-1;y>x;y--){
-					//	classTimes.set(y,classTimes.get(y-1));
-					//}
-					classTimes.add(x,one);
-					//Your need to break out of the for loop otherwise you add it many times -Fred
-					added = true;
-				}
+			//inserts into the list to maintain order from smallest to largest Section
+			int x=0;
+			//compareTo returns the value of this object relative to the parameter
+			while(classTimes.get(x).getName().compareTo(one.getName())<0){
+				x++;
 			}
+			classTimes.add(x,one);
 		}
 	}
-	public boolean replace(ClassTime two){
+	public boolean remove(ClassTime one){
+		return classTimes.remove(one);
+	}
+	public boolean remove(int index){
+		return classTimes.remove(index);
+	}
+	public boolean set(ClassTime two){
 		boolean deed=false;
 		for(int x=0;x<classTimes.size();x++){
 			if(classTimes.get(x).compareTo(two)==0){
@@ -42,23 +68,6 @@ public class Section implements Serializable{
 			}
 		}
 		return deed;
-	}
-	public boolean remove(ClassTime one){
-		boolean deed=false;
-		for(int x=0;x<classTimes.size();x++){
-			if(classTimes.get(x).compareTo(one)==0){
-				classTimes.remove(x);
-				deed=true;
-			}
-		}
-		return deed;
-	}
-	public boolean remove(int index){
-		if(classTimes.size()>=index){
-			classTimes.remove(index);
-			return true;
-		}
-		return false;
 	}
 	public String toString(){
 		String description=name;
@@ -74,21 +83,5 @@ public class Section implements Serializable{
 			}
 		}
 		return description+"\n";
-	}
-	public ClassTime getClassTime(int index){
-		if(classTimes.size()>=index){
-			return classTimes.get(index);
-		}
-		return null;
-	}
-	public int getSize(){
-		return classTimes.size();
-	}
-	public String getName(){
-		return name;
-	}
-	public boolean setName(String two){
-		name=two;
-		return true;
 	}
 }

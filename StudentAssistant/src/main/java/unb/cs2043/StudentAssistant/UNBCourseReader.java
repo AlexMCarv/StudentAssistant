@@ -9,12 +9,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.logging.LogFactory;
 
 //Regex
 import java.util.regex.Pattern;
-
-import org.apache.commons.logging.LogFactory;
-
 import java.util.regex.Matcher;
 
 //HtmlUnit
