@@ -7,7 +7,7 @@ package unb.cs2043.StudentAssistant;
 public class UNBCourseReaderTester {
 
 	public static void main(String[] args) {
-		UNBCourseReader reader = new UNBCourseReader("2018", "FA", "UG", "all", "FR");
+		UNBCourseReader reader = new UNBCourseReader("2018", "FA", "UG", "ENGG", "FR");
 		
 		boolean success = reader.loadData();
 		
