@@ -215,7 +215,6 @@ public class UNBCourseReader {
     						m = multiLocLabCoursePattern.matcher(nextRowText);
     						
     		    			if (m.find()) {
-    		    				System.out.println("RARE CASE MATCHED (1)!");
     		    				//First one
     		    				type = m.group(1);
     		    				day = m.group(2);
@@ -258,7 +257,6 @@ public class UNBCourseReader {
     				
     				if (multiLocation) {
     					if (labCourse) {
-    						System.out.println("RARE CASE MATCHED (2)!");
     						//Second one (lab)
     						type = m.group(1);
     	    				day = m.group(3)==null?day:m.group(3);
