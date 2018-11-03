@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
  * Controller of the window that allows loading data from UNB website.
  * @author Frederic Verret
  */
-public class ReadUNBCoursesController implements javafx.fxml.Initializable {
+public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	
 	@FXML private ComboBox<Choice> termSelect;
     @FXML private ComboBox<Choice> levelSelect;
