@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 //Regex
@@ -25,17 +26,15 @@ import com.gargoylesoftware.htmlunit.javascript.host.Console;
 
 public class UNBCourseReader {
 	
-	private final String URL = "http://es.unb.ca/apps/timetable/";
+	private static final String URL = "http://es.unb.ca/apps/timetable/";
 	
-	private String year;
 	private String term;
 	private String level;
 	private String subject;
 	private String city;
 	
-	public UNBCourseReader(String year, String term, 
+	public UNBCourseReader(String term, 
 			String level, String subject, String city) {
-		this.year = year;
 		this.term = term;
 		this.level = level;
 		this.subject = subject;
@@ -43,9 +42,8 @@ public class UNBCourseReader {
 	}
 	
 	//Constructor overload without subject. Assumes subject is ALL.
-	public UNBCourseReader(String year, String term, 
+	public UNBCourseReader(String term, 
 			String level, String city) {
-		this.year = year;
 		this.term = term;
 		this.level = level;
 		this.subject = "ALL";
@@ -53,10 +51,6 @@ public class UNBCourseReader {
 	}
 	
 //===== GETTERS AND SETTERS =====
-	public String getYear() {
-		return year;
-	}
-
 	public String getTerm() {
 		return term;
 	}
@@ -71,10 +65,6 @@ public class UNBCourseReader {
 
 	public String getCity() {
 		return city;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
 	}
 
 	public void setTerm(String term) {
@@ -99,7 +89,7 @@ public class UNBCourseReader {
 	which has all the courses from the specified term, year, etc.*/
 	public boolean loadData() {
 		
-		HtmlPage page = getHtmlPage();
+		HtmlPage page = getHtmlPage(getUrl());
 		
 		if (page==null) {
 			//Error loading page
@@ -116,7 +106,7 @@ public class UNBCourseReader {
         //Get rows
         List<HtmlTableRow> rows = table.getRows();
         
-        Schedule courseList = new Schedule("UNB Course List: "+year+" "+term+" "+level+" "+city);
+        Schedule courseList = new Schedule("UNB Course List: "+term+" "+level+" "+city);
        	Matcher m;
         String courseName="", section="", type="", day="", time="", location="";
         Course courseObj = null;
@@ -215,7 +205,6 @@ public class UNBCourseReader {
     						m = multiLocLabCoursePattern.matcher(nextRowText);
     						
     		    			if (m.find()) {
-    		    				System.out.println("RARE CASE MATCHED (1)!");
     		    				//First one
     		    				type = m.group(1);
     		    				day = m.group(2);
@@ -258,7 +247,6 @@ public class UNBCourseReader {
     				
     				if (multiLocation) {
     					if (labCourse) {
-    						System.out.println("RARE CASE MATCHED (2)!");
     						//Second one (lab)
     						type = m.group(1);
     	    				day = m.group(3)==null?day:m.group(3);
@@ -362,21 +350,70 @@ public class UNBCourseReader {
 		return courseList;
 	}
 	
+	public File getFile() {
+		//The pattern for the fileName is:
+		//UNBCourses_year_season_level_city.list
+		String fileName = "UNBCourses"+"_"+term.replace("/", "_")+"_"+level+"_"+city+".list";
+		File file = new File(fileName);
+		return file;
+	}
+	
+	public boolean deleteFile() {
+		return getFile().delete();
+	}
 	
 	
-//	public String[][] getDropdownChoices() {
-//		
-//	}
+	public static Choice[][] getDropdownChoices() {
+		
+		Choice[][] choices = new Choice[3][];
+		
+		HtmlPage page = getHtmlPage(URL);
+		
+		//Get Dropdowns (also called Selects)
+		DomElement termElem = page.getElementById("term");
+		DomElement levelElem = page.getElementById("level");
+		DomElement locationElem = page.getElementById("location");
+		while (termElem==null || levelElem == null || locationElem == null) {
+			//Could not find the dropdown on the page, try again
+			termElem = page.getElementById("term");
+			levelElem = page.getElementById("level");
+			locationElem = page.getElementById("location");
+		}
+		HtmlSelect termSelect = (HtmlSelect)termElem;
+		HtmlSelect levelSelect = (HtmlSelect)levelElem;
+		HtmlSelect locationSelect = (HtmlSelect)locationElem;
+		
+		HtmlSelect[] selects = {termSelect, levelSelect, locationSelect};
+		int i=0;
+		for (HtmlSelect select: selects) {
+			
+			ArrayList<Choice> choiceArrayList = new ArrayList<>();
+			
+			List<HtmlOption> options = select.getOptions();
+			for (HtmlOption option: options) {
+				//Don't add options starting with a dash (They are just labels)
+				if (option.getText().charAt(0)!='-') {
+					Choice choice = new Choice(option.getText(), option.getValueAttribute());
+					choiceArrayList.add(choice);
+				}
+			}
+			
+			Choice[] choiceArray = new Choice[choiceArrayList.size()];
+			choices[i++] = choiceArrayList.toArray(choiceArray);
+		}
+		
+		return choices;
+	}
 	
 	
 //======== PRIVATE METHODS =======
 	
 	private String getUrl() {
-		return URL+"?term="+year+"/"+term+"&level="+level+
+		return URL+"?term="+term+"&level="+level+
 				"&subject="+subject+"&location="+city;
 	}
 	
-	//Return the text in the row a space between columns
+	//Return the text in the row with a single space between columns
 	private String getText(HtmlTableRow row, boolean removeProf) {
 		String rowText = "";
 		
@@ -390,16 +427,15 @@ public class UNBCourseReader {
 		return rowText;
 	}
 	
-	private HtmlPage getHtmlPage() {
+	private static HtmlPage getHtmlPage(String url) {
 		//Turn warnings off (Warnings are only useful when testing a website. We just want data so turn it off.)
         java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(java.util.logging.Level.OFF);
         
         //Get page
         WebClient webClient = new WebClient();
-		String address = getUrl();
 		HtmlPage page = null;
 		try {
-			page = webClient.getPage(address);
+			page = webClient.getPage(url);
 		}
 		catch (Exception e) {
 			//Possible reasons: Could not connect to the internet, URL is not valid, ...
@@ -424,14 +460,13 @@ public class UNBCourseReader {
 		
 		//Create a file, putting the parameters in the file name 
 		//It will overwrite if file with those parameters already exists
-		String fileName = "UNBCourses"+year+term+level+city+".list";
-		File file = new File(fileName);
+		File file = getFile();
 		ObjectOutputStream objectStream = null;
 		try {
 			objectStream = new ObjectOutputStream(new FileOutputStream(file));
 		}
 		catch (IOException e) {
-			//Error creating file or Error opening stream
+			System.out.println("Error creating file or Error opening stream");
 			return false;
 		}
 		
@@ -440,7 +475,7 @@ public class UNBCourseReader {
 			objectStream.writeObject(courseList);
 		}
 		catch (IOException e) {
-			//Error writing data
+			System.out.println("Error writing data");
 			
 			//Try to delete the file:
 			file.delete();
@@ -452,7 +487,7 @@ public class UNBCourseReader {
 			objectStream.close();
 		}
 		catch (IOException e) {
-			//Error closing stream
+			System.out.println("Error closing stream");
 			return false;
 		}
 		return result;
