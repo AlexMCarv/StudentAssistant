@@ -1,5 +1,6 @@
 package unb.cs2043.StudentAssistant.fxml;
 
+import unb.cs2043.StudentAssistant.App;
 import unb.cs2043.StudentAssistant.Choice;
 import unb.cs2043.StudentAssistant.Schedule;
 import unb.cs2043.StudentAssistant.UNBCourseReader;
@@ -117,10 +118,12 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
             	File file = (File) t.getSource().getValue();
 				Schedule courseList = UNBCourseReader.readFile(file.getName());
 				
-				//todo: Send courseList to main controller
-				System.out.println(courseList);
+				//Send courseList to main controller
+				App.UNBCourseList = courseList;
 				
-				//closeWindow();
+//				System.out.println(courseList);
+				
+				closeWindow();
             }
         });
         service.start();

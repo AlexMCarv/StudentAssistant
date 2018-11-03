@@ -12,10 +12,11 @@ public class App extends Application
 {
 	
 	public static Schedule userSelection;
+	public static Schedule UNBCourseList;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-        
+		UNBCourseList = null;
 		userSelection = new Schedule("My Schedule");
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
         primaryStage.setTitle("Student Schedule Assistant");
