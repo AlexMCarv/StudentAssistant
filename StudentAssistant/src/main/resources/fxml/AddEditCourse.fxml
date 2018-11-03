@@ -5,12 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.StudentAssistant.fxml.AddEditCourseController">
    <children>
-      <Label layoutX="14.0" layoutY="14.0" text="Course Name" />
-      <Button layoutX="119.0" layoutY="80.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Add / Modify" />
-      <Button layoutX="223.0" layoutY="80.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Cancel" />
-      <TextField layoutX="12.0" layoutY="35.0" prefHeight="25.0" prefWidth="400.0" />
+      <Label fx:id="lblName" layoutX="14.0" layoutY="14.0" text="Course Name" />
+      <Button fx:id="btnAdd" layoutX="119.0" layoutY="80.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Add / Modify" />
+      <Button fx:id="btnCancel" layoutX="223.0" layoutY="80.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Cancel" />
+      <TextField fx:id="txfName" layoutX="12.0" layoutY="35.0" prefHeight="25.0" prefWidth="400.0" />
    </children>
 </AnchorPane>

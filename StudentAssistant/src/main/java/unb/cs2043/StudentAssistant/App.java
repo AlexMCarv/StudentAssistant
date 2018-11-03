@@ -6,16 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * Hello world!
- *
- */
+
+
 public class App extends Application
 {
-
+	
+	public static Schedule userSelection;
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
         
+		userSelection = new Schedule("My Schedule");
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
         primaryStage.setTitle("Student Schedule Assistant");
         primaryStage.setScene(new Scene(root, 400, 350));
