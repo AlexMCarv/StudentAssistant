@@ -2,19 +2,28 @@ package unb.cs2043.StudentAssistant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-/**@author Tye Shutty*/
+/**@author Tye Shutty
+* Course allows for performing most default operations of ArrayList.
+* Lists can only be of type Section
+* Saves course name
+*/
 public class Course implements Serializable{
-
+//-------Instance Variables--------//
 	private String name;
 	private ArrayList<Section> sections;
-
+//-------Constructor--------//
 	public Course(String name){
 		this.name=name;
 		sections = new ArrayList<Section>();
 	}
-
-	public ArrayList<Section> copyList() throws nullPointerException{
-		return ArrayList(sections);
+//--------Getters---------//
+	public ArrayList<Section> copyList(){
+		if(!isEmpty()){
+			return new ArrayList<Section>(sections);
+		}
+		else{
+			return new ArrayList<Section>();
+		}
 	}
 	public Section getSection(int index){
 		if(sections.size()>=index){
@@ -22,19 +31,51 @@ public class Course implements Serializable{
 		}
 		return null;
 	}
-
 	public String getName(){
 		return name;
 	}
+	public int getSize(){
+		return sections.size();
+	}
+	public boolean contains(Section a){
+		return sections.contains(a);
+	}
+	public int indexOf(Section a){
+		return sections.indexOf(a);
+	}
+	public int indexOf(String a){
+		for(int x=0;x<sections.size();x++){
+			if(sections.get(x).getName().compareTo(a)==0){
+				return x;
+			}
+			else{
+				return -1;
+			}
+		}
+		return sections.indexOf(a);
+	}
+	public int lastIndexOf(Section a){
+		return sections.lastIndexOf(a);
+	}
+	public boolean isEmpty(){
+		return sections.isEmpty();
+	}
+	public String toString(){
+		String description=name;
+		// System.out.println(sections.size());
+		if(sections.size()>0){
+			description+=":\n";
+		}
+		for(int x=0; x<sections.size();x++){
+			description+="   "+sections.get(x);
+		}
+		return description;
+	}
+//-----------Setters------------//
 	public boolean setName(String name){
 		this.name=name;
 		return true;
 	}
-
-	public int getSize(){
-		return sections.size();
-	}
-
 	public void add(Section one){
 		//edge cases
 		if(sections.isEmpty() ||
@@ -56,13 +97,14 @@ public class Course implements Serializable{
 		return sections.remove(one);
 	}
 	public boolean remove(int index){
-		return sections.remove(index);
+		return null!=sections.remove(index);
 	}
-	public boolean replace(Section older, Section newer){
+	public boolean replace(Section older, Section newer)
+	{
 		boolean deed=false;
-		for(Section x : sections){
+		for(int x=0;x<sections.size();x++){
 			if(sections.get(x).getName().compareTo(older.getName())==0){
-				sections.add(x,newer);
+				sections.set(x,newer);
 				deed=true;
 			}
 		}
@@ -70,9 +112,9 @@ public class Course implements Serializable{
 	}
 	public boolean replace(String older, Section newer){
 		boolean deed=false;
-		for(Section x : sections){
+		for(int x=0;x<sections.size();x++){
 			if(sections.get(x).getName().compareTo(older)==0){
-				sections.add(x,newer);
+				sections.set(x,newer);
 				deed=true;
 			}
 		}
@@ -80,27 +122,12 @@ public class Course implements Serializable{
 	}
 	public boolean replace(int oldIndex, Section newer){
 		if(oldIndex<sections.size()){
-			set(oldIndex,newer);
+			sections.set(oldIndex,newer);
 			return true;
 		}
 		return false;
 	}
 	public void clear(){
 		sections.clear();
-	}
-	public boolean contains(Section a){
-		return sections.contains(a);
-	}
-
-	public String toString(){
-		String description=name;
-		// System.out.println(sections.size());
-		if(sections.size()>0){
-			description+=":\n";
-		}
-		for(int x=0; x<sections.size();x++){
-			description+="   "+sections.get(x);
-		}
-		return description;
 	}
 }

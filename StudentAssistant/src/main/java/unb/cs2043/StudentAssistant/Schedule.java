@@ -1,19 +1,29 @@
 package unb.cs2043.StudentAssistant;
 //package naming convention https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html
-
 import java.io.Serializable;
 import java.util.ArrayList;
-/**@author Tye Shutty*/
+/**@author Tye Shutty
+* Schedule allows for performing most default operations of ArrayList.
+* Lists can only be of type Course
+* Saves course name
+*/
 public class Schedule implements Serializable{
+//-------Instance Variables--------//
 	private String name;
 	private ArrayList<Course> courses;
-
+//-------Constructor--------//
 	public Schedule(String name){
 		this.name=name;
 		courses = new ArrayList<Course>();
 	}
+//--------Getters---------//
 	public ArrayList<Course> copyList(){
-		return courses;
+		if(!isEmpty()){
+			return new ArrayList<Course>(courses);
+		}
+		else{
+			return new ArrayList<Course>();
+		}
 	}
 	public Course getCourse(int index){
 		if(courses.size()>=index){
@@ -21,60 +31,34 @@ public class Schedule implements Serializable{
 		}
 		return null;
 	}
-	public int getSize(){
-		return courses.size();
-	}
 	public String getName(){
 		return name;
 	}
-	public boolean setName(String name){
-		this.name=name;
-		return true;
+	public int getSize(){
+		return courses.size();
 	}
-	public void add(Course one){
-		if(courses.isEmpty() ||
-		courses.get(courses.size()-1).getName().compareTo(one.getName())<=0){
-			courses.add(one);
-		}
-		else{
-			//inserts into the list to maintain order from
-			// smallest to largest Course
-			for(int x=0; x<courses.size();x++){
-				if(courses.get(x).getName().compareTo(one.getName())>0){
-					for(int y=courses.size();y>x;y--){
-						courses.set(y,courses.get(y-1));
-					}
-					courses.add(x,one);
-				}
-			}
-		}
+	public boolean contains(Course a){
+		return courses.contains(a);
 	}
-	public boolean remove(Course one){
-		boolean deed=false;
+	public int indexOf(Course a){
+		return courses.indexOf(a);
+	}
+	public int indexOf(String a){
 		for(int x=0;x<courses.size();x++){
-			if(courses.get(x).getName().compareTo(one.getName())==0){
-				courses.remove(x);
-				deed=true;
+			if(courses.get(x).getName().compareTo(a)==0){
+				return x;
+			}
+			else{
+				return -1;
 			}
 		}
-		return deed;
+		return courses.indexOf(a);
 	}
-	public boolean remove(int index){
-		if(courses.size()>=index){
-			courses.remove(index);
-			return true;
-		}
-		return false;
+	public int lastIndexOf(Course a){
+		return courses.lastIndexOf(a);
 	}
-	public boolean replace(Course two){
-		boolean deed=false;
-		for(int x=0;x<courses.size();x++){
-			if(courses.get(x).getName().compareTo(two.getName())==0){
-				courses.add(x,two);
-				deed=true;
-			}
-		}
-		return deed;
+	public boolean isEmpty(){
+		return courses.isEmpty();
 	}
 	public String toString(){
 		String description=name;
@@ -83,8 +67,67 @@ public class Schedule implements Serializable{
 			description+=":\n";
 		}
 		for(int x=0; x<courses.size();x++){
-			description+=courses.get(x);
+			description+="   "+courses.get(x);
 		}
 		return description;
+	}
+//-----------Setters------------//
+	public boolean setName(String name){
+		this.name=name;
+		return true;
+	}
+	public void add(Course one){
+		//edge cases
+		if(courses.isEmpty() ||
+		courses.get(courses.size()-1).getName().compareTo(one.getName())<=0){
+			courses.add(one);
+		}
+		//general case
+		else{
+			//inserts into the list to maintain order from smallest to largest Course
+			int x=0;
+			//compareTo returns the value of this object relative to the parameter
+			while(courses.get(x).getName().compareTo(one.getName())<0){
+				x++;
+			}
+			courses.add(x,one);
+		}
+	}
+	public boolean remove(Course one){
+		return courses.remove(one);
+	}
+	public boolean remove(int index){
+		return null!=courses.remove(index);
+	}
+	public boolean replace(Course older, Course newer)
+	{
+		boolean deed=false;
+		for(int x=0;x<courses.size();x++){
+			if(courses.get(x).getName().compareTo(older.getName())==0){
+				courses.set(x,newer);
+				deed=true;
+			}
+		}
+		return deed;
+	}
+	public boolean replace(String older, Course newer){
+		boolean deed=false;
+		for(int x=0;x<courses.size();x++){
+			if(courses.get(x).getName().compareTo(older)==0){
+				courses.set(x,newer);
+				deed=true;
+			}
+		}
+		return deed;
+	}
+	public boolean replace(int oldIndex, Course newer){
+		if(oldIndex<courses.size()){
+			courses.set(oldIndex,newer);
+			return true;
+		}
+		return false;
+	}
+	public void clear(){
+		courses.clear();
 	}
 }
