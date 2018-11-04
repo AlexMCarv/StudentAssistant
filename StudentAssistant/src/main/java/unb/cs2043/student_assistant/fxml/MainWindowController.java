@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,10 +14,10 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import unb.cs2043.StudentAssistant.App;
-import unb.cs2043.StudentAssistant.ClassTime;
-import unb.cs2043.StudentAssistant.Course;
-import unb.cs2043.StudentAssistant.Section;
+import unb.cs2043.student_assistant.App;
+import unb.cs2043.student_assistant.ClassTime;
+import unb.cs2043.student_assistant.Course;
+import unb.cs2043.student_assistant.Section;
 
 /**
  * Controller class for the MainWindow.fxml 
@@ -36,7 +36,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnAddCourse.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 120);});
+			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 160);});
 		btnAddSection.setOnMouseClicked((event) -> {
 			openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 173);});
 		btnAddClassTime.setOnMouseClicked((event) -> {
@@ -50,12 +50,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		openWindow("/fxml/LoadUNBCourses.fxml", "Load UNB Data", 350, 250);
 	}
 	
-	
 	private void closeWindow(ActionEvent event) {
 		Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
 	    stage.close();
 	}
-	
 
 	private void openWindow(String path, String title, int width, int height) {
 		try {

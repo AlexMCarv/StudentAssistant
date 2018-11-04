@@ -1,8 +1,8 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
-import unb.cs2043.StudentAssistant.Choice;
-import unb.cs2043.StudentAssistant.Schedule;
-import unb.cs2043.StudentAssistant.UNBCourseReader;
+import unb.cs2043.student_assistant.App;
+import unb.cs2043.student_assistant.Schedule;
+import unb.cs2043.student_assistant.UNBCourseReader;
 
 import java.io.File;
 import java.net.URL;
@@ -71,6 +71,7 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	private void initializeSelects() {
 		//Get choices
     	Choice[][] choices = UNBCourseReader.getDropdownChoices();
+    	if (choices==null) return;
     	ObservableList<Choice> termChoices = FXCollections.observableArrayList(choices[0]);
     	ObservableList<Choice> levelChoices = FXCollections.observableArrayList(choices[1]);
     	ObservableList<Choice> locationChoices = FXCollections.observableArrayList(choices[2]);
@@ -115,17 +116,19 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
             	setLoadingAnimation(false);
             	
             	File file = (File) t.getSource().getValue();
+//            	System.out.println(file.getName());
 				Schedule courseList = UNBCourseReader.readFile(file.getName());
 				
-				//todo: Send courseList to main controller
-				System.out.println(courseList);
+				//Send courseList to main controller
+				App.UNBCourseList = courseList;
 				
-				//closeWindow();
+//				System.out.println(courseList);
+				
+				closeWindow();
             }
         });
         service.start();
     	
-       
     }
     
     private static class DataLoader extends Service<File> {

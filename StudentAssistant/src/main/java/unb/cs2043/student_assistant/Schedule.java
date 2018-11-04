@@ -1,4 +1,5 @@
 package unb.cs2043.student_assistant;
+
 //package naming convention https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +26,16 @@ public class Schedule implements Serializable{
 			return courses.get(index);
 		}
 		return null;
+	}
+	public Course getCourseByName(String courseName) {
+		Course result = null;
+		for (int i=0; i<courses.size() && result==null; i++) {
+			Course current = courses.get(i);
+			if (current.getName().equals(courseName)) {
+				result = current;
+			}
+		}
+		return result;
 	}
 	public String getName(){
 		return name;

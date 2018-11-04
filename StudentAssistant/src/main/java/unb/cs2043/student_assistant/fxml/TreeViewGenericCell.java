@@ -1,7 +1,7 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
 import javafx.scene.control.TreeCell;
-import unb.cs2043.StudentAssistant.Course;
+import unb.cs2043.student_assistant.Course;
 
 /**
  * Controls how the objects are shown when added to a TreeView item 
