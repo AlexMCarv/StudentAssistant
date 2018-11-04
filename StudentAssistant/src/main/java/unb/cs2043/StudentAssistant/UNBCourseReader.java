@@ -323,7 +323,7 @@ public class UNBCourseReader {
 			objectStream = new ObjectInputStream(new FileInputStream(file));
 		}
 		catch (IOException e) {
-			System.out.println("Error finding file or Error opening stream");
+			System.out.println(getClassName()+": Error finding file or Error opening stream");
 			return null;
 		}
 		
@@ -333,7 +333,7 @@ public class UNBCourseReader {
 			courseList = (Schedule) objectStream.readObject();
 		}
 		catch (Exception e) {
-			System.out.println("Error reading data");
+			System.out.println(getClassName()+": Error reading data");
 		}
 		
 		//Close the stream
@@ -341,7 +341,7 @@ public class UNBCourseReader {
 			objectStream.close();
 		}
 		catch (IOException e) {
-			System.out.println("Error closing stream");
+			System.out.println(getClassName()+": Error closing stream");
 		}
 		
 		return courseList;
@@ -438,7 +438,7 @@ public class UNBCourseReader {
 		}
 		catch (Exception e) {
 			//Possible reasons: Could not connect to the internet, URL is not valid, ...
-			System.out.println("Could not open webpage");
+			System.out.println(getClassName()+": Could not open webpage");
 			webClient.close();
 		}
 		
@@ -449,7 +449,7 @@ public class UNBCourseReader {
         }
         catch (Exception e) {
         	//IOException or NullPointerException
-        	System.out.println("Error trying to press submit button.");
+        	System.out.println(getClassName()+": Error trying to press submit button.");
         	webClient.close();
         }
         
@@ -467,7 +467,7 @@ public class UNBCourseReader {
 			objectStream = new ObjectOutputStream(new FileOutputStream(file));
 		}
 		catch (IOException e) {
-			System.out.println("Error creating file or Error opening stream");
+			System.out.println(getClassName()+": Error creating file or Error opening stream");
 			return false;
 		}
 		
@@ -476,7 +476,7 @@ public class UNBCourseReader {
 			objectStream.writeObject(courseList);
 		}
 		catch (IOException e) {
-			System.out.println("Error writing data");
+			System.out.println(getClassName()+": Error writing data");
 			
 			//Try to delete the file:
 			file.delete();
@@ -488,9 +488,13 @@ public class UNBCourseReader {
 			objectStream.close();
 		}
 		catch (IOException e) {
-			System.out.println("Error closing stream");
+			System.out.println(getClassName()+": Error closing stream");
 			return false;
 		}
 		return result;
+	}
+	
+	private static String getClassName() {
+		return UNBCourseReader.class.getSimpleName();
 	}
 }
