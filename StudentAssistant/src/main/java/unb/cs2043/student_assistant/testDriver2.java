@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant;
+package unb.cs2043.student_assistant;
 
 import java.util.ArrayList;
 /**@author Tye Shutty*/
@@ -6,7 +6,7 @@ public class testDriver2{
 	public static void main(String[] args){
 		// Scanner Tye = new Scanner(System.in);
 		Schedule one=new Schedule("Jane's Winter 2019");
-		Schedule two=one.copyList();
+		ArrayList<Course> two=one.copyList();
 		Course temp;
 		Section temp1;
 		ClassTime temp2;

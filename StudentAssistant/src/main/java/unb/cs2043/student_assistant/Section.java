@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant;
+package unb.cs2043.student_assistant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,12 +16,7 @@ public class Section implements Serializable{
 		}
 	//--------Getters---------//
 		public ArrayList<ClassTime> copyList(){
-			if(!isEmpty()){
-				return new ArrayList<ClassTime>(classTimes);
-			}
-			else{
-				return new ArrayList<ClassTime>();
-			}
+			return classTimes;
 		}
 		public ClassTime getClassTime(int index){
 			if(classTimes.size()>=index){
