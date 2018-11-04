@@ -5,17 +5,23 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="170.0" minWidth="-Infinity" prefHeight="250.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.LoadUNBCoursesController">
+
+<StackPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.LoadUNBCoursesController">
    <children>
-      <ProgressIndicator fx:id="loading" layoutX="150.0" layoutY="89.0" />
-      <Label fx:id="termLabel" layoutX="14.0" layoutY="14.0" text="Select Term" visible="false" />
-      <ComboBox fx:id="termSelect" layoutX="13.0" layoutY="32.0" prefWidth="325.0" visible="false" />
-      <Label fx:id="levelLabel" layoutX="13.0" layoutY="72.0" text="Select Level" visible="false" />
-      <ComboBox fx:id="levelSelect" layoutX="13.0" layoutY="90.0" prefWidth="325.0" visible="false" />
-      <Label fx:id="locationLabel" layoutX="14.0" layoutY="130.0" text="Select Location" visible="false" AnchorPane.leftAnchor="14.0" />
-      <ComboBox fx:id="locationSelect" layoutX="13.0" layoutY="148.0" prefWidth="325.0" visible="false" />
-      <Button fx:id="loadBtn" disable="true" layoutX="94.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#loadData" prefHeight="25.0" prefWidth="75.0" text="Load Data" />
-      <Button fx:id="cancelBtn" layoutX="187.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#closeWindow" prefHeight="25.0" prefWidth="55.0" text="Cancel" />
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="350.0">
+         <children>
+            <ProgressIndicator fx:id="loading" layoutX="149.0" layoutY="76.0" />
+            <Label fx:id="termLabel" layoutX="14.0" layoutY="14.0" text="Select Term" visible="false" />
+            <ComboBox fx:id="termSelect" layoutX="13.0" layoutY="32.0" prefWidth="325.0" visible="false" />
+            <Label fx:id="levelLabel" layoutX="13.0" layoutY="72.0" text="Select Level" visible="false" />
+            <ComboBox fx:id="levelSelect" layoutX="13.0" layoutY="90.0" prefWidth="325.0" visible="false" />
+            <Label fx:id="locationLabel" layoutX="14.0" layoutY="130.0" text="Select Location" visible="false" AnchorPane.leftAnchor="14.0" />
+            <ComboBox fx:id="locationSelect" layoutX="13.0" layoutY="148.0" prefWidth="325.0" visible="false" />
+            <Button fx:id="loadBtn" disable="true" layoutX="94.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#loadData" prefHeight="25.0" prefWidth="75.0" text="Load Data" />
+            <Button fx:id="cancelBtn" layoutX="187.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#closeWindow" prefHeight="25.0" prefWidth="55.0" text="Cancel" />
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</StackPane>

@@ -24,7 +24,9 @@ public class App extends Application
 		userSelection = new Schedule("My Schedule");
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
         primaryStage.setTitle("Student Schedule Assistant");
-        primaryStage.setScene(new Scene(root, 400, 350));
+        primaryStage.setScene(new Scene(root, 425, 370));
+        primaryStage.setMinWidth(445);
+        primaryStage.setMinHeight(417);
         primaryStage.show();
 	}
 	

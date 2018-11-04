@@ -38,9 +38,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		btnAddCourse.setOnMouseClicked((event) -> {
 			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 160);});
 		btnAddSection.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 173);});
+			openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 180);});
 		btnAddClassTime.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditClassTime.fxml", "Add/Edit Class Time", 425, 356);});
+			openWindow("/fxml/AddEditClassTime.fxml", "Add/Edit Class Time", 425, 360);});
 		btnGenSchedule.setOnMouseClicked((event) -> {
 			openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);});
 	}
@@ -63,6 +63,8 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			Scene scene = new Scene(window, width, height);
 			Stage stage = new Stage();
 			stage.setTitle(title);
+			stage.setMinWidth(width+20);
+			stage.setMinHeight(height+47);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setOnHiding(windowEvent -> createCourseList());
 			stage.setScene(scene);
