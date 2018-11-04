@@ -17,6 +17,19 @@ public class Schedule implements Serializable{
 		}
 		return null;
 	}
+	public Course getCourseByName(String courseName) {
+		Course result = null;
+		for (int i=0; i<courses.size() && result==null; i++) {
+			Course current = courses.get(i);
+			if (current.getName().equals(courseName)) {
+				result = current;
+			}
+		}
+		return result;
+	}
+	public ArrayList<Course> getCourses() {
+		return courses;
+	}
 	public int getSize(){
 		return courses.size();
 	}

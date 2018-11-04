@@ -1,7 +1,7 @@
 package unb.cs2043.StudentAssistant.fxml;
 
 /**
- * Class representing a choice used in a comboBoc (has a label and value)
+ * Class representing a choice used in a comboBox (has a label and value)
  * @author frede
  */
 public class Choice {
