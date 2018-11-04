@@ -1,12 +1,18 @@
-package unb.cs2043.student_assistant;
+package unb.cs2043.student_assistant.TestDrivers;
+
+import java.util.Scanner;
+
+import unb.cs2043.student_assistant.ClassTime;
+import unb.cs2043.student_assistant.Course;
+import unb.cs2043.student_assistant.Schedule;
+import unb.cs2043.student_assistant.Section;
 
 import java.util.ArrayList;
 /**@author Tye Shutty*/
-public class testDriver2{
+public class testDriver0{
 	public static void main(String[] args){
 		// Scanner Tye = new Scanner(System.in);
 		Schedule one=new Schedule("Jane's Winter 2019");
-		ArrayList<Course> two=one.copyList();
 		Course temp;
 		Section temp1;
 		ClassTime temp2;
@@ -20,6 +26,5 @@ public class testDriver2{
 
 		}
 		System.out.println(one);
-		System.out.println(two);
 	}
 }

@@ -1,5 +1,7 @@
-package unb.cs2043.student_assistant;
+package unb.cs2043.student_assistant.TestDrivers;
 
+import unb.cs2043.student_assistant.Schedule;
+import unb.cs2043.student_assistant.UNBCourseReader;
 import unb.cs2043.student_assistant.fxml.Choice;
 
 /**
