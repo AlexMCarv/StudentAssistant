@@ -190,7 +190,7 @@ public class UNBCourseReader {
     				}
     				
     				//Get values for this course
-    				courseName = row.getCells().get(1).asText();
+    				courseName = row.getCells().get(1).asText().replace("*", "");
     				section = m.group(3);
     				if (labCourse) {
         				//Get values from next row
@@ -308,7 +308,7 @@ public class UNBCourseReader {
         
         //Save to a file
         if(!writeToFile(courseList)) {
-        	//File creation failed!
+        	System.out.println("File creation failed!");
         	return false;
         }
         
@@ -323,7 +323,7 @@ public class UNBCourseReader {
 			objectStream = new ObjectInputStream(new FileInputStream(file));
 		}
 		catch (IOException e) {
-			//Error finding file or Error opening stream
+			System.out.println("Error finding file or Error opening stream");
 			return null;
 		}
 		
@@ -333,7 +333,7 @@ public class UNBCourseReader {
 			courseList = (Schedule) objectStream.readObject();
 		}
 		catch (Exception e) {
-			//Error reading data
+			System.out.println("Error reading data");
 		}
 		
 		//Close the stream
@@ -341,7 +341,7 @@ public class UNBCourseReader {
 			objectStream.close();
 		}
 		catch (IOException e) {
-			//Error closing stream
+			System.out.println("Error closing stream");
 		}
 		
 		return courseList;
@@ -365,6 +365,7 @@ public class UNBCourseReader {
 		Choice[][] choices = new Choice[3][];
 		
 		HtmlPage page = getHtmlPage(URL);
+		if (page == null) return null;
 		
 		//Get Dropdowns (also called Selects)
 		DomElement termElem = page.getElementById("term");
@@ -437,6 +438,7 @@ public class UNBCourseReader {
 		}
 		catch (Exception e) {
 			//Possible reasons: Could not connect to the internet, URL is not valid, ...
+			System.out.println("Could not open webpage");
 			webClient.close();
 		}
 		
@@ -447,6 +449,7 @@ public class UNBCourseReader {
         }
         catch (Exception e) {
         	//IOException or NullPointerException
+        	System.out.println("Error trying to press submit button.");
         	webClient.close();
         }
         

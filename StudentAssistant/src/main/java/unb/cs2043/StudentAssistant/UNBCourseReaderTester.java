@@ -9,29 +9,29 @@ import unb.cs2043.StudentAssistant.fxml.Choice;
 public class UNBCourseReaderTester {
 
 	public static void main(String[] args) {
-//		UNBCourseReader reader = new UNBCourseReader("2018/FA", "UG", "CS", "FR");
-//		
-//		boolean success = reader.loadData();
-//		
-//		if (success) {
-//			//Try to read result from the created file
-//			String fileName = reader.getFile().getName();
-//			System.out.println("fileName: "+fileName);
-//			Schedule courseList = UNBCourseReader.readFile(fileName);
-//			System.out.println(courseList);
-//			
-//			//Delete file
-//			if (!reader.deleteFile()) {
-//				System.out.println("Could not delete file.");
-//			}
-//		}
-//		else {
-//			System.out.println("Oh no! Something went wrong!");
-//		}
+		UNBCourseReader reader = new UNBCourseReader("2018/FA", "UG", "CS", "FR");
+		
+		boolean success = reader.loadData();
+		
+		if (success) {
+			//Try to read result from the created file
+			String fileName = reader.getFile().getName();
+			System.out.println("fileName: "+fileName);
+			Schedule courseList = UNBCourseReader.readFile(fileName);
+			System.out.println(courseList);
+			
+			//Delete file
+			if (!reader.deleteFile()) {
+				System.out.println("Could not delete file.");
+			}
+		}
+		else {
+			System.out.println("Oh no! Something went wrong!");
+		}
 		
 		
-		Choice[][] choices = UNBCourseReader.getDropdownChoices();
-		print2DChoiceArray(choices);
+//		Choice[][] choices = UNBCourseReader.getDropdownChoices();
+//		print2DChoiceArray(choices);
 	}
 	
 	private static void print2DChoiceArray(Choice[][] array) {
