@@ -112,5 +112,6 @@ public class ScheduleDriver implements Serializable{
 		ClassTime time1=new ClassTime("50");
 		//add ClassTime
 		section1.add(time1);
+		System.out.println(stringEverything());
 	}
 }
