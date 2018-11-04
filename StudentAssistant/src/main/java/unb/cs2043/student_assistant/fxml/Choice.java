@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
 /**
  * Class representing a choice used in a comboBox (has a label and value)

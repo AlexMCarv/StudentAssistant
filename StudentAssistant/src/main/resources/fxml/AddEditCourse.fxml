@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.StudentAssistant.fxml.AddEditCourseController">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.AddEditCourseController">
    <children>
       <Label fx:id="lblName" layoutX="14.0" layoutY="14.0" text="Course Name" />
       <Button fx:id="btnAdd" layoutX="119.0" layoutY="80.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Add / Modify" AnchorPane.bottomAnchor="14.399999999999999" />

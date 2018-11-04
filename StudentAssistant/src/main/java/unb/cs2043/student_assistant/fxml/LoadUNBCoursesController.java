@@ -1,8 +1,8 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
-import unb.cs2043.StudentAssistant.App;
-import unb.cs2043.StudentAssistant.Schedule;
-import unb.cs2043.StudentAssistant.UNBCourseReader;
+import unb.cs2043.student_assistant.App;
+import unb.cs2043.student_assistant.Schedule;
+import unb.cs2043.student_assistant.UNBCourseReader;
 
 import java.io.File;
 import java.net.URL;

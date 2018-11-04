@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,10 +14,10 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import unb.cs2043.StudentAssistant.App;
-import unb.cs2043.StudentAssistant.ClassTime;
-import unb.cs2043.StudentAssistant.Course;
-import unb.cs2043.StudentAssistant.Section;
+import unb.cs2043.student_assistant.App;
+import unb.cs2043.student_assistant.ClassTime;
+import unb.cs2043.student_assistant.Course;
+import unb.cs2043.student_assistant.Section;
 
 /**
  * Controller class for the MainWindow.fxml 

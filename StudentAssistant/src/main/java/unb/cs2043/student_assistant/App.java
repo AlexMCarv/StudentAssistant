@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant;
+package unb.cs2043.student_assistant;
 
 import java.util.Set;
 import java.util.TreeSet;

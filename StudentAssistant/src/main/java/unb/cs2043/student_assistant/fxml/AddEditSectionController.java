@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import unb.cs2043.StudentAssistant.App;
-import unb.cs2043.StudentAssistant.Course;
-import unb.cs2043.StudentAssistant.Section;
+import unb.cs2043.student_assistant.App;
+import unb.cs2043.student_assistant.Course;
+import unb.cs2043.student_assistant.Section;
 
 /**
  * Controller class for the AddEditSection.fxml 

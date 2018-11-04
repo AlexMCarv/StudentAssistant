@@ -1,7 +1,7 @@
-package unb.cs2043.StudentAssistant;
+package unb.cs2043.student_assistant;
 
 //Imports
-import unb.cs2043.StudentAssistant.fxml.Choice;
+import unb.cs2043.student_assistant.fxml.Choice;
 import java.io.ObjectOutputStream;
 import java.io.File;
 import java.io.FileInputStream;

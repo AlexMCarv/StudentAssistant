@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

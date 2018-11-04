@@ -1,4 +1,4 @@
-package unb.cs2043.StudentAssistant.fxml;
+package unb.cs2043.student_assistant.fxml;
 
 import java.net.URL;
 import java.util.List;
@@ -14,8 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import unb.cs2043.StudentAssistant.App;
-import unb.cs2043.StudentAssistant.Course;
+import unb.cs2043.student_assistant.App;
+import unb.cs2043.student_assistant.Course;
 
 /**
  * Controller class for the AddEditCourse.fxml 
