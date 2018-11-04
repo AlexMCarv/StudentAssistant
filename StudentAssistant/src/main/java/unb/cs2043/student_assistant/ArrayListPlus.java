@@ -1,10 +1,6 @@
 package unb.cs2043.student_assistant;
 import java.util.ArrayList;
 /**@author Tye Shutty*/
-//MyArrayList<MyArrayList<ClassTime>> aka courses
-//MyArrayList<MyArrayList<MyArrayList<ClassTime>>> aka schedule
-//The best practice is to do the same thing with regular
-//ArrayLists in whatever class calls this one
 public class ArrayListPlus<E> extends ArrayList<E>{
 
 	private String name;
