@@ -36,7 +36,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnAddCourse.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 120);});
+			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 160);});
 		btnAddSection.setOnMouseClicked((event) -> {
 			openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 173);});
 		btnAddClassTime.setOnMouseClicked((event) -> {

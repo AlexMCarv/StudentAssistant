@@ -71,6 +71,7 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	private void initializeSelects() {
 		//Get choices
     	Choice[][] choices = UNBCourseReader.getDropdownChoices();
+    	if (choices==null) return;
     	ObservableList<Choice> termChoices = FXCollections.observableArrayList(choices[0]);
     	ObservableList<Choice> levelChoices = FXCollections.observableArrayList(choices[1]);
     	ObservableList<Choice> locationChoices = FXCollections.observableArrayList(choices[2]);
@@ -115,6 +116,7 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
             	setLoadingAnimation(false);
             	
             	File file = (File) t.getSource().getValue();
+//            	System.out.println(file.getName());
 				Schedule courseList = UNBCourseReader.readFile(file.getName());
 				
 				//Send courseList to main controller
@@ -127,7 +129,6 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
         });
         service.start();
     	
-       
     }
     
     private static class DataLoader extends Service<File> {

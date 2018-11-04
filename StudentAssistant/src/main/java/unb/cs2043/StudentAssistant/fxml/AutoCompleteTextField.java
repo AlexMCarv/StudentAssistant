@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -27,9 +28,10 @@ public class AutoCompleteTextField extends TextField
   private ContextMenu entriesPopup;
 
   /** Construct a new AutoCompleteTextField. */
-  public AutoCompleteTextField() {
+  public AutoCompleteTextField(Set<String> values) {
     super();
     entries = new TreeSet<>();
+    entries.addAll(values);
     entriesPopup = new ContextMenu();
     textProperty().addListener(new ChangeListener<String>()
     {
@@ -41,7 +43,9 @@ public class AutoCompleteTextField extends TextField
         } else
         {
           LinkedList<String> searchResult = new LinkedList<>();
-          searchResult.addAll(entries.subSet(getText(), getText() + Character.MAX_VALUE));
+          String value = getText().toUpperCase();
+          searchResult.addAll(entries.subSet(value, value + Character.MAX_VALUE));
+          
           if (entries.size() > 0)
           {
             populatePopup(searchResult);
@@ -71,7 +75,7 @@ public class AutoCompleteTextField extends TextField
    * @return The existing autocomplete entries.
    */
   public SortedSet<String> getEntries() { return entries; }
-
+  
   /**
    * Populate the entry set with the given search results.  Display is limited to 10 entries, for performance.
    * @param searchResult The set of matching strings.
