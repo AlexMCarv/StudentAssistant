@@ -2,7 +2,7 @@ package unb.cs2043.student_assistant.TestDrivers;
 
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.UNBCourseReader;
-import unb.cs2043.student_assistant.fxml.Choice;
+import unb.cs2043.student_assistant.fxml.ComboBoxChoice;
 
 /**
  * Used to test the UNBCourseReader class.
@@ -31,17 +31,16 @@ public class UNBCourseReaderTester {
 			System.out.println("Oh no! Something went wrong!");
 		}
 		
-		
-//		Choice[][] choices = UNBCourseReader.getDropdownChoices();
-//		print2DChoiceArray(choices);
+		ComboBoxChoice[][] choices = UNBCourseReader.getDropdownChoices();
+		print2DChoiceArray(choices);
 	}
 	
-	private static void print2DChoiceArray(Choice[][] array) {
+	private static void print2DChoiceArray(ComboBoxChoice[][] array) {
 		int i=0;
-		for (Choice[] arrayLv2: array) {
+		for (ComboBoxChoice[] arrayLv2: array) {
 			System.out.println(i+++":");
 			
-			for (Choice obj: arrayLv2) {
+			for (ComboBoxChoice obj: arrayLv2) {
 				System.out.println("\t"+obj.toFormattedString());
 			}
 		}

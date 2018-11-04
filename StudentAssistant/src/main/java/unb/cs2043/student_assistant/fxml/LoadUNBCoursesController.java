@@ -31,9 +31,9 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	@FXML private Label termLabel;
 	@FXML private Label levelLabel;
     @FXML private Label locationLabel;
-	@FXML private ComboBox<Choice> termSelect;
-    @FXML private ComboBox<Choice> levelSelect;
-    @FXML private ComboBox<Choice> locationSelect;
+	@FXML private ComboBox<ComboBoxChoice> termSelect;
+    @FXML private ComboBox<ComboBoxChoice> levelSelect;
+    @FXML private ComboBox<ComboBoxChoice> locationSelect;
     @FXML private Button loadBtn;
     @FXML private Button cancelBtn;
 	
@@ -46,6 +46,7 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
         service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent t) {
+            //*This runs after selects are initialized
             	//Choose first choice as default
             	termSelect.getSelectionModel().select(0);
             	levelSelect.getSelectionModel().select(0);
@@ -70,11 +71,11 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     
 	private void initializeSelects() {
 		//Get choices
-    	Choice[][] choices = UNBCourseReader.getDropdownChoices();
+		ComboBoxChoice[][] choices = UNBCourseReader.getDropdownChoices();
     	if (choices==null) return;
-    	ObservableList<Choice> termChoices = FXCollections.observableArrayList(choices[0]);
-    	ObservableList<Choice> levelChoices = FXCollections.observableArrayList(choices[1]);
-    	ObservableList<Choice> locationChoices = FXCollections.observableArrayList(choices[2]);
+    	ObservableList<ComboBoxChoice> termChoices = FXCollections.observableArrayList(choices[0]);
+    	ObservableList<ComboBoxChoice> levelChoices = FXCollections.observableArrayList(choices[1]);
+    	ObservableList<ComboBoxChoice> locationChoices = FXCollections.observableArrayList(choices[2]);
     	
     	//Set Choices
     	termSelect.setItems(termChoices);

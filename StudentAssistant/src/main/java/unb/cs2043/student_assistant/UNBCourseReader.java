@@ -1,7 +1,6 @@
 package unb.cs2043.student_assistant;
 
-//Imports
-import unb.cs2043.student_assistant.fxml.Choice;
+import unb.cs2043.student_assistant.fxml.ComboBoxChoice;
 import java.io.ObjectOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +16,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 
 /**
- * Allows reading course information from the UNB course timetable website 
+ * Allows reading course information from the UNB course timetable website.
  * @author Frederic Verret
  */
 
@@ -360,9 +359,9 @@ public class UNBCourseReader {
 	}
 	
 	
-	public static Choice[][] getDropdownChoices() {
+	public static ComboBoxChoice[][] getDropdownChoices() {
 		
-		Choice[][] choices = new Choice[3][];
+		ComboBoxChoice[][] choices = new ComboBoxChoice[3][];
 		
 		HtmlPage page = getHtmlPage(URL);
 		if (page == null) return null;
@@ -385,18 +384,18 @@ public class UNBCourseReader {
 		int i=0;
 		for (HtmlSelect select: selects) {
 			
-			ArrayList<Choice> choiceArrayList = new ArrayList<>();
+			ArrayList<ComboBoxChoice> choiceArrayList = new ArrayList<>();
 			
 			List<HtmlOption> options = select.getOptions();
 			for (HtmlOption option: options) {
 				//Don't add options starting with a dash (They are just labels)
 				if (option.getText().charAt(0)!='-') {
-					Choice choice = new Choice(option.getText(), option.getValueAttribute());
+					ComboBoxChoice choice = new ComboBoxChoice(option.getText(), option.getValueAttribute());
 					choiceArrayList.add(choice);
 				}
 			}
 			
-			Choice[] choiceArray = new Choice[choiceArrayList.size()];
+			ComboBoxChoice[] choiceArray = new ComboBoxChoice[choiceArrayList.size()];
 			choices[i++] = choiceArrayList.toArray(choiceArray);
 		}
 		

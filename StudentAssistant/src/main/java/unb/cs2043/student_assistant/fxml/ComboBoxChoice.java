@@ -4,11 +4,11 @@ package unb.cs2043.student_assistant.fxml;
  * Class representing a choice used in a comboBox (has a label and value)
  * @author frede
  */
-public class Choice {
+public class ComboBoxChoice {
 	private String label;
 	private String value;
 	
-	public Choice(String label, String value) {
+	public ComboBoxChoice(String label, String value) {
 		this.label = label;
 		this.value = value;
 	}
