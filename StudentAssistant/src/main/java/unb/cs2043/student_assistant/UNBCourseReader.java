@@ -321,7 +321,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error finding file or Error opening stream");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 			return null;
 		}
 		
@@ -332,7 +332,7 @@ public class UNBCourseReader {
 		}
 		catch (Exception e) {
 			System.out.println(getClassName()+": Error reading data");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 		}
 		
 		//Close the stream
@@ -341,7 +341,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error closing stream");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 		}
 		
 		return courseList;
@@ -439,7 +439,7 @@ public class UNBCourseReader {
 		catch (Exception e) {
 			//Possible reasons: Could not connect to the internet, URL is not valid, ...
 			System.out.println(getClassName()+": Could not open webpage");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 			webClient.close();
 		}
 		
@@ -451,7 +451,7 @@ public class UNBCourseReader {
         catch (Exception e) {
         	//IOException or NullPointerException
         	System.out.println(getClassName()+": Error trying to press submit button.");
-        	System.out.println(e.getStackTrace());
+        	e.printStackTrace();
         	webClient.close();
         }
         
@@ -470,7 +470,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error creating file or Error opening stream");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 			return false;
 		}
 		
@@ -480,7 +480,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error writing data");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 			
 			//Try to delete the file:
 			file.delete();
@@ -493,7 +493,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error closing stream");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 			return false;
 		}
 		return result;
