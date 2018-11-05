@@ -73,7 +73,7 @@ public class Schedule implements Serializable{
 			description+=":\n";
 		}
 		for(int x=0; x<courses.size();x++){
-			description+="   "+courses.get(x);
+			description+=courses.get(x);
 		}
 		return description;
 	}

@@ -13,14 +13,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
+import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.Section;
 import unb.cs2043.student_assistant.UNBCourseReader;
 
@@ -36,13 +40,14 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML private Button btnAddSection;
 	@FXML private Button btnAddClassTime;
 	@FXML private Button btnGenSchedule;
+	@FXML private Label msgLabel;
 	
 	private LoadUNBCoursesController LoadUNBController;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnAddCourse.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 160);});
+			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 170);});
 		btnAddSection.setOnMouseClicked((event) -> {
 			openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 180);});
 		btnAddClassTime.setOnMouseClicked((event) -> {
@@ -71,7 +76,13 @@ public class MainWindowController implements javafx.fxml.Initializable {
         protected Task<ComboBoxChoice[][]> createTask() {
             return new Task<ComboBoxChoice[][]>() {
                 protected ComboBoxChoice[][] call() {
-                	return UNBCourseReader.getDropdownChoices();
+                	ComboBoxChoice[][] choices = null;
+                	int i=0;
+                	while (choices==null && i<3) {
+                		//System.out.println("Load trial "+(++i));
+                		choices = UNBCourseReader.getDropdownChoices();
+                	}
+                	return choices;
                 }
             };
         }
@@ -96,7 +107,17 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setScene(scene);
 			stage.show();
-		} catch (IOException e) {e.printStackTrace();}
+			stage.setOnHidden(e -> {
+				Schedule courseList = App.UNBCourseList;
+				if (courseList!=null) {
+					int numCourses = courseList.getSize();
+					msgLabel.setText(numCourses+" UNB courses loaded for:\n"+courseList.getName()+".");
+				}
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			windowError();
+		}
 	}
 	
 	private void closeWindow(ActionEvent event) {
@@ -120,7 +141,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			stage.setScene(scene);
 			stage.show();
 			
-		} catch (IOException e) {e.printStackTrace();}
+		} catch (IOException e) {
+			e.printStackTrace();
+			windowError();
+		}
 	}
 	
 	
@@ -175,5 +199,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	private void refresh() {createCourseList();}
 	
-	
+	private void windowError() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setContentText("An error occured while trying to open the window.\nPlease try again.");
+		alert.show();
+	}
 }

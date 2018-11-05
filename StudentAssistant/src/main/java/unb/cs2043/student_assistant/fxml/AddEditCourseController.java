@@ -12,7 +12,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.Course;
@@ -51,6 +54,10 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 		autoTxfName.setPrefWidth(400.0);
 		pane.getChildren().add(autoTxfName);
 		
+		initializeInfoLabel();
+	}
+	
+	private void initializeInfoLabel() {
 		//Create message label when input matches a UNB course
 		UNBCourseMsg = new Label("Note: Entered course is a UNB course. All sections "
 				+"and class times will be added automatically.");
@@ -76,8 +83,13 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 	
 	private void addCourse(ActionEvent event) {
 		try {
-			if (autoTxfName.getText().trim().equals("")) 
-				throw new Exception("Invalid Course name.");
+			if (autoTxfName.getText().trim().equals("")) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Invalid Course name.");
+				alert.show();
+				return;
+			}
+
 			String inputVal = autoTxfName.getText();
 			Course newCourse;
 			if (App.isUNBCourse(inputVal)) {

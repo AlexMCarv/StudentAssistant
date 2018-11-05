@@ -15,6 +15,8 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -55,7 +57,11 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     
     public void initializeSelects() {
 		if (choices==null) {
+			//Error occured while loading data
 			closeWindow();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setContentText("An error occured while loading the data.\nPlease make sure you are connected to the internet and try again.");
+			alert.show();
 			return;
 		};
     	ObservableList<ComboBoxChoice> termChoices = FXCollections.observableArrayList(choices[0]);
@@ -104,6 +110,8 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     	String levelVal = levelSelect.getSelectionModel().getSelectedItem().getValue();
     	String locationVal = locationSelect.getSelectionModel().getSelectedItem().getValue();
     	
+    	//System.out.println(termVal+" "+levelVal+" "+locationVal);
+    	
     	//Load the data on another thread
     	DataLoader service = new DataLoader();
     	service.setTerm(termVal);
@@ -117,10 +125,33 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
             	File file = (File) t.getSource().getValue();
 				Schedule courseList = UNBCourseReader.readFile(file.getName());
 				
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("An error occured while loading the data.\nPlease make sure you are connected to the internet and try again.");
+				if (courseList!=null) {
+					//Rename using choice labels
+					String[] values = courseList.getName().split(" ");
+					for (int i=0; i<values.length; i++) {
+						values[i] = getChoiceLabel(values[i]);
+					}
+					courseList.setName(String.join(",\n", values));
+					
+					int numCourses = courseList.getSize();
+					if (numCourses==0) {
+						alert.setAlertType(AlertType.INFORMATION);
+						alert.setContentText("No courses are available for this selection.");
+						courseList = null;
+					}
+					else {
+						alert.setAlertType(AlertType.INFORMATION);
+						alert.setContentText("UNB Courses have been loaded successfully. \n("+courseList.getSize()+" courses loaded)");
+					}
+				}
+				
 				//Send courseList to main class
 				App.UNBCourseList = courseList;
 				
 				closeWindow();
+				alert.show();
             }
         });
         service.start();
@@ -147,6 +178,17 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
             };
         }
     }
+    
+    private static String getChoiceLabel(String value) {
+		for (ComboBoxChoice[] array: choices) {
+			for (ComboBoxChoice singleChoice: array) {
+				if (singleChoice.getValue().equals(value)) {
+					return singleChoice.getLabel();
+				}
+			}
+		}
+		return null;
+	}
     
     @FXML
     private void closeWindow(MouseEvent event) {

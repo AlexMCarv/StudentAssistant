@@ -8,9 +8,11 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.Course;
@@ -50,14 +52,23 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 	
 	private void addSection(ActionEvent event) {
 		try {
-			if (txfName.getText().trim().equals("")) 
-				throw new Exception("Invalid Section name.");
-			if (cmbCourse.getSelectionModel().getSelectedItem() == null) 
-				throw new Exception("Course not selected.");
+			if (txfName.getText().trim().equals("")) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Invalid Section name.");
+				alert.show();
+				return;
+			}
+				
+			if (cmbCourse.getSelectionModel().getSelectedItem() == null) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Course not selected.");
+				alert.show();
+				return;
+			}
 			Section newSection = new Section(txfName.getText());
 			Course course = cmbCourse.getSelectionModel().getSelectedItem();
 			course.add(newSection);
-					
+		
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
