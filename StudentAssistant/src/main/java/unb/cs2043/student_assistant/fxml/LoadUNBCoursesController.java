@@ -54,7 +54,10 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	}
     
     public void initializeSelects() {
-		if (choices==null) return;
+		if (choices==null) {
+			closeWindow();
+			return;
+		};
     	ObservableList<ComboBoxChoice> termChoices = FXCollections.observableArrayList(choices[0]);
     	ObservableList<ComboBoxChoice> levelChoices = FXCollections.observableArrayList(choices[1]);
     	ObservableList<ComboBoxChoice> locationChoices = FXCollections.observableArrayList(choices[2]);

@@ -88,11 +88,11 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			window = loader.load();
 			//Controller reference
 			LoadUNBController = loader.<LoadUNBCoursesController>getController();
-			Scene scene = new Scene(window, 350, 250);
+			Scene scene = new Scene(window, 350, 260);
 			Stage stage = new Stage();
 			stage.setTitle("Load UNB Data");
 			stage.setMinWidth(350+20);
-			stage.setMinHeight(250+47);
+			stage.setMinHeight(260+47);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setScene(scene);
 			stage.show();
