@@ -29,17 +29,15 @@ public class UNBCourseReader {
 	private String subject;
 	private String city;
 	
-	public UNBCourseReader(String term, 
-			String level, String subject, String city) {
+	public UNBCourseReader(String term, String level, String subject, String city) {
 		this.term = term;
 		this.level = level;
 		this.subject = subject;
 		this.city = city;
 	}
 	
-	//Constructor overload without subject. Assumes subject is ALL.
-	public UNBCourseReader(String term, 
-			String level, String city) {
+	//Constructor overload without subject (assumes subject is ALL)
+	public UNBCourseReader(String term, String level, String city) {
 		this.term = term;
 		this.level = level;
 		this.subject = "ALL";
@@ -81,7 +79,7 @@ public class UNBCourseReader {
 	
 //======= PUBLIC METHODS =======
 	
-	/*This method creates a file containing a Schedule object 
+	/**This method creates a file containing a Schedule object 
 	which has all the courses from the specified term, year, etc.*/
 	public boolean loadData() {
 		
@@ -323,6 +321,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error finding file or Error opening stream");
+			System.out.println(e.getStackTrace());
 			return null;
 		}
 		
@@ -333,6 +332,7 @@ public class UNBCourseReader {
 		}
 		catch (Exception e) {
 			System.out.println(getClassName()+": Error reading data");
+			System.out.println(e.getStackTrace());
 		}
 		
 		//Close the stream
@@ -341,6 +341,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error closing stream");
+			System.out.println(e.getStackTrace());
 		}
 		
 		return courseList;
@@ -438,6 +439,7 @@ public class UNBCourseReader {
 		catch (Exception e) {
 			//Possible reasons: Could not connect to the internet, URL is not valid, ...
 			System.out.println(getClassName()+": Could not open webpage");
+			System.out.println(e.getStackTrace());
 			webClient.close();
 		}
 		
@@ -449,6 +451,7 @@ public class UNBCourseReader {
         catch (Exception e) {
         	//IOException or NullPointerException
         	System.out.println(getClassName()+": Error trying to press submit button.");
+        	System.out.println(e.getStackTrace());
         	webClient.close();
         }
         
@@ -467,6 +470,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error creating file or Error opening stream");
+			System.out.println(e.getStackTrace());
 			return false;
 		}
 		
@@ -476,6 +480,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error writing data");
+			System.out.println(e.getStackTrace());
 			
 			//Try to delete the file:
 			file.delete();
@@ -488,6 +493,7 @@ public class UNBCourseReader {
 		}
 		catch (IOException e) {
 			System.out.println(getClassName()+": Error closing stream");
+			System.out.println(e.getStackTrace());
 			return false;
 		}
 		return result;
