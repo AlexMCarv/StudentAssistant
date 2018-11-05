@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	
+	private static ComboBoxChoice[][] choices;
 	@FXML private ProgressIndicator loading;
 	@FXML private Label termLabel;
 	@FXML private Label levelLabel;
@@ -36,43 +37,24 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     @FXML private ComboBox<ComboBoxChoice> locationSelect;
     @FXML private Button loadBtn;
     @FXML private Button cancelBtn;
-	
+
+//====== PUBLIC METHODS ======
+    
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
-    	setLoadingAnimation(true);
     	
-    	//Initialize the selects on another thread
-    	SelectInitializer service = new SelectInitializer();
-        service.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent t) {
-            //*This runs after selects are initialized
-            	//Choose first choice as default
-            	termSelect.getSelectionModel().select(0);
-            	levelSelect.getSelectionModel().select(0);
-            	locationSelect.getSelectionModel().select(0);
-            	
-            	setLoadingAnimation(false);
-            }
-        });
-        service.start();
+    	if (choices==null) {
+    		//Waiting for choices to load...
+    		setLoadingAnimation(true);
+    	}
+    	else {
+    		initializeSelects();
+    	}
+    	
 	}
     
-    private class SelectInitializer extends Service<Void> {
-        protected Task<Void> createTask() {
-            return new Task<Void>() {
-                protected Void call() {
-                	initializeSelects();
-                    return null;
-                }
-            };
-        }
-    }
-    
-	private void initializeSelects() {
-		//Get choices
-		ComboBoxChoice[][] choices = UNBCourseReader.getDropdownChoices();
-    	if (choices==null) return;
+    public void initializeSelects() {
+		if (choices==null) return;
     	ObservableList<ComboBoxChoice> termChoices = FXCollections.observableArrayList(choices[0]);
     	ObservableList<ComboBoxChoice> levelChoices = FXCollections.observableArrayList(choices[1]);
     	ObservableList<ComboBoxChoice> locationChoices = FXCollections.observableArrayList(choices[2]);
@@ -81,7 +63,20 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     	termSelect.setItems(termChoices);
     	levelSelect.setItems(levelChoices);
     	locationSelect.setItems(locationChoices);
+    	
+    	//Choose first choice as default
+    	termSelect.getSelectionModel().select(0);
+    	levelSelect.getSelectionModel().select(0);
+    	locationSelect.getSelectionModel().select(0);
+    	
+    	setLoadingAnimation(false);
 	}
+    	
+	public static void setChoices(ComboBoxChoice[][] loadedChoices) {
+		choices = loadedChoices;
+	}
+	
+//====== PRIVATE METHODS ======
     
 	private void setLoadingAnimation(boolean active) {
 		//Loading animation
@@ -117,13 +112,10 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
             	setLoadingAnimation(false);
             	
             	File file = (File) t.getSource().getValue();
-//            	System.out.println(file.getName());
 				Schedule courseList = UNBCourseReader.readFile(file.getName());
 				
-				//Send courseList to main controller
+				//Send courseList to main class
 				App.UNBCourseList = courseList;
-				
-//				System.out.println(courseList);
 				
 				closeWindow();
             }
