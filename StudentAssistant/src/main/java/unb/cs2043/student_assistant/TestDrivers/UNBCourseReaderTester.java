@@ -31,8 +31,8 @@ public class UNBCourseReaderTester {
 			System.out.println("Oh no! Something went wrong!");
 		}
 		
-		ComboBoxChoice[][] choices = UNBCourseReader.getDropdownChoices();
-		print2DChoiceArray(choices);
+//		ComboBoxChoice[][] choices = UNBCourseReader.getDropdownChoices();
+//		print2DChoiceArray(choices);
 	}
 	
 	private static void print2DChoiceArray(ComboBoxChoice[][] array) {

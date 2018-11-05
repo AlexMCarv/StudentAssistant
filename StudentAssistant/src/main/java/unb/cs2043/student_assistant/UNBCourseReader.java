@@ -82,7 +82,8 @@ public class UNBCourseReader {
 	/**This method creates a file containing a Schedule object 
 	which has all the courses from the specified term, year, etc.*/
 	public boolean loadData() {
-		
+		Schedule courseList = new Schedule(term+" "+level+" "+city);
+       	
 		HtmlPage page = getHtmlPage(getUrl());
 		
 		if (page==null) {
@@ -93,6 +94,16 @@ public class UNBCourseReader {
         //Get the table with the results
         HtmlTable table = (HtmlTable)page.getElementById("course-list");
         
+        //No courses are available for this selection, create file with empty course list.
+        if (table==null) {
+        	//Save to a file
+            if(!writeToFile(courseList)) {
+            	System.out.println("File creation failed!");
+            	return false;
+            }
+        	return true;
+        }
+        
         //Get the number of rows of the table
         int numRows = table.getRowCount();
         //System.out.println("Number of rows: "+numRows+"\n");
@@ -100,8 +111,7 @@ public class UNBCourseReader {
         //Get rows
         List<HtmlTableRow> rows = table.getRows();
         
-        Schedule courseList = new Schedule("UNB Course List: "+term+" "+level+" "+city);
-       	Matcher m;
+        Matcher m;
         String courseName="", section="", type="", day="", time="", location="";
         Course courseObj = null;
         
@@ -182,12 +192,15 @@ public class UNBCourseReader {
         		
     			if (m.find()) {
     				//Check if still same course (more than 1 section)
+//    				System.out.println("courseName: "+courseName+"\tnextCourse: "+row.getCells().get(1).asText());
     				if (courseName.equals(row.getCells().get(1).asText())) {
+//    					System.out.println("Same course!");
+    					
     					sameCourse = true;
     				}
     				
     				//Get values for this course
-    				courseName = row.getCells().get(1).asText().replace("*", "");
+    				courseName = row.getCells().get(1).asText();
     				section = m.group(3);
     				if (labCourse) {
         				//Get values from next row
@@ -264,7 +277,7 @@ public class UNBCourseReader {
     				}
     				else {
     					//Create new course
-        				courseObj = new Course(courseName);
+        				courseObj = new Course(courseName.replace("*", ""));
         				courseObj.add(sectionObj);
         				courseList.add(courseObj);
     				}
@@ -315,6 +328,12 @@ public class UNBCourseReader {
 	public static Schedule readFile(String fileName) {
 		
 		File file = new File(fileName);
+		
+		//Check if file exists
+		if (!file.exists()) {
+			return null;
+		}
+		
 		ObjectInputStream objectStream = null;
 		try {
 			objectStream = new ObjectInputStream(new FileInputStream(file));
@@ -371,18 +390,17 @@ public class UNBCourseReader {
 		DomElement termElem = page.getElementById("term");
 		DomElement levelElem = page.getElementById("level");
 		DomElement locationElem = page.getElementById("location");
-		while (termElem==null || levelElem == null || locationElem == null) {
-			//Could not find the dropdown on the page, try again
-			termElem = page.getElementById("term");
-			levelElem = page.getElementById("level");
-			locationElem = page.getElementById("location");
+		int i=0;
+		if (termElem==null || levelElem == null || locationElem == null) {
+			//Could not find the dropdown on the page
+			return null;
 		}
 		HtmlSelect termSelect = (HtmlSelect)termElem;
 		HtmlSelect levelSelect = (HtmlSelect)levelElem;
 		HtmlSelect locationSelect = (HtmlSelect)locationElem;
 		
 		HtmlSelect[] selects = {termSelect, levelSelect, locationSelect};
-		int i=0;
+		i=0;
 		for (HtmlSelect select: selects) {
 			
 			ArrayList<ComboBoxChoice> choiceArrayList = new ArrayList<>();
@@ -441,6 +459,7 @@ public class UNBCourseReader {
 			System.out.println(getClassName()+": Could not open webpage");
 			e.printStackTrace();
 			webClient.close();
+			return null;
 		}
 		
 		//Find the search button and click it (Needed when searching for ALL courses)
@@ -453,8 +472,10 @@ public class UNBCourseReader {
         	System.out.println(getClassName()+": Error trying to press submit button.");
         	e.printStackTrace();
         	webClient.close();
+        	return null;
         }
         
+        webClient.close();
         return page;
 	}
 	
