@@ -173,43 +173,21 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		TreeItem<Object> rootItem = new TreeItem<>(new Course("List"));
 		rootItem.setExpanded(true);
 		
-		/* 
-		for (Course course : App.userSelection.getCourseList()) {
+		for (Course course : App.userSelection.copyList()) {
 			TreeItem<Object> courseCell = new TreeItem<>(course);
 			rootItem.getChildren().add(courseCell);
 			
-			for (Section section: course.getSectionList()) {
+			for (Section section: course.copyList()) {
 				TreeItem<Object> sectionCell = new TreeItem<>(section);
 				courseCell.getChildren().add(sectionCell);
 				
-				for (ClassTime time: section.getTimeList()) {
-					TreeItem<Object> timeCell = new TreeItem<>(time);
-					sectionCell.getChildren().add(timeCell);
-				}
-			}
-		}*/
-		
-		
-		// Populating Course List - DELETE AND UNCOMMENT CODE AT THE TOP after datatype classes receive a getList method
-		for (int i = 0; i < App.userSelection.getSize(); i++) {
-			Course course = App.userSelection.getCourse(i);
-			TreeItem<Object> courseCell = new TreeItem<>(course);
-			rootItem.getChildren().add(courseCell);
-						
-			for (int j = 0; j < course.getSize(); j++) {
-				Section section = course.getSection(j);
-				TreeItem<Object> sectionCell = new TreeItem<>(section);
-				courseCell.getChildren().add(sectionCell);
-				courseCell.setExpanded(true);
-				
-				for (int k = 0; k < section.getSize(); k++) {
-					ClassTime time = section.getClassTime(k);
+				for (ClassTime time: section.copyList()) {
 					TreeItem<Object> timeCell = new TreeItem<>(time);
 					sectionCell.getChildren().add(timeCell);
 				}
 			}
 		}
-				
+		
 		//TreeView Setup
 		treeCourseList.setCellFactory(e -> new TreeViewGenericCell());
 		treeCourseList.setRoot(rootItem);
