@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
@@ -17,13 +17,11 @@
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="Select Course" />
             <Label layoutX="14.0" layoutY="68.0" text="Select Section" />
-            <Button fx:id="btnAdd" layoutX="122.0" layoutY="363.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Add / Modify" />
-            <Button fx:id="btnCancel" layoutX="226.0" layoutY="363.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Cancel" />
-            <Label fx:id="lblClassTime" layoutX="14.0" layoutY="271.0" text="Class Time" />
-            <JFXTimePicker fx:id="timePickFrom" layoutX="13.0" layoutY="305.0" />
-            <JFXTimePicker fx:id="timePickTo" layoutX="232.0" layoutY="305.0" />
-            <Label fx:id="lblFrom" layoutX="16.0" layoutY="288.0" text="From:" />
-            <Label fx:id="lblTo" layoutX="232.0" layoutY="288.0" text="To:" />
+            <Button fx:id="btnAdd" layoutX="122.0" layoutY="367.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Add / Modify" />
+            <Button fx:id="btnCancel" layoutX="226.0" layoutY="367.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Cancel" />
+            <Label fx:id="lblClassTime" layoutX="14.0" layoutY="269.0" text="Class Time" />
+            <Label fx:id="lblFrom" layoutX="16.0" layoutY="297.0" text="From" />
+            <Label fx:id="lblTo" layoutX="234.0" layoutY="296.0" text="To" />
             <ComboBox fx:id="cmbCourse" layoutX="11.0" layoutY="32.0" prefHeight="25.0" prefWidth="400.0" />
             <ComboBox fx:id="cmbSection" layoutX="11.0" layoutY="85.0" prefHeight="25.0" prefWidth="200.0" />
             <Separator layoutX="-1.0" layoutY="401.0" prefHeight="1.0" prefWidth="425.0" />
@@ -41,12 +39,15 @@
             <Label layoutX="14.0" layoutY="206.0" text="Type:" />
             <Separator layoutX="-1.0" layoutY="120.0" prefHeight="1.0" prefWidth="425.0" />
             <Separator layoutX="1.0" layoutY="265.0" prefHeight="1.0" prefWidth="425.0" />
-            <Separator layoutY="347.0" prefHeight="1.0" prefWidth="425.0" />
+            <Separator layoutY="351.0" prefHeight="1.0" prefWidth="425.0" />
             <RadioButton fx:id="rbtnLec" layoutX="13.0" layoutY="234.0" mnemonicParsing="false" text="Lecture" />
             <RadioButton fx:id="rbtnLab" layoutX="111.0" layoutY="234.0" mnemonicParsing="false" text="Laboratory" />
             <RadioButton fx:id="rbtnTut" layoutX="229.0" layoutY="234.0" mnemonicParsing="false" text="Tutorial" />
             <RadioButton fx:id="rbtnOth" layoutX="331.0" layoutY="234.0" mnemonicParsing="false" text="Other" />
             <Separator layoutX="-2.0" layoutY="201.0" prefHeight="1.0" prefWidth="425.0" />
+            <Spinner fx:id="spinnerTo" layoutX="256.0" layoutY="293.0" />
+            <Spinner fx:id="spinnerFrom" layoutX="52.0" layoutY="293.0" />
+            <Label fx:id="lblTimeError" layoutX="15.0" layoutY="325.0" />
          </children>
       </AnchorPane>
    </children>

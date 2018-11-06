@@ -19,9 +19,11 @@ public class TreeViewGenericCell <T> extends TreeCell<T>{
 		} else {
 			setText(item.toString());
 			if (!(this.getItem() instanceof ClassTime)) {
-				int colonPos = item.toString().indexOf(':');
-				String text = item.toString().substring(0, colonPos);
-				setText(text);
+				if (item.toString().indexOf(':') != -1) {
+					int colonPos = item.toString().indexOf(':');
+					String text = item.toString().substring(0, colonPos);
+					setText(text);
+				}
 			}
 		}
 	}
