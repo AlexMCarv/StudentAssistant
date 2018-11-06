@@ -2,10 +2,13 @@ package unb.cs2043.student_assistant.fxml;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.util.converter.LocalTimeStringConverter;
 
+/**
+ * Controls how the spinner values are exhibited and incremented 
+ * @author Alexandre Carvalho
+ */
 public class TimeSpinnerValueFactory extends SpinnerValueFactory<LocalTime>{
 	
 	{

@@ -2,12 +2,7 @@ package unb.cs2043.student_assistant.fxml;
 
 import java.net.URL;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
-
-import com.jfoenix.controls.JFXTimePicker;
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,14 +13,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalTimeStringConverter;
 import unb.cs2043.student_assistant.App;
+import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Section;
 
@@ -41,7 +36,7 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 	@FXML private Button btnCancel;
 	@FXML private TextField txfUNB;
 	@FXML private Button btnAddUNB;
-	@FXML private Spinner<LocalTime> spinnerFrom, spinnerTo;
+	@FXML private Spinner<LocalTime> spinnerStart, spinnerEnd;
 	@FXML private StackPane container;
 	@FXML private CheckBox chkSun, chkMon, chkTue, chkWed, chkThu, chkFri, chkSat;
 	@FXML private RadioButton rbtnLec, rbtnLab, rbtnTut, rbtnOth;
@@ -51,16 +46,26 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnCancel.setOnAction(this::closeWindow);
+		btnAdd.setOnAction(this::addClassTime);
 		
+		//Close window when pressing Escape
+		container.setOnKeyPressed(event -> {
+			if (event.getCode() ==  KeyCode.ESCAPE) closeWindow(new ActionEvent());
+		});
+		
+		rbtnLec.setUserData("Lec");
 		rbtnLec.setToggleGroup(group);
+		rbtnLab.setUserData("Lab");
 		rbtnLab.setToggleGroup(group);
+		rbtnTut.setUserData("Tutorial");
 		rbtnTut.setToggleGroup(group);
+		rbtnOth.setUserData("Other");
 		rbtnOth.setToggleGroup(group);
 		
-		spinnerFrom.setValueFactory(new TimeSpinnerValueFactory());
-		spinnerTo.setValueFactory(new TimeSpinnerValueFactory());
-		spinnerTo.valueProperty().addListener((obs, oldValue, newValue) -> {
-			if (spinnerFrom.getValue().compareTo(spinnerTo.getValue()) >= 0) {
+		spinnerStart.setValueFactory(new TimeSpinnerValueFactory());
+		spinnerEnd.setValueFactory(new TimeSpinnerValueFactory());
+		spinnerEnd.valueProperty().addListener((obs, oldValue, newValue) -> {
+			if (spinnerStart.getValue().compareTo(spinnerEnd.getValue()) >= 0) {
 				lblTimeError.setText("* End time must be greater than start time.");
 			} else {
 				lblTimeError.setText("");
@@ -80,6 +85,81 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 	}
 
 	
+	private void addClassTime(ActionEvent event) {
+		try {
+				
+			if (cmbCourse.getSelectionModel().getSelectedItem() == null) {
+				App.showNotification("Course not selected.", AlertType.ERROR);
+				return;
+			}
+			
+			if (cmbSection.getSelectionModel().getSelectedItem() == null) {
+				App.showNotification("Section not selected.", AlertType.ERROR);
+				return;
+			}
+			
+			if (!(chkSun.isSelected() || chkMon.isSelected() || chkTue.isSelected() || 
+					  chkWed.isSelected() || chkThu.isSelected() || chkFri.isSelected() || chkSat.isSelected())) {
+					App.showNotification("Week day not selected.", AlertType.ERROR);
+					return;
+			}
+			
+			if (group.getSelectedToggle() == null) {
+				App.showNotification("Type not selected.", AlertType.ERROR);
+				return;
+			}
+			
+			if (spinnerStart.getValue() == null) {
+				App.showNotification("Start time not selected", AlertType.ERROR);
+				return;
+			}
+			
+			if (spinnerEnd.getValue() == null) {
+				App.showNotification("End time not selected", AlertType.ERROR);
+				return;
+			}
+			
+			if (spinnerStart.getValue().compareTo(spinnerEnd.getValue()) >= 0) {
+				App.showNotification("End time must be greater than start time.", AlertType.ERROR);
+				return;
+			}
+
+			ClassTime newSection = new ClassTime(classTimeNameBuilder());
+			Section section = cmbSection.getSelectionModel().getSelectedItem();
+			section.add(newSection);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		closeWindow(event);
+	}
+		
+	// For Testing purposes
+	private String classTimeNameBuilder() {
+		String type = (String)group.getSelectedToggle().getUserData();
+		
+		String days = "";
+		if(chkSun.isSelected())
+			days += "Su";
+		if(chkMon.isSelected())
+			days += "M";
+		if(chkTue.isSelected())
+			days += "T";
+		if(chkWed.isSelected())
+			days += "W";
+		if(chkThu.isSelected())
+			days += "Th";
+		if(chkFri.isSelected())
+			days += "F";
+		if(chkSat.isSelected())
+			days += "Sa";
+
+		String startTime = spinnerStart.getValue().toString();
+		String endTime = spinnerEnd.getValue().toString();
+			
+		return (type + " " + days + " " + startTime + "-" + endTime);
+	}
 	
 	
 	private void closeWindow(ActionEvent event) {

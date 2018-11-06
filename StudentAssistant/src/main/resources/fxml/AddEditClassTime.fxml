@@ -45,8 +45,8 @@
             <RadioButton fx:id="rbtnTut" layoutX="229.0" layoutY="234.0" mnemonicParsing="false" text="Tutorial" />
             <RadioButton fx:id="rbtnOth" layoutX="331.0" layoutY="234.0" mnemonicParsing="false" text="Other" />
             <Separator layoutX="-2.0" layoutY="201.0" prefHeight="1.0" prefWidth="425.0" />
-            <Spinner fx:id="spinnerTo" layoutX="256.0" layoutY="293.0" />
-            <Spinner fx:id="spinnerFrom" layoutX="52.0" layoutY="293.0" />
+            <Spinner fx:id="spinnerEnd" layoutX="256.0" layoutY="293.0" />
+            <Spinner fx:id="spinnerStart" layoutX="52.0" layoutY="293.0" />
             <Label fx:id="lblTimeError" layoutX="15.0" layoutY="325.0" />
          </children>
       </AnchorPane>
