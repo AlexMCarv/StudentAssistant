@@ -2,6 +2,7 @@ package unb.cs2043.student_assistant.fxml;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.concurrent.Service;
@@ -13,11 +14,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,6 +39,7 @@ import unb.cs2043.student_assistant.UNBCourseReader;
 
 public class MainWindowController implements javafx.fxml.Initializable {
 
+	@FXML private VBox container;
 	@FXML private TreeView<Object> treeCourseList;
 	@FXML private Button btnAddCourse;
 	@FXML private Button btnAddSection;
@@ -46,14 +51,24 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		btnAddCourse.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 170);});
-		btnAddSection.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 180);});
-		btnAddClassTime.setOnMouseClicked((event) -> {
-			openWindow("/fxml/AddEditClassTime.fxml", "Add/Edit Class Time", 425, 360);});
-		btnGenSchedule.setOnMouseClicked((event) -> {
-			openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);});
+		
+		//Keybindings
+		final KeyCombination ctrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN);
+		container.setOnKeyReleased(event -> {
+			if (ctrlC.match(event)) addCourse();
+			else if (ctrlS.match(event)) addSection();
+			else if (ctrlT.match(event)) addClassTime();
+			else if (ctrlG.match(event)) genSchedule();
+		});
+		container.setOnKeyPressed(event -> {
+			if (event.getCode() ==  KeyCode.ESCAPE) {
+				boolean result = App.showConfirmDialog("Do you really want to exit?\nAll progress will be lost.", AlertType.WARNING);
+				if (result) closeWindow(new ActionEvent());
+			}	
+		});
 		
 		//Get UNB Choices (only once) in a separate thread to use in the UNB Load Data window
 		ChoiceLoader service = new ChoiceLoader();
@@ -120,14 +135,19 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		}
 	}
 	
+	//These methods are called when the corresponding button is pressed.
+	@FXML private void addCourse() {openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 170);}
+	@FXML private void addSection() {openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 180);}
+	@FXML private void addClassTime() {openWindow("/fxml/AddEditClassTime.fxml", "Add/Edit Class Time", 425, 360);}
+	@FXML private void genSchedule() {openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);}
+	
 	private void closeWindow(ActionEvent event) {
-		Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+		Stage stage = (Stage)container.getScene().getWindow();
 	    stage.close();
 	}
 
 	private void openWindow(String path, String title, int width, int height) {
 		try {
-			
 			Parent window;
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 			window = loader.load();
@@ -200,8 +220,6 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	private void refresh() {createCourseList();}
 	
 	private void windowError() {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setContentText("An error occured while trying to open the window.\nPlease try again.");
-		alert.show();
+		App.showNotification("An error occured while trying to open the window.\nPlease try again.", AlertType.ERROR);
 	}
 }

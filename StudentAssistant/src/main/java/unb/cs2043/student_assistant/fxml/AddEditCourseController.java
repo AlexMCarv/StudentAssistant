@@ -1,21 +1,17 @@
 package unb.cs2043.student_assistant.fxml;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.Course;
@@ -26,7 +22,7 @@ import unb.cs2043.student_assistant.Course;
  */
 public class AddEditCourseController implements javafx.fxml.Initializable {
 
-	@FXML private AnchorPane pane;
+	@FXML private AnchorPane anchorPane;
 	@FXML private Button btnAdd;
 	@FXML private Button btnCancel;
 	@FXML private AutoCompleteTextField autoTxfName;
@@ -36,6 +32,11 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		btnAdd.setOnAction(this::addCourse);
 		btnCancel.setOnAction(this::closeWindow);
+		
+		//Close window when pressing Escape
+		anchorPane.setOnKeyPressed(event -> {
+			if (event.getCode() ==  KeyCode.ESCAPE) closeWindow(new ActionEvent());
+		});
 		
 		initializeAutocompleteField();
 	}
@@ -52,7 +53,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 		autoTxfName.setLayoutY(35.0);
 		autoTxfName.setPrefHeight(25.0);
 		autoTxfName.setPrefWidth(400.0);
-		pane.getChildren().add(autoTxfName);
+		anchorPane.getChildren().add(autoTxfName);
 		
 		initializeInfoLabel();
 	}
@@ -66,7 +67,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 		UNBCourseMsg.setMaxWidth(400.0);
 		UNBCourseMsg.setWrapText(true);
 		UNBCourseMsg.setVisible(false);
-		pane.getChildren().add(UNBCourseMsg);
+		anchorPane.getChildren().add(UNBCourseMsg);
 		
 		//Check if entered value matches a UNB Course
 		autoTxfName.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -84,9 +85,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 	private void addCourse(ActionEvent event) {
 		try {
 			if (autoTxfName.getText().trim().equals("")) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setContentText("Invalid Course name.");
-				alert.show();
+				App.showNotification("Invalid Course name.", AlertType.ERROR);
 				return;
 			}
 

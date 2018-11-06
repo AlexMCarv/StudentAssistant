@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.AddEditSectionController">
+<StackPane fx:id="container" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.AddEditSectionController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="425.0">
          <children>
@@ -15,8 +15,8 @@
             <ComboBox fx:id="cmbCourse" layoutX="11.0" layoutY="33.0" prefHeight="25.0" prefWidth="400.0" />
             <Label fx:id="lblSection" layoutX="14.0" layoutY="68.0" text="Section Name" />
             <TextField fx:id="txfName" layoutX="14.0" layoutY="88.0" prefHeight="25.0" prefWidth="200.0" />
-            <Button fx:id="btnAdd" layoutX="107.0" layoutY="135.0" mnemonicParsing="false" text="Add / Modify" />
-            <Button fx:id="btnCancel" layoutX="233.0" layoutY="135.0" mnemonicParsing="false" text="Cancel" />
+            <Button fx:id="btnAdd" defaultButton="true" layoutX="107.0" layoutY="135.0" mnemonicParsing="false" text="Add / Modify" />
+            <Button fx:id="btnCancel" cancelButton="true" layoutX="233.0" layoutY="135.0" mnemonicParsing="false" text="Cancel" />
          </children>
       </AnchorPane>
    </children>

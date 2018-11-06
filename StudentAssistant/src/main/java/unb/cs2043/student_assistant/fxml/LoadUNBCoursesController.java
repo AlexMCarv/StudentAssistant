@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,7 +22,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  * Controller of the window that allows loading data from UNB website.
@@ -30,6 +34,7 @@ import javafx.scene.input.MouseEvent;
 public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	
 	private static ComboBoxChoice[][] choices;
+	@FXML private StackPane container;
 	@FXML private ProgressIndicator loading;
 	@FXML private Label termLabel;
 	@FXML private Label levelLabel;
@@ -44,6 +49,11 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
+    	//Close window when pressing Escape
+    	container.setOnKeyPressed(event -> {
+			if (event.getCode() ==  KeyCode.ESCAPE) closeWindow(new ActionEvent());
+			else if (event.getCode() ==  KeyCode.ENTER) loadData(null);
+		});
     	
     	if (choices==null) {
     		//Waiting for choices to load...
@@ -58,10 +68,9 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     public void initializeSelects() {
 		if (choices==null) {
 			//Error occured while loading data
-			closeWindow();
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setContentText("An error occured while loading the data.\nPlease make sure you are connected to the internet and try again.");
-			alert.show();
+			closeWindow(new ActionEvent());
+			App.showNotification("An error occured while loading the data.\n"
+					+"Please make sure you are connected to the internet and try again.", AlertType.ERROR);
 			return;
 		};
     	ObservableList<ComboBoxChoice> termChoices = FXCollections.observableArrayList(choices[0]);
@@ -125,8 +134,9 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
             	File file = (File) t.getSource().getValue();
 				Schedule courseList = UNBCourseReader.readFile(file.getName());
 				
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setContentText("An error occured while loading the data.\nPlease make sure you are connected to the internet and try again.");
+				String msg = "An error occured while loading the data.\n"
+						+"Please make sure you are connected to the internet and try again.";
+				AlertType type = AlertType.ERROR;
 				if (courseList!=null) {
 					//Rename using choice labels
 					String[] values = courseList.getName().split(" ");
@@ -137,20 +147,22 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 					
 					int numCourses = courseList.getSize();
 					if (numCourses==0) {
-						alert.setAlertType(AlertType.INFORMATION);
-						alert.setContentText("No courses are available for this selection.");
+						type = AlertType.INFORMATION;
+						msg = "No courses are available for this selection.";
 						courseList = null;
 					}
 					else {
-						alert.setAlertType(AlertType.INFORMATION);
-						alert.setContentText("UNB Courses have been loaded successfully. \n("+courseList.getSize()+" courses loaded)");
+						type = AlertType.INFORMATION;
+						msg = "UNB Courses have been loaded successfully. \n("+courseList.getSize()+" courses loaded)";
 					}
 				}
+				Alert alert = new Alert(type);
+				alert.setContentText(msg);
 				
 				//Send courseList to main class
 				App.UNBCourseList = courseList;
 				
-				closeWindow();
+				closeWindow(new ActionEvent());
 				alert.show();
             }
         });
@@ -192,10 +204,11 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
     
     @FXML
     private void closeWindow(MouseEvent event) {
-    	closeWindow();
+    	closeWindow(new ActionEvent());
     }
     
-    private void closeWindow() {
-    	cancelBtn.getScene().getWindow().hide();
-    }
+    private void closeWindow(ActionEvent event) {
+		Stage stage = (Stage)(cancelBtn.getScene().getWindow());
+	    stage.close();
+	}
 }

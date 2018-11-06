@@ -7,19 +7,23 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="350.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.MainWindowController">
+<VBox fx:id="container" prefHeight="350.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.MainWindowController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="false" text="_File">
           <items>
             <MenuItem mnemonicParsing="false" text="New" />
             <MenuItem mnemonicParsing="false" text="Open…" />
             <Menu mnemonicParsing="false" text="Open Recent" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadUNBData" text="Load UNB Data..." />
+                  <MenuItem mnemonicParsing="false" onAction="#loadUNBData" text="Load UNB Data...">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" text="Close" />
             <MenuItem mnemonicParsing="false" text="Save" />
@@ -31,7 +35,7 @@
             <MenuItem mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
+        <Menu mnemonicParsing="false" text="_Edit">
           <items>
             <MenuItem mnemonicParsing="false" text="Undo" />
             <MenuItem mnemonicParsing="false" text="Redo" />
@@ -45,7 +49,7 @@
             <MenuItem mnemonicParsing="false" text="Unselect All" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" text="_Help">
           <items>
             <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
           </items>
@@ -54,13 +58,13 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="314.0" prefWidth="575.0">
       <children>
-            <VBox layoutX="370.0" layoutY="27.0" prefHeight="286.0" prefWidth="130.0" spacing="10.0">
+            <VBox layoutX="370.0" layoutY="27.0" prefHeight="286.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnAddCourse" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add Course" />
-                  <Button fx:id="btnAddSection" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add Section" />
-                  <Button fx:id="btnAddClassTime" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Add Class Time" />
-                  <Label fx:id="msgLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="130.0" wrapText="true" VBox.vgrow="ALWAYS" />
-                  <Button fx:id="btnGenSchedule" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Generate Schedule" />
+                  <Button fx:id="btnAddCourse" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addCourse" text="Add Course" />
+                  <Button fx:id="btnAddSection" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addSection" text="Add Section" />
+                  <Button fx:id="btnAddClassTime" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addClassTime" text="Add Class Time" />
+                  <Label fx:id="msgLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" wrapText="true" VBox.vgrow="ALWAYS" />
+                  <Button fx:id="btnGenSchedule" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#genSchedule" text="Generate Schedule" />
                </children>
             </VBox>
             <Label fx:id="lblCourseList" layoutX="16.0" layoutY="9.0" text="Course List" />

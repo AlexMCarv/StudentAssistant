@@ -1,5 +1,6 @@
 package unb.cs2043.student_assistant;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -7,6 +8,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 public class App extends Application
@@ -53,6 +58,27 @@ public class App extends Application
     	}
     	
     	return UNBCourseNames;
+    }
+    
+    public static boolean showConfirmDialog(String content, AlertType alertType) {
+        final Alert alert = new Alert(alertType);
+        alert.setContentText(content);
+        
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
+        
+        //Deactivate Defaultbehavior for yes-Button:
+//        Button yesButton = (Button) alert.getDialogPane().lookupButton( ButtonType.YES );
+//        yesButton.setDefaultButton( false );
+        
+        final Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.YES;
+    }
+    
+    public static void showNotification(String content, AlertType alertType) {
+        final Alert alert = new Alert(alertType);
+        alert.setContentText(content);
+        alert.show();
     }
 
 }

@@ -8,11 +8,12 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.Course;
@@ -24,6 +25,7 @@ import unb.cs2043.student_assistant.Section;
  */
 public class AddEditSectionController implements javafx.fxml.Initializable {
 
+	@FXML private StackPane container;
 	@FXML private Button btnAdd;
 	@FXML private Button btnCancel;
 	@FXML private TextField txfName;
@@ -34,6 +36,11 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		btnAdd.setOnAction(this::addSection);
 		btnCancel.setOnAction(this::closeWindow);
+		
+		//Close window when pressing Escape
+		container.setOnKeyPressed(event -> {
+			if (event.getCode() ==  KeyCode.ESCAPE) closeWindow(new ActionEvent());
+		});
 		
 		//Delete after vinculating to getList from Schedule
 		List<Course> list = new ArrayList<Course>();
@@ -53,16 +60,12 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 	private void addSection(ActionEvent event) {
 		try {
 			if (txfName.getText().trim().equals("")) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setContentText("Invalid Section name.");
-				alert.show();
+				App.showNotification("Invalid Section name.", AlertType.ERROR);
 				return;
 			}
 				
 			if (cmbCourse.getSelectionModel().getSelectedItem() == null) {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setContentText("Course not selected.");
-				alert.show();
+				App.showNotification("Course not selected.", AlertType.ERROR);
 				return;
 			}
 			Section newSection = new Section(txfName.getText());
