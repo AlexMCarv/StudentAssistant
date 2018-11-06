@@ -138,7 +138,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	//These methods are called when the corresponding button is pressed.
 	@FXML private void addCourse() {openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 170);}
 	@FXML private void addSection() {openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 180);}
-	@FXML private void addClassTime() {openWindow("/fxml/AddEditClassTime.fxml", "Add/Edit Class Time", 425, 360);}
+	@FXML private void addClassTime() {openWindow("/fxml/AddEditClassTime.fxml", "Add/Edit Class Time", 425, 500);}
 	@FXML private void genSchedule() {openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);}
 	
 	private void closeWindow(ActionEvent event) {

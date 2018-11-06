@@ -12,7 +12,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -36,11 +38,16 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 	@FXML private JFXTimePicker timePickTo;
 	@FXML private StackPane container;
 	@FXML private CheckBox chkSun, chkMon, chkTue, chkWed, chkThu, chkFri, chkSat;
-	@FXML private CheckBox chkLec, chkLab, chkTut, chkOth;
+	@FXML private RadioButton rbtnLec, rbtnLab, rbtnTut, rbtnOth;
+	final ToggleGroup group = new ToggleGroup();
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnCancel.setOnAction(this::closeWindow);
+		rbtnLec.setToggleGroup(group);
+		rbtnLab.setToggleGroup(group);
+		rbtnTut.setToggleGroup(group);
+		rbtnOth.setToggleGroup(group);
 		
 		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyList()));
 		cmbCourse.setOnAction(new EventHandler<ActionEvent>() {
