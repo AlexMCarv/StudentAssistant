@@ -42,15 +42,6 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 			if (event.getCode() ==  KeyCode.ESCAPE) closeWindow(new ActionEvent());
 		});
 		
-		/*Delete after vinculating to getList from Schedule
-		List<Course> list = new ArrayList<Course>();
-		for (int i = 0; i < App.userSelection.getSize(); i++) {
-			Course course = App.userSelection.getCourse(i);
-			list.add(course);
-		}	
-		cmbCourse.setItems(FXCollections.observableList(list));
-		*/
-		
 		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyList()));
 		cmbCourse.setCellFactory(e -> new ComboBoxCourseCell());
 		
