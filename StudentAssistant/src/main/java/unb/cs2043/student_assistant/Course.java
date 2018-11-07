@@ -30,6 +30,16 @@ public class Course implements Serializable{
 		}
 		return null;
 	}
+	public Section getSectionByName(String sectionName) {
+		Section result = null;
+		for (int i=0; i<sections.size() && result==null; i++) {
+			Section current = sections.get(i);
+			if (current.getName().equals(sectionName)) {
+				result = current;
+			}
+		}
+		return result;
+	}
 	public String getName(){
 		return name;
 	}

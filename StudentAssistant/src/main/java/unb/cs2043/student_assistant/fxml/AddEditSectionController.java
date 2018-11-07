@@ -84,6 +84,11 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 				sectionToEdit.setName(sectionName);
 			}
 			else {
+				//Check if a section of this course already has that name
+				if (cmbCourse.getSelectionModel().getSelectedItem().getSectionByName(sectionName) != null) {
+					App.showNotification("Section "+sectionName+" already exists for this course.", AlertType.ERROR);
+					return;
+				}
 				Section newSection = new Section(sectionName);
 				Course course = cmbCourse.getSelectionModel().getSelectedItem();
 				course.add(newSection);

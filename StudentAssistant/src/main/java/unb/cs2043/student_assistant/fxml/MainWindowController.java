@@ -108,6 +108,15 @@ public class MainWindowController implements javafx.fxml.Initializable {
         }
     }
 	
+	public boolean closeWindow() {
+		boolean result = App.showConfirmDialog("Do you really want to exit?\nAll unsaved data will be lost.", AlertType.WARNING);
+		if (result) {
+			Stage stage = (Stage)container.getScene().getWindow();
+		    stage.close();
+		}
+		return result;
+	}
+	
 	private void initializeContextMenu() {
 		contextMenu.setOnShowing(e -> {
 			contextMenu.getItems().clear();
@@ -146,12 +155,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			else if (ctrlT.match(event)) addClassTime();
 			else if (ctrlG.match(event)) genSchedule();
 		});
-		container.setOnKeyPressed(event -> {
-			if (event.getCode() ==  KeyCode.ESCAPE) {
-				boolean result = App.showConfirmDialog("Do you really want to exit?\nAll progress will be lost.", AlertType.WARNING);
-				if (result) closeWindow(new ActionEvent());
-			}	
-		});
+		container.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
+		treeCourseList.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
+		
 		btnAddCourse.setTooltip(new Tooltip("Ctrl+C"));
 		btnAddSection.setTooltip(new Tooltip("Ctrl+S"));
 		btnAddClassTime.setTooltip(new Tooltip("Ctrl+T"));
@@ -220,7 +226,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			String title = "Add Section";
 			
 			String focus = "ComboBox";
-			//Potentially send data if editing
+			//Send data if editing
 			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
 			if (treeItem!=null) {
 				String objType = getObjectType(treeItem.getValue());
@@ -255,7 +261,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			AddEditClassTimeController controller = loader.<AddEditClassTimeController>getController();
 			String title = "Add Class Time";
 			
-			//Potentially send data if editing
+			//Send data if editing
 			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
 			if (treeItem!=null) {
 				String objType = getObjectType(treeItem.getValue());
@@ -328,11 +334,6 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	private void resetButtons() {
 		btnAddSection.setDisable(true);
 		btnAddClassTime.setDisable(true);
-	}
-	
-	private void closeWindow(ActionEvent event) {
-		Stage stage = (Stage)container.getScene().getWindow();
-	    stage.close();
 	}
 
 	private void openWindow(String path, String title, int width, int height) {
