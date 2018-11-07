@@ -69,7 +69,7 @@
                </children>
             </VBox>
             <Label fx:id="lblCourseList" layoutX="16.0" layoutY="9.0" text="Course List" />
-            <TreeView fx:id="treeCourseList" layoutX="14.0" layoutY="26.0" onMouseClicked="#treeClicked" prefHeight="286.0" prefWidth="338.0">
+            <TreeView fx:id="treeCourseList" layoutX="14.0" layoutY="26.0" prefHeight="286.0" prefWidth="338.0">
                <contextMenu>
                   <ContextMenu fx:id="contextMenu">
                     <items>
@@ -79,6 +79,7 @@
                         <MenuItem fx:id="menuAddCourse" mnemonicParsing="false" onAction="#addCourse" text="Add Course" />
                         <MenuItem fx:id="menuAddSection" mnemonicParsing="false" onAction="#addSection" text="Add Section" />
                         <MenuItem fx:id="menuAddClassTime" mnemonicParsing="false" onAction="#addClassTime" text="Add Class Time" />
+                        <MenuItem fx:id="menuDelete" mnemonicParsing="false" onAction="#deleteItem" text="Delete" />
                     </items>
                   </ContextMenu>
                </contextMenu></TreeView>
