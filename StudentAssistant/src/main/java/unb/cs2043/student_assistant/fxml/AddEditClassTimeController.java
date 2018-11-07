@@ -43,6 +43,8 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 	@FXML private Label lblTimeError;
 	final ToggleGroup group = new ToggleGroup();
 	
+	private ClassTime classTimeToEdit;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		btnCancel.setOnAction(this::closeWindow);
@@ -82,6 +84,19 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		});
 		
 		//cmbCourse.setCellFactory(e -> new ComboBoxCourseCell());
+	}
+	
+	public void setCourseToAddTo(Course course) {
+		cmbCourse.getSelectionModel().select(course);
+	}
+	public void setSectionToAddTo(Section section) {
+		cmbSection.getSelectionModel().select(section);
+	}
+	public void setClassTimeToEdit(ClassTime classTimeToEdit) {
+		this.classTimeToEdit = classTimeToEdit;
+		btnAdd.setText("Modify");
+		
+		//TODO: Autofill all fields using values from classTimeToEdit
 	}
 
 	
@@ -123,10 +138,17 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 				App.showNotification("End time must be greater than start time.", AlertType.ERROR);
 				return;
 			}
-
-			ClassTime newSection = new ClassTime(classTimeNameBuilder());
-			Section section = cmbSection.getSelectionModel().getSelectedItem();
-			section.add(newSection);
+			
+			ClassTime newClassTime = new ClassTime(classTimeNameBuilder());
+			
+			//Check if adding or editing
+			if (classTimeToEdit!=null) {
+				classTimeToEdit.setName(classTimeNameBuilder());
+			}
+			else {
+				Section section = cmbSection.getSelectionModel().getSelectedItem();
+				section.add(newClassTime);
+			}
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

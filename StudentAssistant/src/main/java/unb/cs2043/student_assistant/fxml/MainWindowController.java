@@ -1,5 +1,6 @@
 package unb.cs2043.student_assistant.fxml;
 
+import java.awt.Event;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -10,17 +11,24 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionModel;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
@@ -40,6 +48,7 @@ import unb.cs2043.student_assistant.UNBCourseReader;
 public class MainWindowController implements javafx.fxml.Initializable {
 
 	@FXML private VBox container;
+	
 	@FXML private TreeView<Object> treeCourseList;
 	@FXML private Button btnAddCourse;
 	@FXML private Button btnAddSection;
@@ -47,28 +56,21 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML private Button btnGenSchedule;
 	@FXML private Label msgLabel;
 	
+	@FXML private ContextMenu contextMenu;
+	@FXML private MenuItem menuEditCourse;
+	@FXML private MenuItem menuEditSection;
+	@FXML private MenuItem menuEditClassTime;
+	@FXML private MenuItem menuAddCourse;
+	@FXML private MenuItem menuAddSection;
+	@FXML private MenuItem menuAddClassTime;
+	
 	private LoadUNBCoursesController LoadUNBController;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		//Keybindings
-		final KeyCombination ctrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN);
-		container.setOnKeyReleased(event -> {
-			if (ctrlC.match(event)) addCourse();
-			else if (ctrlS.match(event)) addSection();
-			else if (ctrlT.match(event)) addClassTime();
-			else if (ctrlG.match(event)) genSchedule();
-		});
-		container.setOnKeyPressed(event -> {
-			if (event.getCode() ==  KeyCode.ESCAPE) {
-				boolean result = App.showConfirmDialog("Do you really want to exit?\nAll progress will be lost.", AlertType.WARNING);
-				if (result) closeWindow(new ActionEvent());
-			}	
-		});
+		initializeContextMenu();
+		setKeyBindings();
 		
 		//Get UNB Choices (only once) in a separate thread to use in the UNB Load Data window
 		ChoiceLoader service = new ChoiceLoader();
@@ -81,7 +83,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
             	if (LoadUNBController!=null) {
             		LoadUNBController.initializeSelects();
             	}
-            	System.out.println("LOADED!");
+            	//System.out.println("LOADED!");
             }
         });
         service.start();
@@ -103,6 +105,60 @@ public class MainWindowController implements javafx.fxml.Initializable {
         }
     }
 	
+	private void initializeContextMenu() {
+		contextMenu.setOnShowing(e -> {
+			contextMenu.getItems().clear();
+			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
+			if (treeItem!=null) {
+				String type = getObjectType(treeItem.getValue());
+				if (type.equals("Course")) {
+					contextMenu.getItems().addAll(menuEditCourse, menuAddSection);
+				}
+				else if (type.equals("Section")) {
+					contextMenu.getItems().addAll(menuEditSection, menuAddClassTime);
+				}
+				else if (type.equals("ClassTime")) {
+					contextMenu.getItems().add(menuEditClassTime);
+				}
+			}
+			else {
+				contextMenu.getItems().add(menuAddCourse);
+			}
+		});
+		contextMenu.setOnHidden(e -> {
+			contextMenu.getItems().clear();
+			contextMenu.getItems().add(menuAddCourse);
+		});
+	}
+	
+	private void setKeyBindings() {
+		//Keybindings
+		final KeyCombination ctrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN);
+		container.setOnKeyReleased(event -> {
+			if (ctrlC.match(event)) addCourse();
+			else if (ctrlS.match(event)) addSection();
+			else if (ctrlT.match(event)) addClassTime();
+			else if (ctrlG.match(event)) genSchedule();
+		});
+		container.setOnKeyPressed(event -> {
+			if (event.getCode() ==  KeyCode.ESCAPE) {
+				boolean result = App.showConfirmDialog("Do you really want to exit?\nAll progress will be lost.", AlertType.WARNING);
+				if (result) closeWindow(new ActionEvent());
+			}	
+		});
+		Tooltip courseTooltip = new Tooltip("Ctrl+C");
+		Tooltip sectionTooltip = new Tooltip("Ctrl+S");
+		Tooltip classTimeTooltip = new Tooltip("Ctrl+T");
+		Tooltip genScheduleTooltip = new Tooltip("Ctrl+G");
+		btnAddCourse.setTooltip(courseTooltip);
+		btnAddSection.setTooltip(sectionTooltip);
+		btnAddClassTime.setTooltip(classTimeTooltip);
+		btnGenSchedule.setTooltip(genScheduleTooltip);
+	}
+	
 	@FXML
 	//This is called when clicking on the Load UNB Data... menu item.
 	private void loadUNBData() {
@@ -114,13 +170,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			window = loader.load();
 			//Controller reference
 			LoadUNBController = loader.<LoadUNBCoursesController>getController();
-			Scene scene = new Scene(window, 350, 260);
-			Stage stage = new Stage();
-			stage.setTitle("Load UNB Data");
-			stage.setMinWidth(350+20);
-			stage.setMinHeight(260+47);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setScene(scene);
+			Stage stage = setStage(window, "Load UNB Data", 350, 260);
 			stage.show();
 			stage.setOnHidden(e -> {
 				Schedule courseList = App.UNBCourseList;
@@ -136,10 +186,135 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	}
 	
 	//These methods are called when the corresponding button is pressed.
-	@FXML private void addCourse() {openWindow("/fxml/AddEditCourse.fxml", "Add/Edit Course", 425, 170);}
-	@FXML private void addSection() {openWindow("/fxml/AddEditSection.fxml", "Add/Edit Section", 425, 180);}
-	@FXML private void addClassTime() {openWindow("/fxml/AddEditClassTime.fxml", "Add/Edit Class Time", 425, 500);}
-	@FXML private void genSchedule() {openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);}
+	@FXML private void addCourse() {
+		if (btnAddCourse.isDisabled()) return;
+		try {
+			Parent window;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddEditCourse.fxml"));
+			window = loader.load();
+			AddEditCourseController controller = loader.<AddEditCourseController>getController();
+			String title = "Add Course";
+			
+			//Potentially send data if editing
+			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
+			if (treeItem!=null && getObjectType(treeItem.getValue())=="Course") {
+				//Send value of course to the window
+				controller.setCourseToEdit((Course)treeItem.getValue());
+				title = "Edit Course";
+			}
+			
+			Stage stage = setStage(window, title, 425, 170);
+			stage.show();
+			controller.setFocus();
+		} catch (IOException e) {
+			e.printStackTrace();
+			windowError();
+		}
+	}
+	@FXML private void addSection() {
+		if (btnAddSection.isDisabled()) return;
+		try {
+			Parent window;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddEditSection.fxml"));
+			window = loader.load();
+			AddEditSectionController controller = loader.<AddEditSectionController>getController();
+			String title = "Add Section";
+			
+			String focus = "ComboBox";
+			//Potentially send data if editing
+			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
+			if (treeItem!=null) {
+				String objType = getObjectType(treeItem.getValue());
+				if (objType=="Course") {
+					//Adding section to a course
+					controller.setCourseToAddTo((Course)treeItem.getValue());
+					focus = "TextField";
+				}
+				else if (objType=="Section") {
+					//Editing section
+					controller.setCourseToAddTo((Course)treeItem.getParent().getValue());
+					controller.setSectionToEdit((Section)treeItem.getValue());
+					title = "Edit Section";
+					focus = "TextField";
+				}
+			}
+			
+			Stage stage = setStage(window, title, 425, 180);
+			stage.show();
+			controller.setFocus(focus);
+		} catch (IOException e) {
+			e.printStackTrace();
+			windowError();
+		}
+	}
+	@FXML private void addClassTime() {
+		if (btnAddClassTime.isDisabled()) return;
+		try {
+			Parent window;
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddEditClassTime.fxml"));
+			window = loader.load();
+			AddEditClassTimeController controller = loader.<AddEditClassTimeController>getController();
+			String title = "Add Class Time";
+			
+			//Potentially send data if editing
+			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
+			if (treeItem!=null) {
+				String objType = getObjectType(treeItem.getValue());
+				if (objType=="Section") {
+					//Adding classtime to a section
+					controller.setCourseToAddTo((Course)treeItem.getParent().getValue());
+					controller.setSectionToAddTo((Section)treeItem.getValue());
+				}
+				else if (objType=="ClassTime") {
+					//Editing a classtime
+					controller.setCourseToAddTo((Course)treeItem.getParent().getParent().getValue());
+					controller.setSectionToAddTo((Section)treeItem.getParent().getValue());
+					controller.setClassTimeToEdit((ClassTime)treeItem.getValue());
+					title = "Edit Class Time";
+				}
+			}
+			
+			Stage stage = setStage(window, title, 425, 500);
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+			windowError();
+		}
+	}
+	@FXML private void genSchedule() {
+		if (btnGenSchedule.isDisabled()) return;
+		openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);
+	}
+	
+	@FXML private void treeClicked(MouseEvent event) {
+		resetButtons();
+		
+		TreeItem<Object> selectedItem = treeCourseList.getSelectionModel().getSelectedItem();
+		if (selectedItem!=null) {
+			String type = getObjectType(selectedItem.getValue());
+			if (type.equals("Course")) {
+				btnAddCourse.setText("Edit Course");
+				btnAddSection.setDisable(false);
+			}
+			else if (type.equals("Section")) {
+				btnAddSection.setText("Edit Section");
+				btnAddSection.setDisable(false);
+				btnAddClassTime.setDisable(false);
+			}
+			else if (type.equals("ClassTime")) {
+				btnAddClassTime.setText("Edit Class Time");
+				btnAddClassTime.setDisable(false);
+			}
+		}
+	}
+	
+	private void resetButtons() {
+		btnAddCourse.setText("Add Course");
+		btnAddSection.setText("Add Section");
+		btnAddClassTime.setText("Add Class Time");
+		btnAddSection.setDisable(true);
+		btnAddClassTime.setDisable(true);
+	}
 	
 	private void closeWindow(ActionEvent event) {
 		Stage stage = (Stage)container.getScene().getWindow();
@@ -151,14 +326,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			Parent window;
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 			window = loader.load();
-			Scene scene = new Scene(window, width, height);
-			Stage stage = new Stage();
-			stage.setTitle(title);
-			stage.setMinWidth(width+20);
-			stage.setMinHeight(height+47);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setOnHiding(windowEvent -> createCourseList());
-			stage.setScene(scene);
+			Stage stage = setStage(window, title, width, height);
 			stage.show();
 			
 		} catch (IOException e) {
@@ -167,25 +335,45 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		}
 	}
 	
+	private Stage setStage(Parent window, String title, int width, int height) {
+		Scene scene = new Scene(window, width, height);
+		Stage stage = new Stage();
+		stage.setTitle(title);
+		stage.setMinWidth(width+20);
+		stage.setMinHeight(height+47);
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.setOnHiding(windowEvent -> createCourseList());
+		stage.setScene(scene);
+		return stage;
+	}
 	
 	private void createCourseList() {
+		resetButtons();
+		
 		// Root Item
 		TreeItem<Object> rootItem = new TreeItem<>(new Course("List"));
 		rootItem.setExpanded(true);
 		
 		for (Course course : App.userSelection.copyList()) {
 			TreeItem<Object> courseCell = new TreeItem<>(course);
+			courseCell.setExpanded(true);
 			rootItem.getChildren().add(courseCell);
 			
 			for (Section section: course.copyList()) {
 				TreeItem<Object> sectionCell = new TreeItem<>(section);
+				sectionCell.setExpanded(true);
 				courseCell.getChildren().add(sectionCell);
 				
 				for (ClassTime time: section.copyList()) {
 					TreeItem<Object> timeCell = new TreeItem<>(time);
+					timeCell.setExpanded(true);
 					sectionCell.getChildren().add(timeCell);
 				}
 			}
+		}
+		
+		if (rootItem.getChildren().size()!=0) {
+			btnGenSchedule.setDisable(false);
 		}
 		
 		//TreeView Setup
@@ -194,6 +382,29 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		treeCourseList.setShowRoot(false);
 	}
 	
+	private String getObjectType(Object item) {
+		String type = null;
+		try {
+			Course course = (Course)item;
+			type = "Course";
+		}
+		catch (Exception e1) {
+			try {
+				Section section = (Section)item;
+				type = "Section";
+			}
+			catch (Exception e2) {
+				try {
+					ClassTime classtime = (ClassTime)item;
+					type = "ClassTime";
+				}
+				catch (Exception e3) {
+					//Should not come here
+				}
+			}
+		}
+		return type;
+	}
 	
 	private void refresh() {createCourseList();}
 	

@@ -31,6 +31,7 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 	@FXML private TextField txfName;
 	@FXML private ComboBox<Course> cmbCourse;
 	
+	private Section sectionToEdit;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -46,7 +47,24 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 		cmbCourse.setCellFactory(e -> new ComboBoxCourseCell());
 		
 	}
-
+	
+	public void setFocus(String elem) {
+		if (elem.equals("ComboBox")) {
+			cmbCourse.requestFocus();
+		}
+		else if (elem.equals(("TextField"))) {
+			txfName.requestFocus();
+		}
+	}
+	
+	public void setCourseToAddTo(Course course) {
+		cmbCourse.getSelectionModel().select(course);
+	}
+	public void setSectionToEdit(Section section) {
+		this.sectionToEdit = section;
+		txfName.setText(section.getName());
+		btnAdd.setText("Modify");
+	}
 	
 	private void addSection(ActionEvent event) {
 		try {
@@ -59,9 +77,17 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 				App.showNotification("Course not selected.", AlertType.ERROR);
 				return;
 			}
-			Section newSection = new Section(txfName.getText());
-			Course course = cmbCourse.getSelectionModel().getSelectedItem();
-			course.add(newSection);
+			
+			String sectionName = txfName.getText();
+			//Check if editing or adding
+			if (sectionToEdit!=null) {
+				sectionToEdit.setName(sectionName);
+			}
+			else {
+				Section newSection = new Section(sectionName);
+				Course course = cmbCourse.getSelectionModel().getSelectedItem();
+				course.add(newSection);
+			}
 		
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

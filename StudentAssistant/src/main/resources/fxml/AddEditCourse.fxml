@@ -11,8 +11,8 @@
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="425.0">
          <children>
             <Label fx:id="lblName" layoutX="14.0" layoutY="14.0" text="Course Name" />
-            <Button fx:id="btnAdd" defaultButton="true" layoutX="107.0" layoutY="110.0" mnemonicParsing="false" text="Add / Modify" AnchorPane.bottomAnchor="14.800000000000011" />
-            <Button fx:id="btnCancel" cancelButton="true" layoutX="235.0" layoutY="110.0" mnemonicParsing="false" text="Cancel" AnchorPane.bottomAnchor="14.800000000000011" />
+            <Button fx:id="btnAdd" defaultButton="true" layoutX="132.0" layoutY="130.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="Add" AnchorPane.bottomAnchor="15.0" />
+            <Button fx:id="btnCancel" cancelButton="true" layoutX="223.0" layoutY="130.0" mnemonicParsing="false" text="Cancel" AnchorPane.bottomAnchor="14.800000000000011" />
             <TextField layoutX="12.0" layoutY="35.0" prefHeight="25.0" prefWidth="400.0" />
          </children>
       </AnchorPane>
