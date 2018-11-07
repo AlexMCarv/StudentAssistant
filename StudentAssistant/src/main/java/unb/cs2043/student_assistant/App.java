@@ -12,7 +12,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import unb.cs2043.student_assistant.fxml.AddEditClassTimeController;
 import unb.cs2043.student_assistant.fxml.MainWindowController;
 
 public class App extends Application
@@ -22,7 +21,7 @@ public class App extends Application
 	public static Schedule UNBCourseList;
 	//Need instance variable UNBCourseNames since used a lot for autocompletion.
 	//(To avoid retrieving it from UNBCourseList every single time)
-	public static Set<String> UNBCourseNames;
+	private static Set<String> UNBCourseNames;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
