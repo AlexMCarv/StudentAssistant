@@ -3,6 +3,8 @@ package unb.cs2043.student_assistant.fxml;
 import java.awt.Event;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -63,6 +65,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML private MenuItem menuAddCourse;
 	@FXML private MenuItem menuAddSection;
 	@FXML private MenuItem menuAddClassTime;
+	@FXML private MenuItem menuDelete;
 	
 	private LoadUNBCoursesController LoadUNBController;
 	
@@ -112,13 +115,13 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			if (treeItem!=null) {
 				String type = getObjectType(treeItem.getValue());
 				if (type.equals("Course")) {
-					contextMenu.getItems().addAll(menuEditCourse, menuAddSection);
+					contextMenu.getItems().addAll(menuEditCourse, menuAddSection, menuDelete);
 				}
 				else if (type.equals("Section")) {
-					contextMenu.getItems().addAll(menuEditSection, menuAddClassTime);
+					contextMenu.getItems().addAll(menuEditSection, menuAddClassTime, menuDelete);
 				}
 				else if (type.equals("ClassTime")) {
-					contextMenu.getItems().add(menuEditClassTime);
+					contextMenu.getItems().addAll(menuEditClassTime, menuDelete);
 				}
 			}
 			else {
@@ -149,14 +152,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 				if (result) closeWindow(new ActionEvent());
 			}	
 		});
-		Tooltip courseTooltip = new Tooltip("Ctrl+C");
-		Tooltip sectionTooltip = new Tooltip("Ctrl+S");
-		Tooltip classTimeTooltip = new Tooltip("Ctrl+T");
-		Tooltip genScheduleTooltip = new Tooltip("Ctrl+G");
-		btnAddCourse.setTooltip(courseTooltip);
-		btnAddSection.setTooltip(sectionTooltip);
-		btnAddClassTime.setTooltip(classTimeTooltip);
-		btnGenSchedule.setTooltip(genScheduleTooltip);
+		btnAddCourse.setTooltip(new Tooltip("Ctrl+C"));
+		btnAddSection.setTooltip(new Tooltip("Ctrl+S"));
+		btnAddClassTime.setTooltip(new Tooltip("Ctrl+T"));
+		btnGenSchedule.setTooltip(new Tooltip("Ctrl+G"));
 	}
 	
 	@FXML
@@ -286,32 +285,47 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);
 	}
 	
-	@FXML private void treeClicked(MouseEvent event) {
-		resetButtons();
-		
+	@FXML
+	private void deleteItem(ActionEvent event) {
 		TreeItem<Object> selectedItem = treeCourseList.getSelectionModel().getSelectedItem();
 		if (selectedItem!=null) {
-			String type = getObjectType(selectedItem.getValue());
+			Object item = selectedItem.getValue();
+			String type = getObjectType(item);
 			if (type.equals("Course")) {
-				btnAddCourse.setText("Edit Course");
-				btnAddSection.setDisable(false);
+				Course course = (Course)item;
+				if (App.showConfirmDialog("Do you really want to delete "+course.getName()+"?", AlertType.WARNING)) {
+					App.userSelection.remove(course);
+				}
 			}
 			else if (type.equals("Section")) {
-				btnAddSection.setText("Edit Section");
-				btnAddSection.setDisable(false);
-				btnAddClassTime.setDisable(false);
+				Section section = (Section)item;
+				List<Course> courses = App.userSelection.copyList();
+				for (Course course: courses) {
+					if (course.contains(section) && 
+					App.showConfirmDialog("Do you really want to delete "+section.getName()+"?", AlertType.WARNING)) {
+						course.remove(section);
+					}
+				}
 			}
 			else if (type.equals("ClassTime")) {
-				btnAddClassTime.setText("Edit Class Time");
-				btnAddClassTime.setDisable(false);
+				ClassTime classTime = (ClassTime)item;
+				List<Course> courses = App.userSelection.copyList();
+				for (Course course: courses) {
+					List<Section> sections = course.copyList();
+					for (Section section: sections) {
+						if (section.contains(classTime) && 
+						App.showConfirmDialog("Do you really want to delete "+classTime.getName()+"?", AlertType.WARNING)) {
+							section.remove((ClassTime)item);
+						}
+					}
+				}
 			}
+			treeCourseList.getSelectionModel().clearSelection();
+			refresh();
 		}
 	}
 	
 	private void resetButtons() {
-		btnAddCourse.setText("Add Course");
-		btnAddSection.setText("Add Section");
-		btnAddClassTime.setText("Add Class Time");
 		btnAddSection.setDisable(true);
 		btnAddClassTime.setDisable(true);
 	}
@@ -358,11 +372,14 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			TreeItem<Object> courseCell = new TreeItem<>(course);
 			courseCell.setExpanded(true);
 			rootItem.getChildren().add(courseCell);
+			btnAddSection.setDisable(false);
+			btnGenSchedule.setDisable(false);
 			
 			for (Section section: course.copyList()) {
 				TreeItem<Object> sectionCell = new TreeItem<>(section);
 				sectionCell.setExpanded(true);
 				courseCell.getChildren().add(sectionCell);
+				btnAddClassTime.setDisable(false);
 				
 				for (ClassTime time: section.copyList()) {
 					TreeItem<Object> timeCell = new TreeItem<>(time);
@@ -370,10 +387,6 @@ public class MainWindowController implements javafx.fxml.Initializable {
 					sectionCell.getChildren().add(timeCell);
 				}
 			}
-		}
-		
-		if (rootItem.getChildren().size()!=0) {
-			btnGenSchedule.setDisable(false);
 		}
 		
 		//TreeView Setup
