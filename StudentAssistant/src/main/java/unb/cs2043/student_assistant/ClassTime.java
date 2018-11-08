@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**@author Allan Boutilier **/
 
-public class ClassTime {
+public class ClassTime implements Serializable {
 
 
 private ArrayList<String> days;

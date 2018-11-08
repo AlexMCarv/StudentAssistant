@@ -41,7 +41,7 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 			if (event.getCode() ==  KeyCode.ESCAPE) closeWindow(new ActionEvent());
 		});
 		
-		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyList()));
+		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyCourses()));
 		cmbCourse.setCellFactory(e -> new ComboBoxCourseCell());
 		
 	}

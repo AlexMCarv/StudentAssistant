@@ -2,6 +2,7 @@ package unb.cs2043.student_assistant.fxml;
 
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -74,12 +75,12 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 			}
 		});
 		
-		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyList()));
+		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyCourses()));
 		cmbCourse.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override
 		    public void handle(ActionEvent actionEvent) {
 		    	Course course = cmbCourse.getSelectionModel().getSelectedItem();
-		    	cmbSection.setItems(FXCollections.observableList(course.copyList()));
+		    	cmbSection.setItems(FXCollections.observableList(course.copySections()));
 		    }
 		});
 		
@@ -139,11 +140,11 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 				return;
 			}
 			
-			ClassTime newClassTime = new ClassTime(classTimeNameBuilder());
+			ClassTime newClassTime = classTimeNameBuilder();
 			
 			//Check if adding or editing
 			if (classTimeToEdit!=null) {
-				classTimeToEdit.setName(classTimeNameBuilder());
+				classTimeToEdit = classTimeNameBuilder();
 			}
 			else {
 				Section section = cmbSection.getSelectionModel().getSelectedItem();
@@ -158,29 +159,31 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 	}
 		
 	// For Testing purposes
-	private String classTimeNameBuilder() {
+	private ClassTime classTimeNameBuilder() {
 		String type = (String)group.getSelectedToggle().getUserData();
 		
-		String days = "";
+		ArrayList<String> days = new ArrayList<>();
+//		String days = "";
 		if(chkSun.isSelected())
-			days += "Su";
+			days.add("Su");
 		if(chkMon.isSelected())
-			days += "M";
+			days.add("M");
 		if(chkTue.isSelected())
-			days += "T";
+			days.add("T");
 		if(chkWed.isSelected())
-			days += "W";
+			days.add("W");
 		if(chkThu.isSelected())
-			days += "Th";
+			days.add("Th");
 		if(chkFri.isSelected())
-			days += "F";
+			days.add("F");
 		if(chkSat.isSelected())
-			days += "Sa";
-
+			days.add("Sa");
+		
 		String startTime = spinnerStart.getValue().toString();
 		String endTime = spinnerEnd.getValue().toString();
-			
-		return (type + " " + days + " " + startTime + "-" + endTime);
+		
+//		return (type + " " + days + " " + startTime + "-" + endTime);
+		return new ClassTime(days, startTime, endTime);
 	}
 	
 	
