@@ -27,6 +27,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 	@FXML private Button btnCancel;
 	@FXML private AutoCompleteTextField autoTxfName;
 	private Label UNBCourseMsg;
+	private Course courseToEdit;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -39,6 +40,16 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 		});
 		
 		initializeAutocompleteField();
+	}
+	
+	public void setFocus() {
+		autoTxfName.requestFocus();
+	}
+	
+	public void setCourseToEdit(Course courseToEdit) {
+		this.courseToEdit = courseToEdit;
+		autoTxfName.setText(courseToEdit.getName());
+		btnAdd.setText("Modify");
 	}
 	
 	//Add autocomplete textfield using UNBCourses
@@ -88,16 +99,29 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 				App.showNotification("Invalid Course name.", AlertType.ERROR);
 				return;
 			}
-
-			String inputVal = autoTxfName.getText();
-			Course newCourse;
-			if (App.isUNBCourse(inputVal)) {
-				newCourse = App.UNBCourseList.getCourseByName(inputVal);
+			
+			String courseName = autoTxfName.getText();
+			
+			//Check if adding or editing
+			if (courseToEdit!=null) {
+				courseToEdit.setName(autoTxfName.getText());
 			}
 			else {
-				newCourse = new Course(autoTxfName.getText());
+				//Check if a course already has that name
+				if (App.userSelection.getCourseByName(courseName)!=null) {
+					App.showNotification("Course "+courseName+" already in the list.", AlertType.ERROR);
+					return;
+				}
+				Course newCourse;
+				if (App.isUNBCourse(courseName)) {
+					newCourse = App.UNBCourseList.getCourseByName(courseName);
+				}
+				else {
+					newCourse = new Course(autoTxfName.getText());
+				}
+				App.userSelection.add(newCourse);
 			}
-			App.userSelection.add(newCourse);
+			
 			closeWindow(event);
 			
 		} catch (Exception e) {
@@ -105,7 +129,6 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 			//System.out.println(e.getMessage());
 		}
 	}
-	
 	
 	private void closeWindow(ActionEvent event) {
 		Stage stage = (Stage)(btnCancel.getScene().getWindow());

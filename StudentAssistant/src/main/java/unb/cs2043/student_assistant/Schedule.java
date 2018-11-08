@@ -18,6 +18,10 @@ public class Schedule implements Serializable{
 		courses = new ArrayList<Course>();
 	}
 //--------Getters---------//
+	/*
+	 * This method returns a REFERENCE to the arraylist, not a copy. 
+	 * I suggest changing the name of the method to "getCourses()" to be clearer. -Fred
+	*/
 	public ArrayList<Course> copyList(){
 		return new ArrayList<Course>(courses);
 	}

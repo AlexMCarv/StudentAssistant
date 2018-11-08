@@ -17,6 +17,10 @@ public class Course implements Serializable{
 		sections = new ArrayList<Section>();
 	}
 //--------Getters---------//
+	/*
+	 * This method returns a REFERENCE to the arraylist, not a copy. 
+	 * I suggest changing the name of the method to "getSections()" to be clearer. -Fred
+	*/
 	public ArrayList<Section> copyList(){
 		return new ArrayList<Section>(sections);
 	}
@@ -25,6 +29,16 @@ public class Course implements Serializable{
 			return sections.get(index);
 		}
 		return null;
+	}
+	public Section getSectionByName(String sectionName) {
+		Section result = null;
+		for (int i=0; i<sections.size() && result==null; i++) {
+			Section current = sections.get(i);
+			if (current.getName().equals(sectionName)) {
+				result = current;
+			}
+		}
+		return result;
 	}
 	public String getName(){
 		return name;
