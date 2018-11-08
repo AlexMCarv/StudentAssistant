@@ -97,6 +97,12 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		this.classTimeToEdit = classTimeToEdit;
 		btnAdd.setText("Modify");
 		
+		//Disable combobox when editing (without greying it out)
+		cmbCourse.setMouseTransparent(true);
+		cmbCourse.setFocusTraversable(true);
+		cmbSection.setMouseTransparent(true);
+		cmbSection.setFocusTraversable(true);
+		
 		//TODO: Autofill all fields using values from classTimeToEdit
 	}
 

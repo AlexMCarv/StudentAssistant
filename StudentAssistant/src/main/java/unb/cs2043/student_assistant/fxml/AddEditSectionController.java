@@ -62,6 +62,9 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 		this.sectionToEdit = section;
 		txfName.setText(section.getName());
 		btnAdd.setText("Modify");
+		//Disable combobox when editing (without greying it out)
+		cmbCourse.setMouseTransparent(true);
+		cmbCourse.setFocusTraversable(true);
 	}
 	
 	private void addSection(ActionEvent event) {
