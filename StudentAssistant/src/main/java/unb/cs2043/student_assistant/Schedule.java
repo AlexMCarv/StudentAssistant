@@ -19,7 +19,7 @@ public class Schedule implements Serializable{
 	}
 //--------Getters---------//
 	public ArrayList<Course> copyList(){
-		return courses;
+		return new ArrayList<Course>(courses);
 	}
 	public Course getCourse(int index){
 		if(courses.size()>=index){
@@ -68,7 +68,6 @@ public class Schedule implements Serializable{
 	}
 	public String toString(){
 		String description=name;
-		// System.out.println(courses.size());
 		if(courses.size()>0){
 			description+=":\n";
 		}
