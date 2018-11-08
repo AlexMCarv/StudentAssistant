@@ -1,11 +1,11 @@
 package unb.cs2043.student_assistant;
 
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**@author Allan Boutilier **/
 
-public class ClassTime  {
+public class ClassTime {
 
 
 private ArrayList<String> days;
@@ -44,9 +44,9 @@ public void setDays(ArrayList<String> newDaysIn) {
 		for(int i=0; i<newDaysIn.size(); i++) {
 			if(!isValidDay(days.get(i))) {
 				check = false;
-			}				
-		}	
-		
+			}
+		}
+
 		if(check == true) {
 			days = newDaysIn;
 		}
@@ -56,7 +56,7 @@ public void setStartTime(String newStartTime) {
 	if (isValidTime(newStartTime, endTime)) {
 		startTime = newStartTime;
 	}
-	
+
 }
 
 public void setEndTime(String newEndTime) {
@@ -77,7 +77,7 @@ public boolean isValidDay(String dayIn) {
 		dayIn.toLowerCase().equals("friday")||
 		dayIn.toLowerCase().equals("saturday")||
 		dayIn.toLowerCase().equals("sunday")) {
-				
+
 
 		return true;
 	}
@@ -105,16 +105,16 @@ if(start.length()!= 5){
 }
 
 if( start.length() == 5) {
-	
+
 	try {
 		startHour = Integer.parseInt(start.substring(0,2));
 		startMin = Integer.parseInt(start.substring(start.length()-2));
 
 		if(startHour >=13||startMin>=60) {
-			
+
 			return false;
 		}
-		
+
 	}
 
 	catch (NumberFormatException e) {
@@ -123,8 +123,8 @@ if( start.length() == 5) {
 }
 
 if(start.length() == 4) {
-		
-	
+
+
 	try {
 		startHour = Integer.parseInt(start.substring(0,1));
 		startMin = Integer.parseInt(start.substring(start.length()-2));
@@ -154,8 +154,8 @@ if( end.length() == 5) {
 }
 
 if(end.length() == 4) {
-		
-	
+
+
 	try {
 		endHour = Integer.parseInt(end.substring(0,1));
 		endMin = Integer.parseInt(end.substring(end.length()-2));
@@ -176,8 +176,8 @@ public boolean isValidClassTime() {
 	boolean check=true;
 	for(int i=0; i<days.size(); i++) {
 		if(!isValidDay(days.get(i))) {
-			
-			check = false;	
+
+			check = false;
 		}
 	}
 
@@ -190,5 +190,3 @@ public boolean isValidClassTime() {
 	}
 }
 }
-
-

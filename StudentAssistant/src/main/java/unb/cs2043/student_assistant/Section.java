@@ -16,7 +16,7 @@ public class Section implements Serializable{
 		classTimes = new ArrayList<ClassTime>();
 	}
 //--------Getters---------//
-	public ArrayList<ClassTime> copyList(){
+	public ArrayList<ClassTime> copySection(){
 		return new ArrayList<ClassTime>(classTimes);
 	}
 	public ClassTime getClassTime(int index){

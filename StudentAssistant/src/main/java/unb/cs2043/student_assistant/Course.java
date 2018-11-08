@@ -17,11 +17,7 @@ public class Course implements Serializable{
 		sections = new ArrayList<Section>();
 	}
 //--------Getters---------//
-	/*
-	 * This method returns a REFERENCE to the arraylist, not a copy.
-	 * I suggest changing the name of the method to "getSections()" to be clearer. -Fred
-	*/
-	public ArrayList<Section> copyList(){
+	public ArrayList<Section> copyCourse(){
 		return new ArrayList<Section>(sections);
 	}
 	public Section getSection(int index){
