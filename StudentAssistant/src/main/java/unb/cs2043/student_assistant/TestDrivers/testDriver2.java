@@ -25,5 +25,6 @@ public class testDriver2{
 		}
 		System.out.println(one.getFormattedString());
 		System.out.println(two);
+		System.out.println(one.copyCourses());
 	}
 }
