@@ -63,17 +63,20 @@ public class Schedule implements Serializable{
 	public boolean isEmpty(){
 		return courses.isEmpty();
 	}
-	public String toString(){
+	public String getFormattedString(){
 		String description=name+":\n";
 		if(courses.size()==0){
 			description+="empty\n";
 		}
 		else{
 			for(int x=0; x<courses.size();x++){
-				description+=courses.get(x);
+				description+=courses.get(x).getFormattedString();
 			}
 		}
 		return description;
+	}
+	public String toString(){
+		return name;
 	}
 //-----------Setters------------//
 	public boolean setName(String name){

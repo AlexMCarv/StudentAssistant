@@ -52,7 +52,7 @@ public class Section implements Serializable{
 		return classTimes.isEmpty();
 	}
 
-	public String toString(){
+	public String getFormattedString(){
 		String description=name+":\n      ";
 		if(classTimes.size()==0){
 			description+="empty";
@@ -62,11 +62,14 @@ public class Section implements Serializable{
 				//automatically calls toString on ClassTime object
 				description+=classTimes.get(x);
 				if(x+1<classTimes.size()){
-					description+=",";
+					description+="\n      ";
 				}
 			}
 		}
 		return description+"\n";
+	}
+	public String toString() {
+		return name;
 	}
 //-----------Setters------------//
 	public boolean setName(String name){

@@ -38,6 +38,10 @@ public String getEndTime() {
 	return endTime;
 }
 
+public String toString() {
+	return "placeholder";	//This is temporary so that the rest of the app works.
+}
+
 /**********Setters*********/
 
 public void setDays(ArrayList<String> newDaysIn) {

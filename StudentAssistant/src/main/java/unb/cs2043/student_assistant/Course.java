@@ -62,17 +62,20 @@ public class Course implements Serializable{
 	public boolean isEmpty(){
 		return sections.isEmpty();
 	}
-	public String toString(){
+	public String getFormattedString(){
 		String description=name+":\n";
 		if(sections.size()==0){
 			description+="   empty\n";
 		}
 		else{
 			for(int x=0; x<sections.size();x++){
-				description+="   "+sections.get(x);
+				description+="   "+sections.get(x).getFormattedString();
 			}
 		}
 		return description;
+	}
+	public String toString() {
+		return name;
 	}
 //-----------Setters------------//
 	public boolean setName(String name){

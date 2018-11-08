@@ -20,7 +20,7 @@ public class UNBCourseReaderTester {
 			String fileName = reader.getFile().getName();
 			System.out.println("fileName: "+fileName);
 			Schedule courseList = UNBCourseReader.readFile(fileName);
-			System.out.println(courseList);
+			System.out.println(courseList.getFormattedString());
 			
 			//Delete file
 			if (!reader.deleteFile()) {
