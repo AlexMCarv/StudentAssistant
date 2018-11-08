@@ -5,9 +5,8 @@ import java.util.ArrayList;
 
 /**@author Allan Boutilier **/
 
-public class ClassTime {
-
-
+public class ClassTime{
+	
 private ArrayList<String> days;
 private String startTime;
 private String endTime;
