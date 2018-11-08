@@ -1,3 +1,4 @@
+
 package unb.cs2043.student_assistant.fxml;
 
 import java.io.IOException;
@@ -297,7 +298,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			}
 			else if (type.equals("Section")) {
 				Section section = (Section)item;
-				List<Course> courses = App.userSelection.copyList();
+				List<Course> courses = App.userSelection.copyCourses();
 				for (Course course: courses) {
 					if (course.contains(section) && 
 					App.showConfirmDialog("Do you really want to delete "+section.getName()+"?", AlertType.WARNING)) {
@@ -307,12 +308,12 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			}
 			else if (type.equals("ClassTime")) {
 				ClassTime classTime = (ClassTime)item;
-				List<Course> courses = App.userSelection.copyList();
+				List<Course> courses = App.userSelection.copyCourses();
 				for (Course course: courses) {
-					List<Section> sections = course.copyList();
+					List<Section> sections = course.copySections();
 					for (Section section: sections) {
 						if (section.contains(classTime) && 
-						App.showConfirmDialog("Do you really want to delete "+classTime.getName()+"?", AlertType.WARNING)) {
+						App.showConfirmDialog("Do you really want to delete "+classTime.toString()+"?", AlertType.WARNING)) {
 							section.remove((ClassTime)item);
 						}
 					}
@@ -361,20 +362,20 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		TreeItem<Object> rootItem = new TreeItem<>(new Course("List"));
 		rootItem.setExpanded(true);
 		
-		for (Course course : App.userSelection.copyList()) {
+		for (Course course : App.userSelection.copyCourses()) {
 			TreeItem<Object> courseCell = new TreeItem<>(course);
 			courseCell.setExpanded(true);
 			rootItem.getChildren().add(courseCell);
 			btnAddSection.setDisable(false);
 			btnGenSchedule.setDisable(false);
 			
-			for (Section section: course.copyList()) {
+			for (Section section: course.copySections()) {
 				TreeItem<Object> sectionCell = new TreeItem<>(section);
 				sectionCell.setExpanded(true);
 				courseCell.getChildren().add(sectionCell);
 				btnAddClassTime.setDisable(false);
 				
-				for (ClassTime time: section.copyList()) {
+				for (ClassTime time: section.copyClassTimes()) {
 					TreeItem<Object> timeCell = new TreeItem<>(time);
 					timeCell.setExpanded(true);
 					sectionCell.getChildren().add(timeCell);

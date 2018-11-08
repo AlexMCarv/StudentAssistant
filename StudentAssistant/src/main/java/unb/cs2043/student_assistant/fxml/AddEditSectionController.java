@@ -41,7 +41,7 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 			if (event.getCode() ==  KeyCode.ESCAPE) closeWindow(new ActionEvent());
 		});
 		
-		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyList()));
+		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyCourses()));
 		cmbCourse.setCellFactory(e -> new ComboBoxCourseCell());
 		
 	}
@@ -62,6 +62,9 @@ public class AddEditSectionController implements javafx.fxml.Initializable {
 		this.sectionToEdit = section;
 		txfName.setText(section.getName());
 		btnAdd.setText("Modify");
+		//Disable combobox when editing (without greying it out)
+		cmbCourse.setMouseTransparent(true);
+		cmbCourse.setFocusTraversable(true);
 	}
 	
 	private void addSection(ActionEvent event) {

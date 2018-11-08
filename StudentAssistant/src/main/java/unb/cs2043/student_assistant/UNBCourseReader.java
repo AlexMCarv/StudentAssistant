@@ -248,7 +248,10 @@ public class UNBCourseReader {
     				location = location==null?"N/A":location;
     				
     				//Create objects and add them to the list
-    				ClassTime timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
+    		//TODO Update this when classTime is done
+//    				ClassTime timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
+    				ArrayList<String> days = new ArrayList<>(); days.add(day);
+    				ClassTime timeObj = new ClassTime(days, time.substring(0, 8), time.substring(9));
     				Section sectionObj = new Section(section);
     				sectionObj.add(timeObj);
     				
@@ -267,7 +270,10 @@ public class UNBCourseReader {
     	    				time = m.group(7)==null?time:m.group(7);
     	    				location = m.group(9)==null?location:m.group(9);
     					}
-	    				timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
+    				//TODO Update this when classTime is done
+//    					timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
+        				days = new ArrayList<>(); days.add(day);
+        				timeObj = new ClassTime(days, time.substring(0, 8), time.substring(9));
 	    				sectionObj.add(timeObj);
     				}
     				
@@ -307,7 +313,10 @@ public class UNBCourseReader {
     		    				location = location == null ? "N/A" : location;
     		    				
     		    				//Create classTIme object and add it to the section
-    		    				ClassTime otherTimeObj = new ClassTime(type+" "+day+" "+time+" "+location);
+    		    			//TODO Update this when classTime is done
+//    		    				ClassTime timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
+    		    				days = new ArrayList<>(); days.add(day);
+    		    				ClassTime otherTimeObj = new ClassTime(days, time.substring(0, 8), time.substring(9));
     		    				sectionObj.add(otherTimeObj);
     		    			}
     					}

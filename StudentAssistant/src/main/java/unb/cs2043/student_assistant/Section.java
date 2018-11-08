@@ -37,14 +37,14 @@ public class Section implements Serializable{
 	public int indexOf(ClassTime a){
 		return classTimes.indexOf(a);
 	}
-	public int indexOf(String a){
-		for(int x=0;x<classTimes.size();x++){
-			if(classTimes.get(x).getName().compareTo(a)==0){
-				return x;
-			}
-		}
-		return -1;
-	}
+//	public int indexOf(String a){
+//		for(int x=0;x<classTimes.size();x++){
+//			if(classTimes.get(x).getName().compareTo(a)==0){
+//				return x;
+//			}
+//		}
+//		return -1;
+//	}
 	public int lastIndexOf(ClassTime a){
 		return classTimes.lastIndexOf(a);
 	}
@@ -52,7 +52,7 @@ public class Section implements Serializable{
 		return classTimes.isEmpty();
 	}
 
-	public String toString(){
+	public String getFormattedString(){
 		String description=name+":\n      ";
 		if(classTimes.size()==0){
 			description+="empty";
@@ -62,11 +62,14 @@ public class Section implements Serializable{
 				//automatically calls toString on ClassTime object
 				description+=classTimes.get(x);
 				if(x+1<classTimes.size()){
-					description+=",";
+					description+="\n      ";
 				}
 			}
 		}
 		return description+"\n";
+	}
+	public String toString() {
+		return name;
 	}
 //-----------Setters------------//
 	public boolean setName(String name){
@@ -74,21 +77,22 @@ public class Section implements Serializable{
 		return true;
 	}
 	public void add(ClassTime one){
-		//edge cases
-		if(classTimes.isEmpty() ||
-		classTimes.get(classTimes.size()-1).getName().compareTo(one.getName())<=0){
-			classTimes.add(one);
-		}
-		//general case
-		else{
-			//inserts into the list to maintain order from smallest to largest ClassTime
-			int x=0;
-			//compareTo returns the value of this object relative to the parameter
-			while(classTimes.get(x).getName().compareTo(one.getName())<0){
-				x++;
-			}
-			classTimes.add(x,one);
-		}
+//		//edge cases
+//		if(classTimes.isEmpty() ||
+//		classTimes.get(classTimes.size()-1).getName().compareTo(one.getName())<=0){
+//			classTimes.add(one);
+//		}
+//		//general case
+//		else{
+//			//inserts into the list to maintain order from smallest to largest ClassTime
+//			int x=0;
+//			//compareTo returns the value of this object relative to the parameter
+//			while(classTimes.get(x).getName().compareTo(one.getName())<0){
+//				x++;
+//			}
+//			classTimes.add(x,one);
+//		}
+		classTimes.add(one);
 	}
 	public boolean remove(ClassTime one){
 		return classTimes.remove(one);
@@ -96,26 +100,26 @@ public class Section implements Serializable{
 	public boolean remove(int index){
 		return null!=classTimes.remove(index);
 	}
-	public boolean replace(ClassTime older, ClassTime newer){
-		boolean deed=false;
-		for(int x=0;x<classTimes.size();x++){
-			if(classTimes.get(x).compareTo(older)==0){
-				classTimes.set(x,newer);
-				deed=true;
-			}
-		}
-		return deed;
-	}
-	public boolean replace(String older, ClassTime newer){
-		boolean deed=false;
-		for(int x=0;x<classTimes.size();x++){
-			if(classTimes.get(x).getName().compareTo(older)==0){
-				classTimes.set(x,newer);
-				deed=true;
-			}
-		}
-		return deed;
-	}
+//	public boolean replace(ClassTime older, ClassTime newer){
+//		boolean deed=false;
+//		for(int x=0;x<classTimes.size();x++){
+//			if(classTimes.get(x).compareTo(older)==0){
+//				classTimes.set(x,newer);
+//				deed=true;
+//			}
+//		}
+//		return deed;
+//	}
+//	public boolean replace(String older, ClassTime newer){
+//		boolean deed=false;
+//		for(int x=0;x<classTimes.size();x++){
+//			if(classTimes.get(x).getName().compareTo(older)==0){
+//				classTimes.set(x,newer);
+//				deed=true;
+//			}
+//		}
+//		return deed;
+//	}
 	public boolean replace(int oldIndex, ClassTime newer){
 		if(oldIndex<classTimes.size()){
 			classTimes.set(oldIndex,newer);
