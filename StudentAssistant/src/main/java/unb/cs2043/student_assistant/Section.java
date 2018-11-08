@@ -3,7 +3,8 @@ package unb.cs2043.student_assistant;
 import java.io.Serializable;
 import java.util.ArrayList;
 /**@author Tye Shutty*/
-//Allan, this class is your responsibility, just copied my methods from Course
+//Allan, this class is your responsibility, change it if you want, I
+//just copied my methods from Course
 //and found and replaced the ArrayList name and class name. -Tye
 public class Section implements Serializable{
 //-------Instance Variables--------//
@@ -19,7 +20,7 @@ public class Section implements Serializable{
 		return new ArrayList<ClassTime>(classTimes);
 	}
 	public ClassTime getClassTime(int index){
-		if(classTimes.size()>=index){
+		if(classTimes.size()>index){
 			return classTimes.get(index);
 		}
 		return null;
@@ -41,11 +42,8 @@ public class Section implements Serializable{
 			if(classTimes.get(x).getName().compareTo(a)==0){
 				return x;
 			}
-			else{
-				return -1;
-			}
 		}
-		return classTimes.indexOf(a);
+		return -1;
 	}
 	public int lastIndexOf(ClassTime a){
 		return classTimes.lastIndexOf(a);
@@ -55,15 +53,17 @@ public class Section implements Serializable{
 	}
 
 	public String toString(){
-		String description=name;
-		if(classTimes.size()>0){
-			description+=":\n";
+		String description=name+":\n      ";
+		if(classTimes.size()==0){
+			description+="empty";
 		}
-		for(int x=0; x<classTimes.size();x++){
-			//automatically calls toString on ClassTime object
-			description+="      "+classTimes.get(x);
-			if(x+1<classTimes.size()){
-				description+=",\n";
+		else{
+			for(int x=0; x<classTimes.size();x++){
+				//automatically calls toString on ClassTime object
+				description+=classTimes.get(x);
+				if(x+1<classTimes.size()){
+					description+=",";
+				}
 			}
 		}
 		return description+"\n";

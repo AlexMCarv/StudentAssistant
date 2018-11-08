@@ -18,15 +18,11 @@ public class Schedule implements Serializable{
 		courses = new ArrayList<Course>();
 	}
 //--------Getters---------//
-	/*
-	 * This method returns a REFERENCE to the arraylist, not a copy. 
-	 * I suggest changing the name of the method to "getCourses()" to be clearer. -Fred
-	*/
 	public ArrayList<Course> copyList(){
 		return new ArrayList<Course>(courses);
 	}
 	public Course getCourse(int index){
-		if(courses.size()>=index){
+		if(courses.size()>index){
 			return courses.get(index);
 		}
 		return null;
@@ -58,11 +54,8 @@ public class Schedule implements Serializable{
 			if(courses.get(x).getName().compareTo(a)==0){
 				return x;
 			}
-			else{
-				return -1;
-			}
 		}
-		return courses.indexOf(a);
+		return -1;
 	}
 	public int lastIndexOf(Course a){
 		return courses.lastIndexOf(a);
@@ -71,12 +64,14 @@ public class Schedule implements Serializable{
 		return courses.isEmpty();
 	}
 	public String toString(){
-		String description=name;
-		if(courses.size()>0){
-			description+=":\n";
+		String description=name+":\n";
+		if(courses.size()==0){
+			description+="empty\n";
 		}
-		for(int x=0; x<courses.size();x++){
-			description+=courses.get(x);
+		else{
+			for(int x=0; x<courses.size();x++){
+				description+=courses.get(x);
+			}
 		}
 		return description;
 	}

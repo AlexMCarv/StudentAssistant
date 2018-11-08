@@ -4,6 +4,8 @@ import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.Section;
+import java.io.*;
+
 
 //tests serialize
 /** @author Tye Shutty */
@@ -21,14 +23,14 @@ public class testDriver1{
 			temp.add(temp1);
 			one.add(temp);
 		}
-		serialize(temp);
+		serialize(one);
 		Schedule two =deserialize("test");
 		System.out.println(two);
 	}
 	public static void serialize(Schedule a){
 		FileOutputStream gary;
 		try{
-			gary=new FileOutputStream("test");
+			gary=new FileOutputStream("test.list");
 			ObjectOutputStream smithe=new ObjectOutputStream(gary);
 			smithe.writeObject(a);
 			smithe.close();
@@ -42,9 +44,9 @@ public class testDriver1{
 		}
 	}
 	public static Schedule deserialize(String filename){
-		Schedule a;
+		Schedule a=null;
 		try{
-			FileInputStream hugo=new FileInputSream(filename);
+			FileInputStream hugo=new FileInputStream(filename);
 			ObjectInputStream dara=new ObjectInputStream(hugo);
 			a=(Schedule)dara.readObject();
 		}
@@ -54,5 +56,9 @@ public class testDriver1{
 		catch(ClassNotFoundException e){
 			e.printStackTrace();
 		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+		return a;
 	}
 }
