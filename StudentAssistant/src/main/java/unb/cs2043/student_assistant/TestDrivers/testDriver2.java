@@ -23,7 +23,7 @@ public class testDriver2{
 			one.add(temp);
 
 		}
-		System.out.println(one);
+		System.out.println(one.getFormattedString());
 		System.out.println(two);
 	}
 }
