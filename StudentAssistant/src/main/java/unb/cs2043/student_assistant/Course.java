@@ -17,7 +17,7 @@ public class Course implements Serializable{
 		sections = new ArrayList<Section>();
 	}
 //--------Getters---------//
-	public ArrayList<Section> copyCourse(){
+	public ArrayList<Section> copySections(){
 		return new ArrayList<Section>(sections);
 	}
 	public Section getSection(int index){

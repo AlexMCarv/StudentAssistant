@@ -18,7 +18,7 @@ public class Schedule implements Serializable{
 		courses = new ArrayList<Course>();
 	}
 //--------Getters---------//
-	public ArrayList<Course> copySchedule(){
+	public ArrayList<Course> copyCourses(){
 		return new ArrayList<Course>(courses);
 	}
 	public Course getCourse(int index){
