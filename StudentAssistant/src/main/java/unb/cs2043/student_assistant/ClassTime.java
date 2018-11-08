@@ -24,6 +24,7 @@ public ClassTime(ArrayList<String> daysIn, String startTimeIn, String endTimeIn 
 public String getDays(){
 	String s = "";
 	for(int i=0; i<days.size(); i++) {
+//After you have changed days to be single letters, don't need space in between them here. -Fred
 		s+=days.get(i) + (" ");
 	}
 	return s;
@@ -70,6 +71,7 @@ public void setEndTime(String newEndTime) {
 
 public boolean isValidDay(String dayIn) {
 	System.out.println("day of week: "+ dayIn);
+//The days will be only letters, not full words. Like this: Su, M, T, W, Th, F, Sa. -Fred
 	if (dayIn.toLowerCase().equals("monday")||
 		dayIn.toLowerCase().equals("tuesday")||
 		dayIn.toLowerCase().equals("wednesday")||
