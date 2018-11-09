@@ -1,7 +1,9 @@
 package unb.cs2043.student_assistant;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**@author Allan Boutilier **/
@@ -18,6 +20,14 @@ public class ClassTime implements Serializable {
 		this.days = daysIn;
 		this.startTime = startTimeIn;
 		this.endTime = endTimeIn;
+	}
+	
+	// ONLY FOR TESTING PURPOSES UNTIL PARSING IS IMPLEMENTED AT UNBCOURSEREADER
+	public ClassTime(String type, ArrayList<String> daysIn, String startTimeIn, String endTimeIn ) {
+		this.type = type;
+		this.days = daysIn;
+		this.startTime = convertToLocalTime(startTimeIn.substring(0, 7));
+		this.endTime = convertToLocalTime(endTimeIn);
 	}
 
 	/**********Getters*********/
@@ -43,7 +53,7 @@ public class ClassTime implements Serializable {
 	}
 
 	public String toString() {
-		return getType() + " " + getDays() + " " + getStartTime().toString() + " - " + getEndTime().toString();
+		return getType() + " " + getDays() + " " + getStartTime().toString() + "-" + getEndTime().toString();
 	}
 
 	/**********Setters*********/
@@ -88,10 +98,15 @@ public class ClassTime implements Serializable {
 			return false;
 		}
 	}
-
-	/* LocalTime throws Exception if an invalid value is passed to it.
-	 * So we probably dont need this method anymore
-	 
+	
+	// ONLY FOR TESTING PURPOSES UNTIL PARSING IS IMPLEMENTED AT UNBCOURSEREADER
+	public LocalTime convertToLocalTime(String timeIn) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma");
+		LocalTime date = LocalTime.parse(timeIn, formatter);
+		return date;
+	}
+	
+	/*	 
 	public boolean isValidTime(String start, String end) {
 		int startHour=0;
 		int startMin=0;

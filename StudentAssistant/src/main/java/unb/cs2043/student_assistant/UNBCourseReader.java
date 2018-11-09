@@ -251,7 +251,7 @@ public class UNBCourseReader {
     		//TODO Update this when classTime is done
 //    				ClassTime timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
     				ArrayList<String> days = new ArrayList<>(); days.add(day);
-    				ClassTime timeObj = new ClassTime(days, time.substring(0, 8), time.substring(9));
+    				ClassTime timeObj = new ClassTime(type, days, time.substring(0, 8), time.substring(9));
     				Section sectionObj = new Section(section);
     				sectionObj.add(timeObj);
     				
@@ -273,7 +273,7 @@ public class UNBCourseReader {
     				//TODO Update this when classTime is done
 //    					timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
         				days = new ArrayList<>(); days.add(day);
-        				timeObj = new ClassTime(days, time.substring(0, 8), time.substring(9));
+        				timeObj = new ClassTime(type, days, time.substring(0, 8), time.substring(9));
 	    				sectionObj.add(timeObj);
     				}
     				
@@ -316,7 +316,7 @@ public class UNBCourseReader {
     		    			//TODO Update this when classTime is done
 //    		    				ClassTime timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
     		    				days = new ArrayList<>(); days.add(day);
-    		    				ClassTime otherTimeObj = new ClassTime(days, time.substring(0, 8), time.substring(9));
+    		    				ClassTime otherTimeObj = new ClassTime(type, days, time.substring(0, 8), time.substring(9));
     		    				sectionObj.add(otherTimeObj);
     		    			}
     					}
