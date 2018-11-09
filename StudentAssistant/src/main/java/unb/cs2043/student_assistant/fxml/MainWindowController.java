@@ -37,7 +37,7 @@ import unb.cs2043.student_assistant.UNBCourseReader;
 
 /**
  * Controller class for the MainWindow.fxml 
- * @author Alexandre Carvalho
+ * @author Frederic Verret
  */
 
 public class MainWindowController implements javafx.fxml.Initializable {
