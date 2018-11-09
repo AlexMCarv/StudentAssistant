@@ -21,21 +21,12 @@ public class ClassTime implements Serializable {
 		this.startTime = startTimeIn;
 		this.endTime = endTimeIn;
 	}
-	
-	// ONLY FOR TESTING PURPOSES UNTIL PARSING IS IMPLEMENTED AT UNBCOURSEREADER
-	public ClassTime(String type, ArrayList<String> daysIn, String startTimeIn, String endTimeIn ) {
-		this.type = type;
-		this.days = daysIn;
-		this.startTime = convertToLocalTime(startTimeIn.substring(0, 7));
-		this.endTime = convertToLocalTime(endTimeIn);
-	}
 
 	/**********Getters*********/
 	public String getDays(){
 		String s = "";
 		for(int i=0; i<days.size(); i++) {
-	//After you have changed days to be single letters, don't need space in between them here. -Fred
-			s+=days.get(i) + (" ");
+			s+=days.get(i);
 		}
 		return s;
 	}
@@ -82,28 +73,20 @@ public class ClassTime implements Serializable {
 	
 	/*********Check if Valid**************/
 	public boolean isValidDay(String dayIn) {
-		System.out.println("day of week: "+ dayIn);
-	//The days will be only letters, not full words. Like this: Su, M, T, W, Th, F, Sa. -Fred
-		if (dayIn.toLowerCase().equals("monday")||
-			dayIn.toLowerCase().equals("tuesday")||
-			dayIn.toLowerCase().equals("wednesday")||
-			dayIn.toLowerCase().equals("thursday")||
-			dayIn.toLowerCase().equals("friday")||
-			dayIn.toLowerCase().equals("saturday")||
-			dayIn.toLowerCase().equals("sunday")) {
+//		System.out.println("day of week: "+ dayIn);
+		if (dayIn.toLowerCase().equals("m")||
+			dayIn.toLowerCase().equals("t")||
+			dayIn.toLowerCase().equals("w")||
+			dayIn.toLowerCase().equals("th")||
+			dayIn.toLowerCase().equals("f")||
+			dayIn.toLowerCase().equals("sa")||
+			dayIn.toLowerCase().equals("su")) {
 			return true;
 		}
 	
 		else {
 			return false;
 		}
-	}
-	
-	// ONLY FOR TESTING PURPOSES UNTIL PARSING IS IMPLEMENTED AT UNBCOURSEREADER
-	public LocalTime convertToLocalTime(String timeIn) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma");
-		LocalTime date = LocalTime.parse(timeIn, formatter);
-		return date;
 	}
 	
 	/*	 

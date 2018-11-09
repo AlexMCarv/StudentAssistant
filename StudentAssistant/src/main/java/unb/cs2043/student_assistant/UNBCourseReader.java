@@ -2,12 +2,15 @@ package unb.cs2043.student_assistant;
 
 import unb.cs2043.student_assistant.fxml.ComboBoxChoice;
 import java.io.ObjectOutputStream;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -192,10 +195,7 @@ public class UNBCourseReader {
         		
     			if (m.find()) {
     				//Check if still same course (more than 1 section)
-//    				System.out.println("courseName: "+courseName+"\tnextCourse: "+row.getCells().get(1).asText());
     				if (courseName.equals(row.getCells().get(1).asText())) {
-//    					System.out.println("Same course!");
-    					
     					sameCourse = true;
     				}
     				
@@ -248,10 +248,7 @@ public class UNBCourseReader {
     				location = location==null?"N/A":location;
     				
     				//Create objects and add them to the list
-    		//TODO Update this when classTime is done
-//    				ClassTime timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
-    				ArrayList<String> days = new ArrayList<>(); days.add(day);
-    				ClassTime timeObj = new ClassTime(type, days, time.substring(0, 8), time.substring(9));
+    				ClassTime timeObj = createClassTime(type, day, time);
     				Section sectionObj = new Section(section);
     				sectionObj.add(timeObj);
     				
@@ -270,10 +267,7 @@ public class UNBCourseReader {
     	    				time = m.group(7)==null?time:m.group(7);
     	    				location = m.group(9)==null?location:m.group(9);
     					}
-    				//TODO Update this when classTime is done
-//    					timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
-        				days = new ArrayList<>(); days.add(day);
-        				timeObj = new ClassTime(type, days, time.substring(0, 8), time.substring(9));
+    					timeObj = createClassTime(type, day, time);
 	    				sectionObj.add(timeObj);
     				}
     				
@@ -312,11 +306,8 @@ public class UNBCourseReader {
     		    				//If no location, set it as N/A
     		    				location = location == null ? "N/A" : location;
     		    				
-    		    				//Create classTIme object and add it to the section
-    		    			//TODO Update this when classTime is done
-//    		    				ClassTime timeObj = new ClassTime(type+" "+day+" "+time+" "+location);
-    		    				days = new ArrayList<>(); days.add(day);
-    		    				ClassTime otherTimeObj = new ClassTime(type, days, time.substring(0, 8), time.substring(9));
+    		    				//Create classTime object and add it to the section
+    		    				ClassTime otherTimeObj = createClassTime(type, day, time);
     		    				sectionObj.add(otherTimeObj);
     		    			}
     					}
@@ -531,5 +522,36 @@ public class UNBCourseReader {
 	
 	private static String getClassName() {
 		return UNBCourseReader.class.getSimpleName();
+	}
+	
+	private ClassTime createClassTime(String type, String days, String timeRange) {
+		//Get days as a list
+		ArrayList<String> dayList = getDaysAsList(days);
+		
+		//Reformat start+end times
+		String[] times = timeRange.split("-");
+		LocalTime startTime = convertToLocalTime(times[0]);
+		LocalTime endTime = convertToLocalTime(times[1]);
+		
+		//Create object
+		ClassTime timeObj = new ClassTime(type, dayList, startTime, endTime);
+		return timeObj;
+	}
+	
+	private ArrayList<String> getDaysAsList(String days) {
+		//Split string using uppercase characters
+		String[] dayArray = days.split("(?=\\p{Upper})");
+		
+		//Convert array into arraylist
+		ArrayList<String> dayList = new ArrayList<>(); 
+		dayList.addAll(Arrays.asList(dayArray));
+		
+		return dayList;
+	}
+	
+	private LocalTime convertToLocalTime(String time) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma");
+		LocalTime date = LocalTime.parse(time, formatter);
+		return date;
 	}
 }

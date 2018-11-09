@@ -13,7 +13,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.fxml.MainWindowController;
-
+/**
+ * Main driver for GUI application
+ * @author Alexandre Carvalho
+ * @author Frederic Verret
+ */
 public class App extends Application
 {
 	
@@ -75,8 +79,8 @@ public class App extends Application
         alert.getButtonTypes().addAll(ButtonType.YES, ButtonType.NO);
         
         //Deactivate Defaultbehavior for yes-Button:
-//        Button yesButton = (Button) alert.getDialogPane().lookupButton( ButtonType.YES );
-//        yesButton.setDefaultButton( false );
+        //Button yesButton = (Button) alert.getDialogPane().lookupButton( ButtonType.YES );
+        //yesButton.setDefaultButton( false );
         
         final Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.YES;
