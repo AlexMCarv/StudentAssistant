@@ -83,7 +83,6 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		    	cmbSection.setItems(FXCollections.observableList(course.copySections()));
 		    }
 		});
-		
 		//cmbCourse.setCellFactory(e -> new ComboBoxCourseCell());
 	}
 	
@@ -146,11 +145,11 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 				return;
 			}
 			
-			ClassTime newClassTime = classTimeNameBuilder();
+			ClassTime newClassTime = classTimeBuilder();
 			
 			//Check if adding or editing
 			if (classTimeToEdit!=null) {
-				classTimeToEdit = classTimeNameBuilder();
+				classTimeToEdit = classTimeBuilder();
 			}
 			else {
 				Section section = cmbSection.getSelectionModel().getSelectedItem();
@@ -165,11 +164,10 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 	}
 		
 	// For Testing purposes
-	private ClassTime classTimeNameBuilder() {
+	private ClassTime classTimeBuilder() {
 		String type = (String)group.getSelectedToggle().getUserData();
 		
 		ArrayList<String> days = new ArrayList<>();
-//		String days = "";
 		if(chkSun.isSelected())
 			days.add("Su");
 		if(chkMon.isSelected())
@@ -185,11 +183,11 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		if(chkSat.isSelected())
 			days.add("Sa");
 		
-		String startTime = spinnerStart.getValue().toString();
-		String endTime = spinnerEnd.getValue().toString();
+		LocalTime startTime = spinnerStart.getValue();
+		LocalTime endTime = spinnerEnd.getValue();
 		
 //		return (type + " " + days + " " + startTime + "-" + endTime);
-		return new ClassTime(days, startTime, endTime);
+		return new ClassTime(type, days, startTime, endTime);
 	}
 	
 	
