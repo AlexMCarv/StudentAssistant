@@ -24,6 +24,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
@@ -143,10 +144,11 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		final KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
 		final KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN);
 		container.setOnKeyReleased(event -> {
-			if (ctrlC.match(event)) addCourse();
-			else if (ctrlS.match(event)) addSection();
-			else if (ctrlT.match(event)) addClassTime();
+			if (ctrlC.match(event)) addCourse(null);
+			else if (ctrlS.match(event)) addSection(null);
+			else if (ctrlT.match(event)) addClassTime(null);
 			else if (ctrlG.match(event)) genSchedule();
+			else if (event.getCode() == KeyCode.DELETE) deleteItem(new ActionEvent());
 		});
 		container.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
 		treeCourseList.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
@@ -184,7 +186,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	}
 	
 	//These methods are called when the corresponding button is pressed.
-	@FXML private void addCourse() {
+	@FXML private void addCourse(MouseEvent event) {
 		if (btnAddCourse.isDisabled()) return;
 		try {
 			Parent window;
@@ -195,7 +197,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			
 			//Potentially send data if editing
 			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
-			if (treeItem!=null && getObjectType(treeItem.getValue())=="Course") {
+			if (event==null && treeItem!=null && getObjectType(treeItem.getValue())=="Course") {
 				//Send value of course to the window
 				controller.setCourseToEdit((Course)treeItem.getValue());
 				title = "Edit Course";
@@ -209,7 +211,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			windowError();
 		}
 	}
-	@FXML private void addSection() {
+	@FXML private void addSection(MouseEvent event) {
 		if (btnAddSection.isDisabled()) return;
 		try {
 			Parent window;
@@ -221,7 +223,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			String focus = "ComboBox";
 			//Send data if editing
 			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
-			if (treeItem!=null) {
+			if (event==null && treeItem!=null) {
 				String objType = getObjectType(treeItem.getValue());
 				if (objType=="Course") {
 					//Adding section to a course
@@ -245,7 +247,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			windowError();
 		}
 	}
-	@FXML private void addClassTime() {
+	@FXML private void addClassTime(MouseEvent event) {
 		if (btnAddClassTime.isDisabled()) return;
 		try {
 			Parent window;
@@ -256,7 +258,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			
 			//Send data if editing
 			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
-			if (treeItem!=null) {
+			if (event==null && treeItem!=null) {
 				String objType = getObjectType(treeItem.getValue());
 				if (objType=="Section") {
 					//Adding classtime to a section
@@ -284,8 +286,11 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);
 	}
 	
-	@FXML
-	private void deleteItem(ActionEvent event) {
+	//These methods are called when corresponding context menu item its clicked
+	@FXML private void menuCourseClicked(ActionEvent event) {addCourse(null);}
+	@FXML private void menuSectionClicked(ActionEvent event) {addSection(null);}
+	@FXML private void menuClassTimeClicked(ActionEvent event) {addClassTime(null);}
+	@FXML private void deleteItem(ActionEvent event) {
 		TreeItem<Object> selectedItem = treeCourseList.getSelectionModel().getSelectedItem();
 		if (selectedItem!=null) {
 			Object item = selectedItem.getValue();

@@ -64,7 +64,7 @@
                   <Button fx:id="btnAddCourse" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addCourse" text="Add Course" />
                   <Button fx:id="btnAddSection" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addSection" text="Add Section" />
                   <Button fx:id="btnAddClassTime" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addClassTime" text="Add Class Time" />
-                  <Label fx:id="msgLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" wrapText="true" VBox.vgrow="ALWAYS" />
+                  <Label fx:id="msgLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="115.0" wrapText="true" VBox.vgrow="ALWAYS" />
                   <Button fx:id="btnGenSchedule" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#genSchedule" text="Generate Schedule" />
                </children>
             </VBox>
@@ -73,12 +73,12 @@
                <contextMenu>
                   <ContextMenu fx:id="contextMenu">
                     <items>
-                      <MenuItem fx:id="menuEditCourse" mnemonicParsing="false" onAction="#addCourse" text="Edit Course" />
-                        <MenuItem fx:id="menuEditSection" mnemonicParsing="false" onAction="#addSection" text="Edit Section" />
-                        <MenuItem fx:id="menuEditClassTime" mnemonicParsing="false" onAction="#addClassTime" text="Edit Class Time" />
-                        <MenuItem fx:id="menuAddCourse" mnemonicParsing="false" onAction="#addCourse" text="Add Course" />
-                        <MenuItem fx:id="menuAddSection" mnemonicParsing="false" onAction="#addSection" text="Add Section" />
-                        <MenuItem fx:id="menuAddClassTime" mnemonicParsing="false" onAction="#addClassTime" text="Add Class Time" />
+                      <MenuItem fx:id="menuEditCourse" mnemonicParsing="false" onAction="#menuCourseClicked" text="Edit Course" />
+                        <MenuItem fx:id="menuEditSection" mnemonicParsing="false" onAction="#menuSectionClicked" text="Edit Section" />
+                        <MenuItem fx:id="menuEditClassTime" mnemonicParsing="false" onAction="#menuClassTimeClicked" text="Edit Class Time" />
+                        <MenuItem fx:id="menuAddCourse" mnemonicParsing="false" onAction="#menuCourseClicked" text="Add Course" />
+                        <MenuItem fx:id="menuAddSection" mnemonicParsing="false" onAction="#menuSectionClicked" text="Add Section" />
+                        <MenuItem fx:id="menuAddClassTime" mnemonicParsing="false" onAction="#menuClassTimeClicked" text="Add Class Time" />
                         <MenuItem fx:id="menuDelete" mnemonicParsing="false" onAction="#deleteItem" text="Delete" />
                     </items>
                   </ContextMenu>
