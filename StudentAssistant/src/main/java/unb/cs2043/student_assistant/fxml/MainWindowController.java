@@ -111,6 +111,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		return result;
 	}
 	
+	//Called when clicking Quit in File menu.
+	@FXML private void quit(ActionEvent event) {closeWindow();}
+	
 	private void initializeContextMenu() {
 		contextMenu.setOnShowing(e -> {
 			contextMenu.getItems().clear();
