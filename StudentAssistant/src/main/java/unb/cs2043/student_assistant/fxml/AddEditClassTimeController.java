@@ -3,6 +3,7 @@ package unb.cs2043.student_assistant.fxml;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -102,7 +103,31 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		cmbSection.setMouseTransparent(true);
 		cmbSection.setFocusTraversable(true);
 		
-		//TODO: Autofill all fields using values from classTimeToEdit
+		//Autofill all fields using values from classTimeToEdit
+		//Select days
+		List<String> days = classTimeToEdit.copyDays();
+		for (String day: days) {
+			if (day.toLowerCase().equals("su")) {chkSun.setSelected(true);}
+			else if (day.toLowerCase().equals("m")) {chkMon.setSelected(true);}
+			else if (day.toLowerCase().equals("t")) {chkTue.setSelected(true);}
+			else if (day.toLowerCase().equals("w")) {chkWed.setSelected(true);}
+			else if (day.toLowerCase().equals("th")) {chkThu.setSelected(true);}
+			else if (day.toLowerCase().equals("f")) {chkFri.setSelected(true);}
+			else if (day.toLowerCase().equals("sa")) {chkSat.setSelected(true);}
+		}
+		
+		//Select Type
+		String type = classTimeToEdit.getType();
+		if (type.toLowerCase().equals("lec")) {rbtnLec.setSelected(true);}
+		else if (type.toLowerCase().equals("lab")) {rbtnLab.setSelected(true);}
+		else if (type.toLowerCase().equals("tutorial")) {rbtnTut.setSelected(true);}
+		else {rbtnOth.setSelected(true);}
+		
+		//Select Time
+		LocalTime startTime = classTimeToEdit.getStartTime();
+		LocalTime endTime = classTimeToEdit.getEndTime();
+		spinnerStart.getValueFactory().setValue(startTime);
+		spinnerEnd.getValueFactory().setValue(endTime);
 	}
 
 	
@@ -149,7 +174,7 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 			
 			//Check if adding or editing
 			if (classTimeToEdit!=null) {
-				classTimeToEdit = classTimeBuilder();
+				classTimeToEdit.replace(classTimeBuilder());
 			}
 			else {
 				Section section = cmbSection.getSelectionModel().getSelectedItem();

@@ -121,10 +121,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			if (treeItem!=null) {
 				String type = getObjectType(treeItem.getValue());
 				if (type.equals("Course")) {
-					contextMenu.getItems().addAll(menuEditCourse, menuAddSection, menuDelete);
+					contextMenu.getItems().addAll(menuAddSection, menuEditCourse, menuDelete);
 				}
 				else if (type.equals("Section")) {
-					contextMenu.getItems().addAll(menuEditSection, menuAddClassTime, menuDelete);
+					contextMenu.getItems().addAll(menuAddClassTime, menuEditSection, menuDelete);
 				}
 				else if (type.equals("ClassTime")) {
 					contextMenu.getItems().addAll(menuEditClassTime, menuDelete);

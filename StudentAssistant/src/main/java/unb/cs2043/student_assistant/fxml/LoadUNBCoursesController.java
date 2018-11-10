@@ -36,14 +36,9 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 	private static ComboBoxChoice[][] choices;
 	@FXML private StackPane container;
 	@FXML private ProgressIndicator loading;
-	@FXML private Label termLabel;
-	@FXML private Label levelLabel;
-    @FXML private Label locationLabel;
-	@FXML private ComboBox<ComboBoxChoice> termSelect;
-    @FXML private ComboBox<ComboBoxChoice> levelSelect;
-    @FXML private ComboBox<ComboBoxChoice> locationSelect;
-    @FXML private Button loadBtn;
-    @FXML private Button cancelBtn;
+	@FXML private Label termLabel, levelLabel, locationLabel;
+	@FXML private ComboBox<ComboBoxChoice> termSelect, levelSelect, locationSelect;
+    @FXML private Button loadBtn, cancelBtn;
 
 //====== PUBLIC METHODS ======
     

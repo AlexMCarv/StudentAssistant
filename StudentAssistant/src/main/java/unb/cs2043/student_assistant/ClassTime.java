@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 /**@author Allan Boutilier **/
 
@@ -29,6 +30,10 @@ public class ClassTime implements Serializable {
 			s+=days.get(i);
 		}
 		return s;
+	}
+	
+	public ArrayList<String> copyDays() {
+		return new ArrayList<String>(days);
 	}
 	
 	public LocalTime getStartTime() {
@@ -70,6 +75,12 @@ public class ClassTime implements Serializable {
 			endTime = newEndTime;
 	}
 
+	public void replace(ClassTime newClassTime) {
+		this.type = newClassTime.getType();
+		this.days = newClassTime.copyDays();
+		this.startTime = newClassTime.getStartTime();
+		this.endTime = newClassTime.getEndTime();
+	}
 	
 	/*********Check if Valid**************/
 	public boolean isValidDay(String dayIn) {
