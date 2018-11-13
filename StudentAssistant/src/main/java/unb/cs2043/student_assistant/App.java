@@ -1,5 +1,6 @@
 package unb.cs2043.student_assistant;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,6 +27,7 @@ public class App extends Application
 	//Need instance variable UNBCourseNames since used a lot for autocompletion.
 	//(To avoid retrieving it from UNBCourseList every single time)
 	private static Set<String> UNBCourseNames;
+	private static File fileToLoad;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -92,4 +94,7 @@ public class App extends Application
         alert.show();
     }
 
+    public static void setFileToLoad(File file) {
+    	fileToLoad = file;
+    }
 }

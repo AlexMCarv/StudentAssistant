@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -35,6 +36,7 @@ import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.Section;
 import unb.cs2043.student_assistant.UNBCourseReader;
+import unb.cs2043.student_assistant.FileSelect;
 
 /**
  * Controller class for the MainWindow.fxml 
@@ -421,6 +423,19 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		return type;
 	}
 	
+	/**
+	 * Opens a window to allow the selection of a file to be OPEN.
+	 * It alters the global variable fileToLoad in App to reference the new file chosen
+	 */
+	@FXML
+	private void selectFile(ActionEvent event) {
+		
+		FileSelect fileSelector = new FileSelect(container.getScene().getWindow());
+		App.setFileToLoad(fileSelector.getFile());
+		
+	}
+	
+			
 	private void refresh() {createCourseList();}
 	
 	private void windowError() {
