@@ -1,6 +1,7 @@
 
 package unb.cs2043.student_assistant.fxml;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -429,13 +430,22 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	 */
 	@FXML
 	private void selectFile(ActionEvent event) {
-		
-		FileSelect fileSelector = new FileSelect(container.getScene().getWindow());
+		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "open");
 		App.setFileToLoad(fileSelector.getFile());
 		
+		//Implement what needs to happen after the file to load is selected...
 	}
 	
-			
+	@FXML
+	private void saveAs(ActionEvent event) {
+		// Opens the window allowing the user to set the name and path of the schedule file that is being saved.
+		// It is only creating the reference. A FileInputStream is required to save the file to directory 
+		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "save");
+		File saveAsFile = fileSelector.getFile();
+		
+		//Implement what needs to happen after the file name and path is set ...
+		}
+	
 	private void refresh() {createCourseList();}
 	
 	private void windowError() {
