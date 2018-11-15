@@ -27,7 +27,6 @@ public class App extends Application
 	//Need instance variable UNBCourseNames since used a lot for autocompletion.
 	//(To avoid retrieving it from UNBCourseList every single time)
 	private static Set<String> UNBCourseNames;
-	private static File fileToLoad;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {

@@ -431,7 +431,8 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML
 	private void selectFile(ActionEvent event) {
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "open");
-		App.setFileToLoad(fileSelector.getFile());
+		File fileToLoad = fileSelector.getFile();
+		
 		
 		//Implement what needs to happen after the file to load is selected...
 	}
