@@ -93,7 +93,4 @@ public class App extends Application
         alert.show();
     }
 
-    public static void setFileToLoad(File file) {
-    	fileToLoad = file;
-    }
 }

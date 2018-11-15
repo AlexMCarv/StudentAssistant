@@ -145,9 +145,9 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 			}
 			
 			if (!(chkSun.isSelected() || chkMon.isSelected() || chkTue.isSelected() || 
-					  chkWed.isSelected() || chkThu.isSelected() || chkFri.isSelected() || chkSat.isSelected())) {
-					App.showNotification("Week day not selected.", AlertType.ERROR);
-					return;
+				  chkWed.isSelected() || chkThu.isSelected() || chkFri.isSelected() || chkSat.isSelected())) {
+				App.showNotification("Week day not selected.", AlertType.ERROR);
+				return;
 			}
 			
 			if (group.getSelectedToggle() == null) {
@@ -172,12 +172,22 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 			
 			ClassTime newClassTime = classTimeBuilder();
 			
+			//Make sure this ClassTime does not conflict with any other ClassTime in this section.
+			Section section = cmbSection.getSelectionModel().getSelectedItem();
+			for (ClassTime time : section.copyClassTimes()) {
+				if (time.conflictsWith(newClassTime)) {
+					App.showNotification("This class time conflicts with another class time in this section.", AlertType.ERROR);
+					return;
+				}
+			}
+			
 			//Check if adding or editing
 			if (classTimeToEdit!=null) {
+				//Edit
 				classTimeToEdit.replace(classTimeBuilder());
 			}
 			else {
-				Section section = cmbSection.getSelectionModel().getSelectedItem();
+				//Add
 				section.add(newClassTime);
 			}
 			
@@ -187,8 +197,8 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		
 		closeWindow(event);
 	}
-		
-	// For Testing purposes
+	
+	
 	private ClassTime classTimeBuilder() {
 		String type = (String)group.getSelectedToggle().getUserData();
 		
