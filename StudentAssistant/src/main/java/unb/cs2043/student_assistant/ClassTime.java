@@ -97,4 +97,7 @@ public class ClassTime implements Serializable {
 		}
 	}
 	
+	public boolean conflictsWith(ClassTime other) {
+		return this.startTime.isBefore(other.endTime) && other.startTime.isBefore(this.endTime);
+	}
 }
