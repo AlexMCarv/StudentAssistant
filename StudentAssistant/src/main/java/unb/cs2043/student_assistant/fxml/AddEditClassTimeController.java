@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -68,13 +70,21 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		
 		spinnerStart.setValueFactory(new TimeSpinnerValueFactory());
 		spinnerEnd.setValueFactory(new TimeSpinnerValueFactory());
-		spinnerEnd.valueProperty().addListener((obs, oldValue, newValue) -> {
-			if (spinnerStart.getValue().compareTo(spinnerEnd.getValue()) >= 0) {
-				lblTimeError.setText("* End time must be greater than start time.");
-			} else {
-				lblTimeError.setText("");
+		
+		//Display message when start time > end time
+		ChangeListener<LocalTime> listener = (obs, oldValue, newValue) -> {
+			LocalTime startTime = spinnerStart.getValue();
+			LocalTime endTime = spinnerEnd.getValue();
+			if (startTime!=null && endTime!=null) {
+				if (startTime.compareTo(endTime) >= 0) {
+					lblTimeError.setText("* End time must be greater than start time.");
+				} else {
+					lblTimeError.setText("");
+				}
 			}
-		});
+		};
+		spinnerEnd.valueProperty().addListener(listener);
+		spinnerStart.valueProperty().addListener(listener);
 		
 		cmbCourse.setItems(FXCollections.observableList(App.userSelection.copyCourses()));
 		cmbCourse.setOnAction(new EventHandler<ActionEvent>() {
