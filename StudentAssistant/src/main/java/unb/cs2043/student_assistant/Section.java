@@ -2,6 +2,7 @@ package unb.cs2043.student_assistant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 /**@author Tye Shutty*/
 //Allan, this class is your responsibility, change it if you want, I
 //just copied my methods from Course
@@ -129,5 +130,18 @@ public class Section implements Serializable{
 	}
 	public void clear(){
 		classTimes.clear();
+	}
+	
+	//Checks if any ClassTime in this section conflicts with any ClassTime in the other section.
+	public boolean conflictsWith(Section other) {
+		boolean conflicting = false;
+		
+		for (int i=0; i<this.classTimes.size() && !conflicting; i++) {
+			for (int j=0; j<other.classTimes.size() && !conflicting; j++) {
+				conflicting = this.classTimes.get(i).conflictsWith(other.classTimes.get(j));
+			}
+		}
+		
+		return conflicting;
 	}
 }
