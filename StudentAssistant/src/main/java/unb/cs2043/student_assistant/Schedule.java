@@ -137,4 +137,26 @@ public class Schedule implements Serializable{
 	public void clear(){
 		courses.clear();
 	}
+	
+	
+	/**
+	 * Schedules are equal if, and only if, they contain the same courses 
+	 * (regardless of the name of the schedule)
+	 */
+	@Override
+	public boolean equals(Object obj){
+		boolean result;
+		
+		if (obj instanceof Schedule) {
+			Schedule sc = (Schedule) obj;
+			boolean sameCourses = sc.copyCourses().equals(this.copyCourses());
+//			boolean sameNames = sc.getName().equals(this.getName());
+			result = sameCourses;
+		} 
+		else {
+			result = false;
+		}
+		
+		return result;
+	}
 }
