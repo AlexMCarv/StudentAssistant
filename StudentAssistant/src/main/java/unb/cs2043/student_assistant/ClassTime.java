@@ -3,6 +3,7 @@ package unb.cs2043.student_assistant;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**@author Allan Boutilier **/
 
@@ -98,6 +99,13 @@ public class ClassTime implements Serializable {
 	}
 	
 	public boolean conflictsWith(ClassTime other) {
-		return this.startTime.isBefore(other.endTime) && other.startTime.isBefore(this.endTime);
+		List<String> thisDays = this.copyDays();
+		List<String> otherDays = other.copyDays();
+		
+		//Get all common days of both times
+		List<String> commonDays = new ArrayList<>(thisDays);
+		commonDays.retainAll(otherDays);
+		
+		return commonDays.size()!=0 && this.startTime.isBefore(other.endTime) && other.startTime.isBefore(this.endTime);
 	}
 }
