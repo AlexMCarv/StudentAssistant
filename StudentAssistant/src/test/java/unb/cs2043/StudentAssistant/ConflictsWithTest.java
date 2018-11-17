@@ -15,7 +15,7 @@ import unb.cs2043.student_assistant.Section;
  * @author Frederic Verret
  */
 
-public class conflictsWith_MethodTest {
+public class ConflictsWithTest {
 	
 	public LocalTime time(int hr, int min) {
 		return LocalTime.of(hr, min);
