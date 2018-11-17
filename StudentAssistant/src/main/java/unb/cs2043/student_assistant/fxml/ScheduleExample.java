@@ -53,7 +53,7 @@ public class ScheduleExample extends Application {
 	}
 	
 	public Node getPanel(Stage stage) {
-		spreadSheetView1 = new ScheduleDisplay(new ArrayList<Schedule>());
+		spreadSheetView1 = new ScheduleDisplay(new Schedule(null));
         int rowCount = 30;
         int columnCount = 8;
         GridBase grid = new GridBase(rowCount, columnCount);

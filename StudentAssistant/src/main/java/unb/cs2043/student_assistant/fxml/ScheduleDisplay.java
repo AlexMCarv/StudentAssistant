@@ -1,4 +1,5 @@
 package unb.cs2043.student_assistant.fxml;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,15 +16,15 @@ import unb.cs2043.student_assistant.Schedule;
 
 public class ScheduleDisplay extends SpreadsheetView {
 	
-	private List<Schedule> scheduleList; 
+	private Schedule schedule; 
     /** Header at row 1 and other rows represent time ranging from 07:00AM to 22:00PM */
 	private final int ROW_COUNT = 31;
 	/** Header at column 1 and other columns represent the days of the week */
 	private final int COLUMN_COUNT = 8;
     
-	public ScheduleDisplay(List<Schedule> scheduleList) {
+	public ScheduleDisplay(Schedule schedule) {
 		
-		this.scheduleList = scheduleList;
+		this.schedule = schedule;
         GridBase grid = new GridBase(ROW_COUNT, COLUMN_COUNT);
         buildGrid(grid);
         setGrid(grid);
@@ -58,12 +59,29 @@ public class ScheduleDisplay extends SpreadsheetView {
      * @param grid
      */
     private void buildGrid(GridBase grid) {
-        
+    	String[] days = {"", "Sunday", "Monday", "Tueday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    	String[] time = new String[grid.getRowCount()];
+    	LocalTime start = LocalTime.of(7, 0);
+    	for (int i = 0; i < time.length; i++) {
+    		time[i] = start.toString();
+    		start = start.plusMinutes(30);
+    	}
+    	
+    	
         ObservableList<ObservableList<SpreadsheetCell>> rows = FXCollections.observableArrayList();
+        
         for (int row = 0; row < grid.getRowCount(); ++row) {
             final ObservableList<SpreadsheetCell> list = FXCollections.observableArrayList();
+
             for (int column = 0; column < grid.getColumnCount(); ++column) {
-            	SpreadsheetCell cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1,"value");
+          		SpreadsheetCell cell;
+            	if (row == 0) { 
+            		cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1, days[column]);
+            	} else if (column == 0) {
+            		cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1, time[row]);
+            	} else {
+            		cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1,"value");
+            	}
             	cell.getStyleClass().add("first-cell");
             	list.add(cell);
             }
@@ -71,4 +89,6 @@ public class ScheduleDisplay extends SpreadsheetView {
         }
         grid.setRows(rows);
     }
+    
+   
 }
