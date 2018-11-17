@@ -8,16 +8,19 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import unb.cs2043.student_assistant.ClassTime;
+import unb.cs2043.student_assistant.Course;
+import unb.cs2043.student_assistant.Schedule;
+import unb.cs2043.student_assistant.ScheduleArranger;
 import unb.cs2043.student_assistant.Section;
 
 /**
- * This tester tests the conflictsWith() methods of both ClassTime and Section classes.
+ * This tester tests the conflictsWith() methods of both ClassTime and Section classes, 
+ * as well as the noConflictsBetween() method of ScheduleArranger class.
  * @author Frederic Verret
  */
-
 public class ConflictsWithTest {
 	
-	public LocalTime time(int hr, int min) {
+	private LocalTime time(int hr, int min) {
 		return LocalTime.of(hr, min);
 	}
 	
@@ -91,5 +94,4 @@ public class ConflictsWithTest {
 		
 	}
 	
-
 }
