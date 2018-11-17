@@ -136,4 +136,25 @@ public class Course implements Serializable{
 	public void clear(){
 		sections.clear();
 	}
+	
+	/**
+	 * Courses are equal if they have the same name and same sections.
+	 */
+	@Override
+	public boolean equals(Object obj){
+		boolean result;
+		
+		if (obj instanceof Course) {
+			Course course = (Course) obj;
+			
+			boolean sameSections = this.copySections().equals(course.copySections());
+			boolean sameName = this.getName().equals(course.getName());
+			result = sameSections && sameName;
+		} 
+		else {
+			result = false;
+		}
+		
+		return result;
+	}
 }
