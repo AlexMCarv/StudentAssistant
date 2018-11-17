@@ -141,7 +141,8 @@ public class Schedule implements Serializable{
 	
 	/**
 	 * Schedules are equal if, and only if, they contain the same courses 
-	 * (regardless of the name of the schedule)
+	 * (according to equals() method of courses)
+	 * (regardless of the name of the schedules)
 	 */
 	@Override
 	public boolean equals(Object obj){
@@ -149,9 +150,18 @@ public class Schedule implements Serializable{
 		
 		if (obj instanceof Schedule) {
 			Schedule sc = (Schedule) obj;
-			boolean sameCourses = sc.copyCourses().equals(this.copyCourses());
-//			boolean sameNames = sc.getName().equals(this.getName());
-			result = sameCourses;
+			
+			if (this.getSize() != sc.getSize()) {
+				//False if don't have same number of courses
+				result = false;
+			}
+			else {
+				boolean sameCourses = true;
+				for (int i=0; i<this.getSize() && sameCourses; i++) {
+					sameCourses = sc.getCourse(i).equals(this.getCourse(i));
+				}
+				result = sameCourses;
+			}
 		} 
 		else {
 			result = false;
