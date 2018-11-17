@@ -63,6 +63,14 @@ public class ScheduleExample extends Application {
             }
             rows.add(list);
         }
+       
+        SpreadsheetCell cell = SpreadsheetCellType.STRING.createCell(0, 0, 2, 1,"value");
+        //I add them in the area covered by the span.
+        rows.get(0).set(0, cell);
+        rows.get(1).set(0, cell);
+        grid.setRows(rows);
+
+               
         grid.setRows(rows);
         
         spreadSheetView2 = new SpreadsheetView(grid);
