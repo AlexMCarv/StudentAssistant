@@ -136,9 +136,9 @@ public class Section implements Serializable{
 	public boolean conflictsWith(Section other) {
 		boolean conflicting = false;
 		
-		for (int i=0; i<this.classTimes.size() && !conflicting; i++) {
-			for (int j=0; j<other.classTimes.size() && !conflicting; j++) {
-				conflicting = this.classTimes.get(i).conflictsWith(other.classTimes.get(j));
+		for (int i=0; i<this.getSize() && !conflicting; i++) {
+			for (int j=0; j<other.getSize() && !conflicting; j++) {
+				conflicting = this.getClassTime(i).conflictsWith(other.getClassTime(j));
 			}
 		}
 		
