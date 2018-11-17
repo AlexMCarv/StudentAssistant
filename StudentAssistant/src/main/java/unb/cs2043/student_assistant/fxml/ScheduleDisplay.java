@@ -1,9 +1,9 @@
 package unb.cs2043.student_assistant.fxml;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.controlsfx.control.spreadsheet.GridBase;
-import org.controlsfx.control.spreadsheet.Picker;
 import org.controlsfx.control.spreadsheet.SpreadsheetCell;
 import org.controlsfx.control.spreadsheet.SpreadsheetCellType;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
@@ -11,117 +11,45 @@ import org.controlsfx.samples.Utils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
+import unb.cs2043.student_assistant.Schedule;
 
 public class ScheduleDisplay extends SpreadsheetView {
 	
-	public ScheduleDisplay() {
-        int rowCount = 31; //Will be re-calculated after if incorrect.
-        int columnCount = 8;
-
-        GridBase grid = new GridBase(rowCount, columnCount);
-        grid.setRowHeightCallback(new GridBase.MapBasedRowHeightFactory(generateRowHeight()));
+	private List<Schedule> scheduleList; 
+    /** Header at row 1 and other rows represent time ranging from 07:00AM to 22:00PM */
+	private final int ROW_COUNT = 31;
+	/** Header at column 1 and other columns represent the days of the week */
+	private final int COLUMN_COUNT = 8;
+    
+	public ScheduleDisplay(List<Schedule> scheduleList) {
+		
+		this.scheduleList = scheduleList;
+        GridBase grid = new GridBase(ROW_COUNT, COLUMN_COUNT);
+        grid.setRowHeightCallback(new GridBase.MapBasedRowHeightFactory(generateRowHeight(0, 100.0)));
         buildGrid(grid);
 
         setGrid(grid);
-
-        generatePickers();
 
         getFixedRows().add(0);
         getColumns().get(0).setFixed(true);
         getStylesheets().add(Utils.class.getResource("spreadsheetSample.css").toExternalForm());
 	}
 	
-	 /**
-     * Add some pickers into the SpreadsheetView in order to give some
-     * information.
-     */
-    private void generatePickers() {
-        getRowPickers().put(0, new Picker() {
-
-            @Override
-            public void onClick() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("This row contains several fictive companies. "
-                        + "The cells are not editable.\n"
-                        + "A custom tooltip is applied for the first cell.");
-                alert.show();
-            }
-        });
-
-        getRowPickers().put(1, new Picker() {
-
-            @Override
-            public void onClick() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("This row contains cells that can only show a list.");
-                alert.show();
-            }
-        });
-
-        getRowPickers().put(2, new Picker() {
-
-            @Override
-            public void onClick() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("This row contains cells that display some dates.");
-                alert.show();
-            }
-        });
-
-        getRowPickers().put(3, new Picker() {
-
-            @Override
-            public void onClick() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("This row contains some Images displaying logos of the companies.");
-                alert.show();
-            }
-        });
-
-        getRowPickers().put(4, new Picker() {
-
-            @Override
-            public void onClick() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("This row contains Double editable cells. "
-                        + "Except for ControlsFX compagny where it's a String.");
-                alert.show();
-            }
-        });
-        getRowPickers().put(5, new Picker("picker-label", "picker-label-exclamation") {
-
-            @Override
-            public void onClick() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("This row contains Double editable cells with "
-                        + "a special format (%). Some cells also have "
-                        + "a little icon next to their value.");
-                alert.show();
-            }
-        });
-
-        getColumnPickers().put(0, new Picker("picker-label", "picker-label-security") {
-
-            @Override
-            public void onClick() {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Each cell of this column (except for the "
-                        + "separator in the middle) has a particular css "
-                        + "class for changing its color.\n");
-                alert.show();
-            }
-        });
-    }
-
+	/*
+	 * Utility Methods
+	 */
+	
     /**
-     * Specify a custom row height.
-     *
-     * @return
+     * This method is used to create a map of rows with a specified new row height
+     * @param rowIndex Index of the row where the height is to be modified
+     * @param newHeight New height of the row
+     * @return a Map of rowIndex as key and Height as values
      */
-    private Map<Integer, Double> generateRowHeight() {
+    private Map<Integer, Double> generateRowHeight(int[] rowIndex, Double newHeight) {
         Map<Integer, Double> rowHeight = new HashMap<>();
-        rowHeight.put(1, 100.0);
+        
+        for(int row : rowIndex)
+        	rowHeight.put(rowIndex[row], newHeight);
         return rowHeight;
     }
     
@@ -131,21 +59,17 @@ public class ScheduleDisplay extends SpreadsheetView {
      * @param grid
      */
     private void buildGrid(GridBase grid) {
+        
         ObservableList<ObservableList<SpreadsheetCell>> rows = FXCollections.observableArrayList();
-
-        int rowIndex = 0;
-
-        for (int i = rowIndex; i < rowIndex + 1000; ++i) {
-            final ObservableList<SpreadsheetCell> randomRow = FXCollections.observableArrayList();
-
-            SpreadsheetCell cell = SpreadsheetCellType.STRING.createCell(i, 0, 1, 1, "Random " + (i + 1));
-            cell.getStyleClass().add("first-cell");
-            randomRow.add(cell);
-
-            rows.add(randomRow);
+        for (int row = 0; row < grid.getRowCount(); ++row) {
+            final ObservableList<SpreadsheetCell> list = FXCollections.observableArrayList();
+            for (int column = 0; column < grid.getColumnCount(); ++column) {
+            	SpreadsheetCell cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1,"value");
+            	cell.getStyleClass().add("first-cell");
+            	list.add(cell);
+            }
+            rows.add(list);
         }
         grid.setRows(rows);
     }
-
-
 }
