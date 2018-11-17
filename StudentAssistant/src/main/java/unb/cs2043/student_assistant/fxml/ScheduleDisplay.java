@@ -25,9 +25,7 @@ public class ScheduleDisplay extends SpreadsheetView {
 		
 		this.scheduleList = scheduleList;
         GridBase grid = new GridBase(ROW_COUNT, COLUMN_COUNT);
-        grid.setRowHeightCallback(new GridBase.MapBasedRowHeightFactory(generateRowHeight(0, 100.0)));
         buildGrid(grid);
-
         setGrid(grid);
 
         getFixedRows().add(0);
@@ -40,7 +38,8 @@ public class ScheduleDisplay extends SpreadsheetView {
 	 */
 	
     /**
-     * This method is used to create a map of rows with a specified new row height
+     * This method is used to create a map of rows with a specified new row height. To apply it to a grid call
+     * grid.setRowHeightCallback(new GridBase.MapBasedRowHeightFactory(generateRowHeight(intArray, newDouble)));
      * @param rowIndex Index of the row where the height is to be modified
      * @param newHeight New height of the row
      * @return a Map of rowIndex as key and Height as values
