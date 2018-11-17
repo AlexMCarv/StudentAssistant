@@ -73,6 +73,9 @@ classTimes.add(new ClassTime("regular", new ArrayList<String>(Arrays.asList("Mon
 LocalTime.parse("11:20"), LocalTime.parse("12:20")));
 classTimes.add(new ClassTime("regular", new ArrayList<String>(Arrays.asList("Monday")),
 LocalTime.parse("12:20"), LocalTime.parse("13:20")));
+//------------------Sixth test --------------------------//
+//ToDo: make a test solely about overlapping ClassTime
+
 //---------------------General Test Construction----------------------//
 		for(int x=0;x<classTimes.size();x++){
 			sections.add(new Section("section"+x));
