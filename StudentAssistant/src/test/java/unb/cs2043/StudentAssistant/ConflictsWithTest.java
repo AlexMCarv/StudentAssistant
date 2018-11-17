@@ -18,10 +18,9 @@ import unb.cs2043.student_assistant.Section;
  * as well as the noConflictsBetween() method of ScheduleArranger class.
  * @author Frederic Verret
  */
-
 public class ConflictsWithTest {
 	
-	public LocalTime time(int hr, int min) {
+	private LocalTime time(int hr, int min) {
 		return LocalTime.of(hr, min);
 	}
 	
@@ -95,34 +94,4 @@ public class ConflictsWithTest {
 		
 	}
 	
-	@Test
-	public void testNoConflictsBetweenScheduleArranger() {
-		ArrayList<String> days = new ArrayList<>();
-		days.add("M");
-		ClassTime time1 = new ClassTime("Lab", days, time(21,30), time(22,30));
-		Section sec1 = new Section("S1");
-		sec1.add(time1);
-		Course c1 = new Course("C1");
-		c1.add(sec1);
-		
-		ClassTime time2 = new ClassTime("Lab", days, time(5, 00), time(7, 00));
-		Section sec2 = new Section("S2");
-		sec2.add(time2);
-		Course c2 = new Course("C2");
-		c2.add(sec2);
-		
-		Schedule schedule = new Schedule("Schedule");
-		schedule.add(c1);
-		schedule.add(c2);
-		
-		//Same section
-		assertEquals(false, ScheduleArranger.noConflictsBetween(schedule, sec2));
-		
-		ClassTime time3 = new ClassTime("Lab", days, time(2, 00), time(3, 00));
-		Section sec3 = new Section("S3");
-		sec3.add(time3);
-		
-		//No conflict
-		assertEquals(true, ScheduleArranger.noConflictsBetween(schedule, sec3));
-	}
 }

@@ -9,7 +9,6 @@ import java.util.TreeSet;
  */
 public class ScheduleArranger {
 	
-	//The array returned contains (at most) 4 schedule objects
 	public static Schedule[] getBestSchedules(Schedule courseList) {
 		//Use a set to prevent duplicates in results
 		TreeSet<Schedule> scheduleArrangements = new TreeSet<>();
@@ -36,12 +35,14 @@ public class ScheduleArranger {
 				Section sectionToAdd = currentCourse.getSection(indexes[i]);
 				
 				if (noConflictsBetween(currentSchedule, sectionToAdd)) {
-					currentSchedule.add(currentCourse);
+					//Add section to currentSchedule (need a new course to hold it)
+					Course courseToAdd = new Course(currentCourse.getName());
+					courseToAdd.add(sectionToAdd);
+					currentSchedule.add(courseToAdd);
 				}
-				
 			}
 			
-			if (!incrementAsCounter(indexes, maxIndexes)) {
+			if (incrementAsCounter(indexes, maxIndexes)) {
 				done = true;
 			}
 			
@@ -49,13 +50,26 @@ public class ScheduleArranger {
 			numSchedules++;
 		}
 		
+		//Convert the TreeSet to array
+		Schedule[] results = null;
+		results = scheduleArrangements.toArray(results);
 		
-		return null;
+		//TODO: Remove this debug print
+		for (Schedule sc: results) {
+			System.out.println(sc);
+		}
+		
+		return results;
 	}
 	
 	
-	//Return false if any section in schedule conflicts with section, true otherwise.
-	private static boolean noConflictsBetween(Schedule schedule, Section section) {
+	/**
+	 * Return false if any section in schedule conflicts with section, true otherwise.
+	 * @param schedule
+	 * @param section
+	 * @return False if any section in schedule conflicts with section, true otherwise.
+	 */
+	public static boolean noConflictsBetween(Schedule schedule, Section section) {
 		boolean noConflicts = true;
 		
 		for (int i=0; i<schedule.copyCourses().size() && noConflicts; i++) {
@@ -70,9 +84,46 @@ public class ScheduleArranger {
 	}
 	
 	
-	//Increments an array of integers in a fashion similar to a counter.
-	private static boolean incrementAsCounter(int[] indexes, int[] maxIndexes) {
-		//TODO
-		return false;
+	/**
+	 * Increments an array of integers in a fashion similar to a counter.
+	 * @param indexes
+	 * @param maxIndexes
+	 * @return False when reached max value of last index (counter is reset).
+	 */
+	public static boolean incrementAsCounter(int[] indexes, int[] maxIndexes) {
+		return incrementRecursive(0, indexes, maxIndexes);
+	}
+	
+	
+	/**
+	 * Recursive method used by incrementAsCounter.
+	 * @param i
+	 * @param indexes
+	 * @param maxIndexes
+	 * @return False when reached max value of last index (counter is reset).
+	 */
+	private static boolean incrementRecursive(int i, int[] indexes, int[] maxIndexes) {
+		boolean reachedMax = false;
+		
+		if (indexes[i]<maxIndexes[i]) {
+			//Increment normally
+			indexes[i]++;
+		}
+		else {
+			//Reached max of this index, reset this index
+			indexes[i] = 0;
+			
+			//Check if this is last index
+			if (i<indexes.length-1) {
+				//Not last index, increment next.
+				reachedMax = incrementRecursive(i+1, indexes, maxIndexes);
+			}
+			else {
+				//Last index has reached max value (counter has completely reset)
+				reachedMax = true;
+			}
+		}
+		
+		return reachedMax;
 	}
 }
