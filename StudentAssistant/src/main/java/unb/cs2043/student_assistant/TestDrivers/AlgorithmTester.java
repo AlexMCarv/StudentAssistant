@@ -1,5 +1,8 @@
 package unb.cs2043.student_assistant.TestDrivers;
-/**@author Tye Shutty*/
+/**@author Tye Shutty
+AlgorithmTester tests the ability of the app to return optimal schedules.
+Work in progress.
+*/
 import java.util.ArrayList;
 import java.time.LocalTime;
 import unb.cs2043.student_assistant.ClassTime;
@@ -26,14 +29,15 @@ public class AlgorithmTester{
 //--------------Second test should return two of three Courses----------------//
 //Tests ability to resolve conflict
 		testSubjects.add(new Schedule("Test 2"));
-		classTimes.add(classTimes.get(2));
-//--------------Third test should return one of four Courses----------------//
+		classTimes.add(new ClassTime("special", new ArrayList<String>(Arrays.asList("Monday")),
+		LocalTime.parse("13:00"), LocalTime.parse("14:20")));
+//--------------Third test should return two of four Courses----------------//
 //Tests ability to resolve conflict
 		testSubjects.add(new Schedule("Test 3"));
-		classTimes.add(new ClassTime("special", new ArrayList<String>(Arrays.asList("Monday")),
+		classTimes.add(new ClassTime("regular", new ArrayList<String>(Arrays.asList("Monday")),
 		LocalTime.parse("22:00"), LocalTime.parse("23:20")));
 		classTimes.add(classTimes.get(0));
-//--------------------Fourth test should return 6 Courses--------------------//
+//--------------------Fourth test should return 5 Courses--------------------//
 //Tests ability to pick right section out of past and future conflicts
 	testSubjects.add(new Schedule("Test 4"));
 	String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
