@@ -8,7 +8,7 @@ import java.util.ArrayList;
 * Lists can only be of type Course
 * Saves course name
 */
-public class Schedule implements Serializable{
+public class Schedule implements Serializable, Comparable<Schedule>{
 //-------Instance Variables--------//
 	private String name;
 	private ArrayList<Course> courses;
@@ -140,7 +140,7 @@ public class Schedule implements Serializable{
 	
 	
 	/**
-	 * Schedules are equal if, and only if, they contain the same courses 
+	 * Schedules are equal if, and only if, they contain the same courses.
 	 * (according to equals() method of courses)
 	 * (regardless of the name of the schedules)
 	 */
@@ -168,5 +168,27 @@ public class Schedule implements Serializable{
 		}
 		
 		return result;
+	}
+	
+	
+	@Override
+	/**
+	 * Only returns 0 if they are equal (see equals() method above)
+	 * Otherwise, sort by number of courses (most courses first)
+	 * (If same number of courses, return 1)
+	 */
+	public int compareTo(Schedule other) {
+		int result;
+		if (this.equals(other)) {
+			result = 0;
+		}
+		else {
+			result = this.getSize() - other.getSize();
+			if (result==0) {
+				result = 1;
+			}
+		}
+		
+		return  result;
 	}
 }
