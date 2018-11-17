@@ -1,5 +1,6 @@
 package unb.cs2043.student_assistant;
 
+import java.util.Arrays;
 import java.util.TreeSet;
 
 /**
@@ -9,6 +10,13 @@ import java.util.TreeSet;
  */
 public class ScheduleArranger {
 	
+	/**
+	 * Algorithm complexity = O(((s^c)-1)*c!) (approximation)
+	 * s = Average number of sections in each course.
+	 * c = Total number of courses.
+	 * @param courseList
+	 * @return Array containing best schedule arrangements.
+	 */
 	public static Schedule[] getBestSchedules(Schedule courseList) {
 		//Use a set to prevent duplicates in results
 		TreeSet<Schedule> scheduleArrangements = new TreeSet<>();
@@ -19,45 +27,64 @@ public class ScheduleArranger {
 		int[] indexes = new int[numCourses];
 		//Stores the max number for each index (how many sections in each course)
 		int[] maxIndexes = new int[numCourses];
-		//Initialize all indexes to 0, and set max indexes
+		//Stores numbers 0 to numCourses-1 (used for permutations)
+		Integer[] courseNums = new Integer[numCourses];
+		//Initialize integer arrays
 		for (int i=0; i<indexes.length; i++) {
 			indexes[i] = 0;
-			maxIndexes[i] = courseList.getCourse(i).getSize();
+			maxIndexes[i] = courseList.getCourse(i).getSize()-1;
+			courseNums[i] = i;
 		}
 		
-		int numSchedules = 0;
-		boolean done = false;
-		while (!done) {
-			Schedule currentSchedule = new Schedule("S"+numSchedules);
+		
+    	int numSchedules = 0;
+    	boolean done = false;
+    	//Go through all section combinations (Average#OfSectionsInCourses^#OfCourses possibilities)
+    	while (!done) {
 			
-			for (int i=0; i<numCourses && !done; i++) {
-				Course currentCourse = courseList.getCourse(i);
-				Section sectionToAdd = currentCourse.getSection(indexes[i]);
-				
-				if (noConflictsBetween(currentSchedule, sectionToAdd)) {
-					//Add section to currentSchedule (need a new course to hold it)
-					Course courseToAdd = new Course(currentCourse.getName());
-					courseToAdd.add(sectionToAdd);
-					currentSchedule.add(courseToAdd);
+    		//Go throug all permutations of the courses (#OfCourses! possibilities)
+			Permutations<Integer> perm = new Permutations<Integer>(courseNums);
+		    while(perm.hasNext()){
+		    	Integer[] courseIndexes = perm.next();
+		    	
+		    	Schedule currentSchedule = new Schedule("S"+numSchedules);
+		    	
+				for (int i:courseIndexes) {
+					Course currentCourse = courseList.getCourse(i);
+					Section sectionToAdd = currentCourse.getSection(indexes[i]);
+					
+					if (noConflictsBetween(currentSchedule, sectionToAdd)) {
+						//Add section to currentSchedule (need a new course to hold it)
+						Course courseToAdd = new Course(currentCourse.getName());
+						courseToAdd.add(sectionToAdd);
+						currentSchedule.add(courseToAdd);
+					}
 				}
-			}
+				
+				scheduleArrangements.add(currentSchedule);
+				numSchedules++;
+		    }
 			
 			if (incrementAsCounter(indexes, maxIndexes)) {
 				done = true;
 			}
 			
-			scheduleArrangements.add(currentSchedule);
-			numSchedules++;
-		}
+    	}
 		
+    	
 		//Convert the TreeSet to array
-		Schedule[] results = null;
+		Schedule[] results = new Schedule[scheduleArrangements.size()];
 		results = scheduleArrangements.toArray(results);
 		
-		//TODO: Remove this debug print
-		for (Schedule sc: results) {
-			System.out.println(sc);
+		//Restrict to only 4 best schedules
+		if (results.length>4) {
+			Schedule[] bestResults = new Schedule[4];
+			bestResults = Arrays.copyOfRange(results, 0, 4);
+			results = bestResults;
 		}
+		
+		//Print # of schedules possibilities
+		System.out.println("Possibilities: "+numSchedules);
 		
 		return results;
 	}
@@ -72,9 +99,9 @@ public class ScheduleArranger {
 	public static boolean noConflictsBetween(Schedule schedule, Section section) {
 		boolean noConflicts = true;
 		
-		for (int i=0; i<schedule.copyCourses().size() && noConflicts; i++) {
+		for (int i=0; i<schedule.getSize() && noConflicts; i++) {
 			Course currentCourse = schedule.getCourse(i);
-			for (int j=0; j<currentCourse.copySections().size() && noConflicts; j++) {
+			for (int j=0; j<currentCourse.getSize() && noConflicts; j++) {
 				Section currentSection = currentCourse.getSection(j);
 				noConflicts = !currentSection.conflictsWith(section);
 			}
