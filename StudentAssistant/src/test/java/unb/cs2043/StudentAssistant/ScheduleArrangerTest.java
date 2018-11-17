@@ -1,6 +1,3 @@
-/**
- * 
- */
 package unb.cs2043.StudentAssistant;
 
 import static org.junit.Assert.assertEquals;
@@ -16,6 +13,7 @@ import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.ScheduleArranger;
 import unb.cs2043.student_assistant.Section;
+import unb.cs2043.student_assistant.Permutations;
 
 /**
  * This tests the component methods of the ScheduleArranger class (Everything EXCEPT the algorithm).
@@ -126,17 +124,76 @@ public class ScheduleArrangerTest {
 		Course c2 = new Course("C2");
 		c2.add(sec2);
 		
-		ClassTime time3 = new ClassTime("Lab", days, time(2, 00), time(3, 00));
+		Schedule schedule = new Schedule("Schedule");
+		schedule.add(c1);
+		schedule.add(c2);
+		
+		//No conflicts
+		System.out.println("--Sould have 1 schedule with 2 courses--");
+		Schedule[] results = ScheduleArranger.getBestSchedules(schedule);
+		printScheduleArray(results);
+		
+		//--------------------------------------------------------------
+		
+		ClassTime time3 = new ClassTime("Lab", days, time(4, 00), time(6, 00));
 		Section sec3 = new Section("S3");
 		sec3.add(time3);
 		Course c3 = new Course("C3");
 		c3.add(sec3);
 		
-		Schedule schedule = new Schedule("Schedule");
-		schedule.add(c1);
-		schedule.add(c2);
 		schedule.add(c3);
 		
-		ScheduleArranger.getBestSchedules(schedule);
+		//Conflict
+		System.out.println("--Sould have 2 schedules with 2 courses--");
+		results = ScheduleArranger.getBestSchedules(schedule);
+		printScheduleArray(results);
+		
+		//--------------------------------------------------------------
+		
+		time3.setEndTime(time(22,00));
+		//Conflict
+		System.out.println("--Sould have 2 schedules, 1 with 1 course, the other with 2 courses--");
+		results = ScheduleArranger.getBestSchedules(schedule);
+		printScheduleArray(results);
+		
+		//--------------------------------------------------------------
+		
+		//Let's go crazy
+		//Schedule with 7 courses, 3 sections each
+		//No conflicts at all
+		
+		Schedule schedule2 = new Schedule("Crazy");
+		
+		for (int i=0; i<7; i++) {
+			Course c = new Course("C"+i);
+			
+			for (int j=0; j<3; j++) {
+				Section s = new Section("S"+j);
+				
+				//Use unique days to ensure there are aboslutely no conflicts detected.
+				ArrayList<String> uniqueDays = new ArrayList<String>(Arrays.asList("D"+i+j));
+				ClassTime t = new ClassTime("Lab", uniqueDays, time(5, 00), time(6, 00));
+				
+				s.add(t);
+				c.add(s);
+			}
+			
+			schedule2.add(c);
+		}
+		
+		System.out.println("--Should return 4 schedules of 7 courses--");
+		System.out.println("**(11022480 schedule combinations, Takes about 30sec)**\n");
+		long startTime = System.nanoTime();
+		results = ScheduleArranger.getBestSchedules(schedule2);
+		long endTime = System.nanoTime();
+		double duration = (endTime - startTime)/1000000000.0;
+		printScheduleArray(results);
+		System.out.println("Time: "+duration+"s");
+	}
+	
+	public void printScheduleArray(Schedule[] array) {
+		for (Schedule sc: array) {
+			System.out.println(sc.getFormattedString());
+		}
 	}
 }
