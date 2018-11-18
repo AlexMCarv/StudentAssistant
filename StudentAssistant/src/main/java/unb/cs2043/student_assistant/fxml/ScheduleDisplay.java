@@ -102,12 +102,14 @@ public class ScheduleDisplay extends SpreadsheetView {
 	private void populateGrid(GridBase grid) {
 		
 		for(Course course : schedule.copyCourses()) {
-			ClassTime time = course.getSection(0).getClassTime(0);
-			List<Integer> columnIndex = getColumnIndex(time);
-			List<Integer> rowIndex = getRowIndex(time);
-			for (Integer row : rowIndex) {
-				for(Integer col : columnIndex) { 
-					grid.setCellValue(row, col, course.getName());}
+			for(ClassTime time : course.getSection(0).copyClassTimes()) {
+				List<Integer> columnIndex = getColumnIndex(time);
+				List<Integer> rowIndex = getRowIndex(time);
+				for (Integer row : rowIndex) {
+					for(Integer col : columnIndex) { 
+						grid.setCellValue(row, col, course.getName());
+					}
+				}
 			}
 		}
 	}
