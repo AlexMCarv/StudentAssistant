@@ -7,6 +7,7 @@ import java.util.Map;
 import org.controlsfx.control.spreadsheet.GridBase;
 import org.controlsfx.control.spreadsheet.SpreadsheetCell;
 import org.controlsfx.control.spreadsheet.SpreadsheetCellType;
+import org.controlsfx.control.spreadsheet.SpreadsheetColumn;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
 import org.controlsfx.samples.Utils;
 
@@ -26,6 +27,7 @@ public class ScheduleDisplay extends SpreadsheetView {
 		
 		this.schedule = schedule;
         GridBase grid = new GridBase(ROW_COUNT, COLUMN_COUNT);
+        setHeaders(grid);
         buildGrid(grid);
         setGrid(grid);
 
@@ -59,6 +61,28 @@ public class ScheduleDisplay extends SpreadsheetView {
      * @param grid
      */
     private void buildGrid(GridBase grid) {
+        ObservableList<ObservableList<SpreadsheetCell>> rows = FXCollections.observableArrayList();
+        
+        for (int row = 0; row < grid.getRowCount(); ++row) {
+            final ObservableList<SpreadsheetCell> list = FXCollections.observableArrayList();
+
+            for (int column = 0; column < grid.getColumnCount(); ++column) {
+          		
+          		SpreadsheetCell cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1,"value");
+            	cell.getStyleClass().add("first-cell");
+            	list.add(cell);
+            	
+            }
+            rows.add(list);
+        }
+        grid.setRows(rows);
+        System.out.println(grid.getColumnHeaders().size());
+        for (String text : grid.getColumnHeaders())
+        	System.out.println(text);
+        
+    }
+    
+    public void setHeaders(GridBase grid) {
     	String[] days = {"", "Sunday", "Monday", "Tueday", "Wednesday", "Thursday", "Friday", "Saturday"};
     	String[] time = new String[grid.getRowCount()];
     	LocalTime start = LocalTime.of(7, 0);
@@ -67,28 +91,8 @@ public class ScheduleDisplay extends SpreadsheetView {
     		start = start.plusMinutes(30);
     	}
     	
-    	
-        ObservableList<ObservableList<SpreadsheetCell>> rows = FXCollections.observableArrayList();
-        
-        for (int row = 0; row < grid.getRowCount(); ++row) {
-            final ObservableList<SpreadsheetCell> list = FXCollections.observableArrayList();
-
-            for (int column = 0; column < grid.getColumnCount(); ++column) {
-          		SpreadsheetCell cell;
-            	if (row == 0) { 
-            		cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1, days[column]);
-            	} else if (column == 0) {
-            		cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1, time[row]);
-            	} else {
-            		cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1,"value");
-            	}
-            	cell.getStyleClass().add("first-cell");
-            	list.add(cell);
-            }
-            rows.add(list);
-        }
-        grid.setRows(rows);
+    	grid.getColumnHeaders().setAll(days);
+    	grid.getRowHeaders().setAll(time);
     }
     
-   
 }
