@@ -5,8 +5,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -51,60 +49,9 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="652.0" prefWidth="896.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="anchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="652.0" prefWidth="896.0" VBox.vgrow="ALWAYS">
       <children>
-            <TableView layoutX="14.0" layoutY="33.0" prefHeight="275.0" prefWidth="480.0">
-              <columns>
-                  <TableColumn prefWidth="60.0" text="Time" />
-                <TableColumn prefWidth="60.0" text="Mon" />
-                <TableColumn prefWidth="60.0" text="Tue" />
-                  <TableColumn prefWidth="60.0" text="Wed" />
-                  <TableColumn prefWidth="60.0" text="Thu" />
-                  <TableColumn prefWidth="60.0" text="Fri" />
-                  <TableColumn prefWidth="60.0" text="Sat" />
-                  <TableColumn prefWidth="60.0" text="Sun" />
-              </columns>
-            </TableView>
             <Label layoutX="14.0" layoutY="12.0" text="Schedule 1" />
-            <TableView layoutX="519.0" layoutY="33.0" prefHeight="275.0" prefWidth="480.0">
-               <columns>
-                  <TableColumn prefWidth="60.0" text="Time" />
-                  <TableColumn prefWidth="60.0" text="Mon" />
-                  <TableColumn prefWidth="60.0" text="Tue" />
-                  <TableColumn prefWidth="60.0" text="Wed" />
-                  <TableColumn prefWidth="60.0" text="Thu" />
-                  <TableColumn prefWidth="60.0" text="Fri" />
-                  <TableColumn prefWidth="60.0" text="Sat" />
-                  <TableColumn prefWidth="60.0" text="Sun" />
-               </columns>
-            </TableView>
-            <Label layoutX="519.0" layoutY="12.0" text="Schedule 2" />
-            <TableView layoutX="14.0" layoutY="355.0" prefHeight="275.0" prefWidth="480.0">
-               <columns>
-                  <TableColumn prefWidth="60.0" text="Time" />
-                  <TableColumn prefWidth="60.0" text="Mon" />
-                  <TableColumn prefWidth="60.0" text="Tue" />
-                  <TableColumn prefWidth="60.0" text="Wed" />
-                  <TableColumn prefWidth="60.0" text="Thu" />
-                  <TableColumn prefWidth="60.0" text="Fri" />
-                  <TableColumn prefWidth="60.0" text="Sat" />
-                  <TableColumn prefWidth="60.0" text="Sun" />
-               </columns>
-            </TableView>
-            <Label layoutX="14.0" layoutY="333.0" text="Schedule 3" />
-            <TableView layoutX="519.0" layoutY="355.0" prefHeight="275.0" prefWidth="480.0">
-               <columns>
-                  <TableColumn prefWidth="60.0" text="Time" />
-                  <TableColumn prefWidth="60.0" text="Mon" />
-                  <TableColumn prefWidth="60.0" text="Tue" />
-                  <TableColumn prefWidth="60.0" text="Wed" />
-                  <TableColumn prefWidth="60.0" text="Thu" />
-                  <TableColumn prefWidth="60.0" text="Fri" />
-                  <TableColumn prefWidth="60.0" text="Sat" />
-                  <TableColumn prefWidth="60.0" text="Sun" />
-               </columns>
-            </TableView>
-            <Label layoutX="519.0" layoutY="333.0" text="Schedule 4" />
       </children>
     </AnchorPane>
   </children>

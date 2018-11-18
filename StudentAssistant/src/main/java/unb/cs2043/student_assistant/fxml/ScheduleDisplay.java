@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static java.time.temporal.ChronoUnit.MINUTES;
 
 import java.time.Duration;
 
 import org.controlsfx.control.spreadsheet.GridBase;
 import org.controlsfx.control.spreadsheet.SpreadsheetCell;
 import org.controlsfx.control.spreadsheet.SpreadsheetCellType;
-import org.controlsfx.control.spreadsheet.SpreadsheetColumn;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
 import org.controlsfx.samples.Utils;
 
@@ -20,7 +18,6 @@ import javafx.collections.ObservableList;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
-import unb.cs2043.student_assistant.Section;
 
 public class ScheduleDisplay extends SpreadsheetView {
 	
@@ -39,24 +36,6 @@ public class ScheduleDisplay extends SpreadsheetView {
         setHeaders(grid);
         buildGrid(grid);
         setGrid(grid);
-        
-        ArrayList<String> days = new ArrayList<>();
-		days.add("M");
-		days.add("Th");
-		ClassTime time1 = new ClassTime("Lab", days, LocalTime.of(11,30), LocalTime.of(14,30));
-		Section sec1 = new Section("S1");
-		sec1.add(time1);
-		Course c1 = new Course("C1");
-		c1.add(sec1);
-		
-		ClassTime time2 = new ClassTime("Lab", days, LocalTime.of(8, 30), LocalTime.of(9, 20));
-		Section sec2 = new Section("S2");
-		sec2.add(time2);
-		Course c2 = new Course("C2");
-		c2.add(sec2);
-		
-		schedule.add(c1);
-		schedule.add(c2);
         populateGrid(grid);       
         
         getFixedRows().add(0);
@@ -104,10 +83,6 @@ public class ScheduleDisplay extends SpreadsheetView {
             rows.add(list);
         }
         grid.setRows(rows);
-        System.out.println(grid.getColumnHeaders().size());
-        for (String text : grid.getColumnHeaders())
-        	System.out.println(text);
-        
     }
     
     public void setHeaders(GridBase grid) {
@@ -131,8 +106,8 @@ public class ScheduleDisplay extends SpreadsheetView {
 			List<Integer> columnIndex = getColumnIndex(time);
 			List<Integer> rowIndex = getRowIndex(time);
 			for (Integer row : rowIndex) {
-				for(Integer col : columnIndex) 
-					grid.setCellValue(row, col, course.getName());
+				for(Integer col : columnIndex) { 
+					grid.setCellValue(row, col, course.getName());}
 			}
 		}
 	}
@@ -144,19 +119,19 @@ public class ScheduleDisplay extends SpreadsheetView {
 		List<Integer> columnIndex = new ArrayList<>();
 		
 		for(String day : time.copyDays()) {
-			if(day == "Su")
+			if(day.equals("Su"))
 				columnIndex.add(1);
-			if(day == "M")
+			if(day.equals("M"))
 				columnIndex.add(2);
-			if(day == "T")
+			if(day.equals("T"))
 				columnIndex.add(3);
-			if(day == "W")
+			if(day.equals("W"))
 				columnIndex.add(4);
-			if(day == "Th")
+			if(day.equals("Th"))
 				columnIndex.add(5);
-			if(day == "F")
+			if(day.equals("F"))
 				columnIndex.add(6);
-			if(day == "Sa")
+			if(day.equals("Sa"))
 				columnIndex.add(7);
 		}
 		return columnIndex;
