@@ -104,11 +104,10 @@ public class ScheduleDisplay extends SpreadsheetView {
 		for(Course course : schedule.copyCourses()) {
 			for(ClassTime time : course.getSection(0).copyClassTimes()) {
 				List<Integer> columnIndex = getColumnIndex(time);
-				List<Integer> rowIndex = getRowIndex(time);
-				for (Integer row : rowIndex) {
-					for(Integer col : columnIndex) { 
-						grid.setCellValue(row, col, course.getName());
-					}
+				int rowIndex = getRowIndex(time);
+				for(Integer col : columnIndex) { 
+					grid.setCellValue(rowIndex, col, course.getName() + "\n" + time.getType());
+					spanCell(grid, rowIndex, col, getDuration(time));
 				}
 			}
 		}
@@ -122,38 +121,46 @@ public class ScheduleDisplay extends SpreadsheetView {
 		
 		for(String day : time.copyDays()) {
 			if(day.equals("Su"))
-				columnIndex.add(1);
+				columnIndex.add(0);
 			if(day.equals("M"))
-				columnIndex.add(2);
+				columnIndex.add(1);
 			if(day.equals("T"))
-				columnIndex.add(3);
+				columnIndex.add(2);
 			if(day.equals("W"))
-				columnIndex.add(4);
+				columnIndex.add(3);
 			if(day.equals("Th"))
-				columnIndex.add(5);
+				columnIndex.add(4);
 			if(day.equals("F"))
-				columnIndex.add(6);
+				columnIndex.add(5);
 			if(day.equals("Sa"))
-				columnIndex.add(7);
+				columnIndex.add(6);
 		}
 		return columnIndex;
 	}
 	
 	/*
-	 * This method extracts the column index based on the days of the ClassTime object
+	 * This method returns the row index that corresponds to the class starting time
 	 */
-	private List<Integer> getRowIndex(ClassTime time){
-		List<Integer> rowIndex = new ArrayList<>();
-		
+	private int getRowIndex(ClassTime time){
 		LocalTime start = LocalTime.of(START_HOUR, START_MINUTE);
 		int starting = (int)(Math.ceil((Duration.between(start, time.getStartTime()).toMinutes()/30.0)));
-		rowIndex.add(starting);
-		
+		return starting;
+	}
+	
+	/*
+	 * This method returns the duration of the class
+	 */
+	private int getDuration(ClassTime time){
 		int duration = (int)(Math.ceil((Duration.between(time.getStartTime(), time.getEndTime()).toMinutes()/30.0)));
-		for (int i = 1; i < duration; i++)
-			rowIndex.add(starting + i);
-		
-		return rowIndex;
+		return duration;
+	}
+	
+	
+	private void spanCell(GridBase grid, int row, int col, int span) {
+		System.out.println("row:" + row + " col:" + col);
+		grid.getRows().get(row).get(col).getStyleClass().add("span");
+        grid.spanRow(span, row, col);
+        //grid.spanColumn(row, col, span);
 	}
 }
 
