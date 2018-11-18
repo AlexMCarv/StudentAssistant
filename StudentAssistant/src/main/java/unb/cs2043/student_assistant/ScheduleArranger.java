@@ -1,5 +1,6 @@
 package unb.cs2043.student_assistant;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.TreeSet;
 
@@ -18,6 +19,19 @@ public class ScheduleArranger {
 	 * @return Array containing best schedule arrangements.
 	 */
 	public static Schedule[] getBestSchedules(Schedule courseList) {
+		//Calculate complexity (number of possibilities)
+		long complexity = 0;
+		try {
+			complexity = getComplexity(courseList);
+		}
+		catch (ArithmeticException e) {
+			throw new RuntimeException("Complexity (number of possible schedules) is too large.");
+		}
+		
+		//Time estimate (rounded to 2 decimal places)
+		double time = Math.round(getTimeEstimate(complexity)*100.0)/100.0;
+		System.out.println("Time estimate: "+time+"s");
+		
 		//Use a set to prevent duplicates in results
 		TreeSet<Schedule> scheduleArrangements = new TreeSet<>();
 		
@@ -90,6 +104,44 @@ public class ScheduleArranger {
 	}
 	
 	
+	private static long getComplexity(Schedule schedule) throws ArithmeticException {
+		long result = 1;
+		
+		for (int i=0; i<schedule.getSize(); i++) {
+			Course currentCourse = schedule.getCourse(i);
+			result *= currentCourse.getSize();
+		}
+		result--;
+		
+		result *= factorial(schedule.getSize());
+		
+		if (result<0) {
+			throw new ArithmeticException("Number is too large.");
+		}
+		
+		return result;
+	}
+	
+	
+	public static long factorial(int n) throws ArithmeticException {  
+		long fact=1;
+		for(int i=1; i<=n; i++){
+			fact=fact*i;
+		}
+		
+		if (fact<0) {
+			throw new ArithmeticException("Number is too large.");
+		}
+		
+		return fact;
+	}
+	
+	
+	public static double getTimeEstimate(long complexity) {
+		return complexity/400000.0; //Estimate from tests
+	}
+	
+	
 	/**
 	 * Return false if any section in schedule conflicts with section, true otherwise.
 	 * @param schedule
@@ -153,4 +205,5 @@ public class ScheduleArranger {
 		
 		return reachedMax;
 	}
+	
 }

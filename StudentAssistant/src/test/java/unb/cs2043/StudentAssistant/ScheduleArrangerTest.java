@@ -182,7 +182,6 @@ public class ScheduleArrangerTest {
 		}
 		
 		System.out.println("--Should return 4 schedules of 7 courses--");
-		System.out.println("**(11022480 schedule combinations, Takes about 30sec)**\n");
 		long startTime = System.nanoTime();
 		results = ScheduleArranger.getBestSchedules(schedule2);
 		long endTime = System.nanoTime();
@@ -195,5 +194,23 @@ public class ScheduleArrangerTest {
 		for (Schedule sc: array) {
 			System.out.println(sc.getFormattedString());
 		}
+	}
+	
+	@Test
+	public void testFactorial() {
+		assertEquals(120, ScheduleArranger.factorial(5));
+		assertEquals(40320, ScheduleArranger.factorial(8));
+		assertEquals(2432902008176640000L, ScheduleArranger.factorial(20));
+		
+		//Overflow
+		boolean error = false;
+		try {
+			long result = ScheduleArranger.factorial(21);
+			System.out.println(result);
+		}
+		catch (ArithmeticException e) {
+			error = true;
+		}
+		assertEquals(true, error);
 	}
 }
