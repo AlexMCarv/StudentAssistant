@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.ServiceLoader;
 
+import fxsampler.FXSamplerConfiguration;
+import fxsampler.SampleBase;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -35,6 +38,7 @@ import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
+import unb.cs2043.student_assistant.ScheduleArranger;
 import unb.cs2043.student_assistant.Section;
 import unb.cs2043.student_assistant.UNBCourseReader;
 import unb.cs2043.student_assistant.FileSelect;
@@ -289,7 +293,39 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	}
 	@FXML private void genSchedule() {
 		if (btnGenSchedule.isDisabled()) return;
-		openWindow("/fxml/Schedule.fxml", "Schedule", 1020, 680);
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Schedule.fxml"));
+		
+		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection);
+		ScheduleController controller = new ScheduleController();
+		controller.setBestSchedules(best);
+		System.out.println(best[0].getFormattedString());
+		loader.setController(controller);
+		
+		ServiceLoader<FXSamplerConfiguration> configurationServiceLoader = ServiceLoader.load(FXSamplerConfiguration.class);
+		
+		Scene scene;
+		try {
+			scene = new Scene(loader.load(),1020,680);
+			Stage newStage = new Stage();
+			
+			scene.getStylesheets().add(SampleBase.class.getResource("fxsampler.css").toExternalForm());
+	        for (FXSamplerConfiguration fxsamplerConfiguration : configurationServiceLoader) {
+	        	String stylesheet = fxsamplerConfiguration.getSceneStylesheet();
+	        	if (stylesheet != null) {
+	            	scene.getStylesheets().add(stylesheet);
+	        	}
+	        }
+			
+			newStage.setScene(scene);
+			newStage.setTitle("Schedule");
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.show();
+		} catch (IOException e) {
+			windowError();
+			e.printStackTrace();
+		}
 	}
 	
 	//These methods are called when corresponding context menu item its clicked
