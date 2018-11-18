@@ -40,7 +40,8 @@ public class ScheduleDisplay extends SpreadsheetView {
         
         getFixedRows().add(0);
         getColumns().get(0).setFixed(true);
-        getStylesheets().add(Utils.class.getResource("spreadsheetSample.css").toExternalForm());
+        getStylesheets().add(Utils.class.getResource("/style/spreadsheet.css").toExternalForm());
+        setRowHeaderWidth(50);
 	}
 
 	/*
@@ -107,6 +108,7 @@ public class ScheduleDisplay extends SpreadsheetView {
 				int rowIndex = getRowIndex(time);
 				for(Integer col : columnIndex) { 
 					grid.setCellValue(rowIndex, col, course.getName() + "\n" + time.getType());
+					grid.getRows().get(rowIndex).get(col).getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
 					spanCell(grid, rowIndex, col, getDuration(time));
 				}
 			}
@@ -157,7 +159,6 @@ public class ScheduleDisplay extends SpreadsheetView {
 	
 	
 	private void spanCell(GridBase grid, int row, int col, int span) {
-		System.out.println("row:" + row + " col:" + col);
 		grid.getRows().get(row).get(col).getStyleClass().add("span");
         grid.spanRow(span, row, col);
         //grid.spanColumn(row, col, span);

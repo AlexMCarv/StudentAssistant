@@ -1,0 +1,164 @@
+/* FIRST CELL */
+.spreadsheet-cell.first-cell:filled:selected,
+.spreadsheet-cell.first-cell:filled:focused:selected,
+.spreadsheet-cell.first-cell:filled:focused:selected:hover {
+    -fx-background-color: #FFDA8C;
+}
+.spreadsheet-cell.first-cell:hover {
+    -fx-background-color: #988490;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.spreadsheet-cell.first-cell{
+    -fx-background-color:white;
+    -fx-background-insets: 0, 0 1 1 0;
+    -fx-alignment: CENTER_LEFT;
+}
+
+
+/* style0 */
+.spreadsheet-cell.style0:filled:selected ,
+.spreadsheet-cell.style0:filled:focused:selected,
+.spreadsheet-cell.style0:filled:focused:selected:hover {
+    -fx-background-color: #FFC9B5;
+}
+.spreadsheet-cell.style0:hover {
+    -fx-background-color: #988490;
+}
+
+.spreadsheet-cell.style0 {
+    -fx-background-color: #FFC9B5;
+}
+
+/* style1 */
+.spreadsheet-cell.style1:filled:selected ,
+.spreadsheet-cell.style1:filled:focused:selected,
+.spreadsheet-cell.style1:filled:focused:selected:hover {
+    -fx-background-color: #FFC9B5;
+}
+.spreadsheet-cell.style1:hover {
+    -fx-background-color: #988490;
+}
+
+.spreadsheet-cell.style1 {
+    -fx-background-color: #F7B1AB;
+}
+
+
+/* style2 */
+.spreadsheet-cell.style2:filled:selected ,
+.spreadsheet-cell.style2:filled:focused:selected,
+.spreadsheet-cell.style2:filled:focused:selected:hover {
+    -fx-background-color: #FFC9B5;
+}
+.spreadsheet-cell.style2:hover {
+    -fx-background-color: #988490;
+}
+
+.spreadsheet-cell.style2 {
+    -fx-background-color: #D8AA96;
+}
+
+
+/* style3 */
+.spreadsheet-cell.style3:filled:selected ,
+.spreadsheet-cell.style3:filled:focused:selected,
+.spreadsheet-cell.style3:filled:focused:selected:hover {
+    -fx-background-color: #FFC9B5;
+}
+.spreadsheet-cell.style3:hover {
+    -fx-background-color: #988490;
+}
+
+.spreadsheet-cell.style3 {
+    -fx-background-color: #807182;
+}
+
+/* style4 */
+.spreadsheet-cell.style4:filled:selected ,
+.spreadsheet-cell.style4:filled:focused:selected,
+.spreadsheet-cell.style4:filled:focused:selected:hover {
+    -fx-background-color: #FFC9B5;
+}
+.spreadsheet-cell.style4:hover {
+    -fx-background-color: #988490;
+}
+
+.spreadsheet-cell.style4 {
+    -fx-background-color: #C7D3BF;
+}
+
+/* SEPARATOR */
+.spreadsheet-cell.separator{
+    -fx-background-color: white;
+}
+
+.spreadsheet-cell.separator:selected{
+    -fx-background-color: #FFDA8C;
+}
+
+/* COMPAGNIES */
+.spreadsheet-cell.compagny:filled:selected ,
+.spreadsheet-cell.compagny:filled:focused:selected,
+.spreadsheet-cell.compagny:filled:focused:selected:hover {
+    -fx-background-color: #FFDA8C;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+.spreadsheet-cell.compagny:hover,
+.spreadsheet-cell.compagny:filled:focused {
+    -fx-background-color: #988490;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.spreadsheet-cell.compagny{
+    -fx-background-color: -fx-table-cell-border-color, #ABC8E2;
+    -fx-background-insets: 0, 0 1 1 0;
+    -fx-alignment: center;
+}
+
+/** LOGO CELL **/
+
+.spreadsheet-cell.logo{
+    -fx-background-color: white;
+    -fx-alignment: center;
+}
+.spreadsheet-cell.logo:hover{
+    -fx-background-color: #988490;
+}
+.spreadsheet-cell.logo:selected{
+    -fx-background-color: #FFDA8C;
+    -fx-alignment: center;
+}
+
+/* CELL EVERY 5 ROW */
+.spreadsheet-cell.five_rows:filled:selected ,
+.spreadsheet-cell.five_rows:filled:focused:selected,
+.spreadsheet-cell.five_rows:filled:focused:selected:hover {
+    -fx-background-color: #FFDA8C ;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+.spreadsheet-cell.five_rows:hover,
+.spreadsheet-cell.five_rows:filled:focused {
+    -fx-background-color: #988490;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.spreadsheet-cell.five_rows{
+    -fx-background-color: -fx-table-cell-border-color, #ccffff;
+    -fx-background-insets: 0, 0 1 1 0;
+    -fx-alignment: center;
+}
+
+/* CELL SPANNING */
+.spreadsheet-cell.span{
+    -fx-alignment: center;
+    -fx-border-color : #3B0405;
+    -fx-border-width : 1;
+}
+.spreadsheet-cell.span:hover,
+.spreadsheet-cell.span:selected{
+    -fx-alignment: center;
+}
+
