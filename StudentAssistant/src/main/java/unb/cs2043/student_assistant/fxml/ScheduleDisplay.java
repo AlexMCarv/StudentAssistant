@@ -38,10 +38,19 @@ public class ScheduleDisplay extends SpreadsheetView {
         setGrid(grid);
         populateGrid(grid);       
         
-        getFixedRows().add(0);
-        getColumns().get(0).setFixed(true);
+        //getFixedRows().add(0);
+        //getColumns().get(0).setFixed(true);
         getStylesheets().add(Utils.class.getResource("/style/spreadsheet.css").toExternalForm());
         setRowHeaderWidth(50);
+		setPrefHeight(800);
+		setMaxHeight(800);
+		setMinHeight(800);
+		setPrefWidth(750);
+		setMaxWidth(750);
+		setMinWidth(750);
+		setTranslateX(15);
+		setTranslateY(40);
+
 	}
 
 	/*
