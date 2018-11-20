@@ -300,17 +300,13 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection);
 		ScheduleController controller = new ScheduleController();
 		controller.setBestSchedules(best);
-		//for(Schedule schedule : best) {
-		//	System.out.println(schedule.getFormattedString());
-		//}
-			
 		loader.setController(controller);
 		
 		ServiceLoader<FXSamplerConfiguration> configurationServiceLoader = ServiceLoader.load(FXSamplerConfiguration.class);
 		
 		Scene scene;
 		try {
-			scene = new Scene(loader.load(),785,910);
+			scene = new Scene(loader.load(),785,920);
 			Stage newStage = new Stage();
 			
 			scene.getStylesheets().add(SampleBase.class.getResource("fxsampler.css").toExternalForm());
@@ -378,20 +374,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		btnAddClassTime.setDisable(true);
 	}
 
-	private void openWindow(String path, String title, int width, int height) {
-		try {
-			Parent window;
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
-			window = loader.load();
-			Stage stage = setStage(window, title, width, height);
-			stage.show();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			windowError();
-		}
-	}
-	
+
 	private Stage setStage(Parent window, String title, int width, int height) {
 		Scene scene = new Scene(window, width, height);
 		Stage stage = new Stage();

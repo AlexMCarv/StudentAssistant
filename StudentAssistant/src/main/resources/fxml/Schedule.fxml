@@ -13,9 +13,9 @@
       <ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0" />
       <VBox alignment="TOP_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
          <children>
-            <Pane maxHeight="30.0" maxWidth="185.0" minHeight="30.0" minWidth="185.0" prefHeight="30.0" prefWidth="185.0" style="-fx-border-color: #000000; -fx-border-radius: 5,4;">
+            <Pane maxHeight="30.0" maxWidth="750.0" minHeight="30.0" minWidth="750.0" prefHeight="30.0" prefWidth="750.0" style="-fx-border-color: #BFBFBF;">
                <children>
-                  <Label fx:id="lblSchedule" alignment="CENTER" prefHeight="30.0" prefWidth="185.0" text="Schedule 1" textAlignment="CENTER">
+                  <Label fx:id="lblSchedule" alignment="CENTER" prefHeight="30.0" prefWidth="750.0" text="Schedule 1" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

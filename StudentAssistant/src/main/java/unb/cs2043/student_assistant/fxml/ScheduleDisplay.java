@@ -41,14 +41,11 @@ public class ScheduleDisplay extends SpreadsheetView {
         //getFixedRows().add(0);
         //getColumns().get(0).setFixed(true);
         getStylesheets().add(Utils.class.getResource("/style/spreadsheet.css").toExternalForm());
+        grid.setRowHeightCallback(new GridBase.MapBasedRowHeightFactory(generateRowHeight(25.0)));
         setEditable(false);
         setRowHeaderWidth(50);
-		setPrefHeight(800);
-		setMaxHeight(800);
-		setMinHeight(800);
-		setPrefWidth(750);
-		setMaxWidth(750);
-		setMinWidth(750);
+		setPrefHeight(815); setMaxHeight(815); setMinHeight(815);
+		setPrefWidth(750); setMaxWidth(750); setMinWidth(750);
 	}
 
 	/*
@@ -62,11 +59,11 @@ public class ScheduleDisplay extends SpreadsheetView {
      * @param newHeight New height of the row
      * @return a Map of rowIndex as key and Height as values
      */
-    private Map<Integer, Double> generateRowHeight(int[] rowIndex, Double newHeight) {
+    private Map<Integer, Double> generateRowHeight(Double newHeight) {
         Map<Integer, Double> rowHeight = new HashMap<>();
         
-        for(int row : rowIndex)
-        	rowHeight.put(rowIndex[row], newHeight);
+        for(int i = 0; i < ROW_COUNT; i++)
+        	rowHeight.put(i, newHeight);
         return rowHeight;
     }
     

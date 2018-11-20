@@ -13,79 +13,54 @@
     -fx-background-color:white;
     -fx-background-insets: 0, 0 1 1 0;
     -fx-alignment: CENTER_LEFT;
+    -fx-border-color: #BFBFBF;
 }
 
 
 /* style0 */
-.spreadsheet-cell.style0:filled:selected ,
-.spreadsheet-cell.style0:filled:focused:selected,
-.spreadsheet-cell.style0:filled:focused:selected:hover {
-    -fx-background-color: #FFC9B5;
-}
 .spreadsheet-cell.style0:hover {
     -fx-background-color: #988490;
 }
-
 .spreadsheet-cell.style0 {
-    -fx-background-color: #FFC9B5;
+    -fx-background-color: #4363D8;
 }
 
 /* style1 */
-.spreadsheet-cell.style1:filled:selected ,
-.spreadsheet-cell.style1:filled:focused:selected,
-.spreadsheet-cell.style1:filled:focused:selected:hover {
-    -fx-background-color: #FFC9B5;
-}
 .spreadsheet-cell.style1:hover {
     -fx-background-color: #988490;
 }
 
 .spreadsheet-cell.style1 {
-    -fx-background-color: #F7B1AB;
+    -fx-background-color: #E6194B;
 }
 
 
 /* style2 */
-.spreadsheet-cell.style2:filled:selected ,
-.spreadsheet-cell.style2:filled:focused:selected,
-.spreadsheet-cell.style2:filled:focused:selected:hover {
-    -fx-background-color: #FFC9B5;
-}
 .spreadsheet-cell.style2:hover {
     -fx-background-color: #988490;
 }
 
 .spreadsheet-cell.style2 {
-    -fx-background-color: #D8AA96;
+    -fx-background-color: #FFE119;
 }
 
 
 /* style3 */
-.spreadsheet-cell.style3:filled:selected ,
-.spreadsheet-cell.style3:filled:focused:selected,
-.spreadsheet-cell.style3:filled:focused:selected:hover {
-    -fx-background-color: #FFC9B5;
-}
 .spreadsheet-cell.style3:hover {
     -fx-background-color: #988490;
 }
 
 .spreadsheet-cell.style3 {
-    -fx-background-color: #807182;
+    -fx-background-color: #3CB44B;
 }
 
 /* style4 */
-.spreadsheet-cell.style4:filled:selected ,
-.spreadsheet-cell.style4:filled:focused:selected,
-.spreadsheet-cell.style4:filled:focused:selected:hover {
-    -fx-background-color: #FFC9B5;
-}
 .spreadsheet-cell.style4:hover {
     -fx-background-color: #988490;
 }
 
 .spreadsheet-cell.style4 {
-    -fx-background-color: #C7D3BF;
+    -fx-background-color: #F58231;
 }
 
 /* SEPARATOR */
