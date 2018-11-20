@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="890.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="890.0" maxWidth="785.0" minHeight="890.0" minWidth="785.0" prefHeight="890.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0" />
-    <AnchorPane fx:id="anchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="652.0" prefWidth="896.0" VBox.vgrow="ALWAYS">
-      <children>
-            <Label layoutX="14.0" layoutY="12.0" text="Schedule 1" />
-      </children>
-    </AnchorPane>
+      <VBox alignment="TOP_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Pane maxHeight="30.0" maxWidth="185.0" minHeight="30.0" minWidth="185.0" prefHeight="30.0" prefWidth="185.0" style="-fx-border-color: #000000; -fx-border-radius: 5,4;">
+               <children>
+                  <Label fx:id="lblSchedule" alignment="CENTER" prefHeight="30.0" prefWidth="185.0" text="Schedule 1" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Pane>
+            <StackPane fx:id="container" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0" />
+         </children>
+      </VBox>
   </children>
 </VBox>
