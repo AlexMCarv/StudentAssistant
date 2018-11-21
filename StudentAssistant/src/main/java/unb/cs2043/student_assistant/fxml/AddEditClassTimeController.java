@@ -185,7 +185,7 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 			//Make sure this ClassTime does not conflict with any other ClassTime in this section.
 			Section section = cmbSection.getSelectionModel().getSelectedItem();
 			for (ClassTime time : section.copyClassTimes()) {
-				if (time.conflictsWith(newClassTime)) {
+				if (time.conflictsWith(newClassTime) && !time.equals(classTimeToEdit)) {
 					App.showNotification("This class time conflicts with another class time in this section.", AlertType.ERROR);
 					return;
 				}
