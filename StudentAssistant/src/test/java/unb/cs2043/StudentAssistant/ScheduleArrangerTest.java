@@ -213,4 +213,45 @@ public class ScheduleArrangerTest {
 		}
 		assertEquals(true, error);
 	}
+	
+	
+	@Test
+	public void testAlexBug() {
+		ArrayList<String> TTh = new ArrayList<>();
+		TTh.add("T"); TTh.add("Th");
+		ArrayList<String> Th = new ArrayList<>();
+		Th.add("Th");
+		ArrayList<String> MWF = new ArrayList<>();
+		MWF.add("M"); MWF.add("W"); MWF.add("F");
+		ArrayList<String> M = new ArrayList<>();
+		M.add("M");
+		
+		ClassTime time1 = new ClassTime("Lec", TTh, time(10,00), time(11,20));
+		ClassTime time2 = new ClassTime("Lab", Th, time(14,30), time(16,20));
+		Section sec1 = new Section("FR01A");
+		sec1.add(time1); sec1.add(time2);
+		
+		ClassTime time3 = new ClassTime("Lec", TTh, time(13,00), time(14,20));
+		ClassTime time4 = new ClassTime("Lab", M, time(13,30), time(15,20));
+		Section sec2 = new Section("FR02A");
+		sec2.add(time3); sec2.add(time4);
+		
+		Course CS2043 = new Course("CS2043");
+		CS2043.add(sec1); CS2043.add(sec2);
+		
+		ClassTime time5 = new ClassTime("Lec", MWF, time(11,30), time(12,20));
+		ClassTime time6 = new ClassTime("Tutorial", Th, time(12,30), time(13,20));
+		Section sec3 = new Section("FR01A");
+		sec3.add(time5); sec3.add(time6);
+		
+		Course ECE2214 = new Course("ECE2214");
+		ECE2214.add(sec3);
+		
+		Schedule schedule = new Schedule("Schedule");
+		schedule.add(CS2043);
+		schedule.add(ECE2214);
+		
+		Schedule[] results = ScheduleArranger.getBestSchedules(schedule);
+		printScheduleArray(results);
+	}
 }

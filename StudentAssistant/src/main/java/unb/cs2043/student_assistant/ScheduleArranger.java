@@ -59,6 +59,8 @@ public class ScheduleArranger {
     		//Go throug all permutations of the courses (#OfCourses! possibilities)
 			Permutations<Integer> perm = new Permutations<Integer>(courseNums);
 		    while(perm.hasNext()){
+		    	numSchedules++;
+		    	
 		    	Integer[] courseIndexes = perm.next();
 		    	
 		    	Schedule currentSchedule = new Schedule("S"+numSchedules);
@@ -76,7 +78,6 @@ public class ScheduleArranger {
 				}
 				
 				scheduleArrangements.add(currentSchedule);
-				numSchedules++;
 		    }
 			
 			if (incrementAsCounter(indexes, maxIndexes)) {
@@ -90,15 +91,15 @@ public class ScheduleArranger {
 		Schedule[] results = new Schedule[scheduleArrangements.size()];
 		results = scheduleArrangements.toArray(results);
 		
+		//Print # of schedule possibilities
+		System.out.println("Possibilities: "+results.length);
+		
 		//Restrict to only 4 best schedules
 		if (results.length>4) {
 			Schedule[] bestResults = new Schedule[4];
 			bestResults = Arrays.copyOfRange(results, 0, 4);
 			results = bestResults;
 		}
-		
-		//Print # of schedules possibilities
-		System.out.println("Possibilities: "+numSchedules);
 		
 		return results;
 	}
