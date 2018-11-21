@@ -183,7 +183,7 @@ public class Schedule implements Serializable, Comparable<Schedule>{
 			result = 0;
 		}
 		else {
-			result = this.getSize() - other.getSize();
+			result = other.getSize() - this.getSize();
 			if (result==0) {
 				result = 1;
 			}
