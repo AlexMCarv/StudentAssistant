@@ -53,9 +53,9 @@
                <contextMenu>
                   <ContextMenu fx:id="contextMenu">
                     <items>
-                      <MenuItem fx:id="menuEditCourse" mnemonicParsing="false" onAction="#menuCourseClicked" text="Edit Course" />
-                        <MenuItem fx:id="menuEditSection" mnemonicParsing="false" onAction="#menuSectionClicked" text="Edit Section" />
-                        <MenuItem fx:id="menuEditClassTime" mnemonicParsing="false" onAction="#menuClassTimeClicked" text="Edit Class Time" />
+                      <MenuItem fx:id="menuEditCourse" mnemonicParsing="false" onAction="#menuCourseClicked" text="Edit" />
+                        <MenuItem fx:id="menuEditSection" mnemonicParsing="false" onAction="#menuSectionClicked" text="Edit" />
+                        <MenuItem fx:id="menuEditClassTime" mnemonicParsing="false" onAction="#menuClassTimeClicked" text="Edit" />
                         <MenuItem fx:id="menuAddCourse" mnemonicParsing="false" onAction="#menuCourseClicked" text="Add Course" />
                         <MenuItem fx:id="menuAddSection" mnemonicParsing="false" onAction="#menuSectionClicked" text="Add Section" />
                         <MenuItem fx:id="menuAddClassTime" mnemonicParsing="false" onAction="#menuClassTimeClicked" text="Add Class Time" />
