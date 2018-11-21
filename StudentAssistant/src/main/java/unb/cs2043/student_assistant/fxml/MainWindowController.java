@@ -393,13 +393,13 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		// Root Item
 		TreeItem<Object> rootItem = new TreeItem<>(new Course("List"));
 		rootItem.setExpanded(true);
+		btnGenSchedule.setDisable(true);
 		
 		for (Course course : App.userSelection.copyCourses()) {
 			TreeItem<Object> courseCell = new TreeItem<>(course);
 			courseCell.setExpanded(true);
 			rootItem.getChildren().add(courseCell);
 			btnAddSection.setDisable(false);
-			btnGenSchedule.setDisable(false);
 			
 			for (Section section: course.copySections()) {
 				TreeItem<Object> sectionCell = new TreeItem<>(section);
@@ -411,6 +411,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 					TreeItem<Object> timeCell = new TreeItem<>(time);
 					timeCell.setExpanded(true);
 					sectionCell.getChildren().add(timeCell);
+					
+					//Enable the "Generate" button only if have at least 1 class time.
+					btnGenSchedule.setDisable(false);
 				}
 			}
 		}
