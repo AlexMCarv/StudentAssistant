@@ -12,37 +12,37 @@
 
 <StackPane fx:id="container" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.AddEditClassTimeController">
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="425.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="Select Course" />
-            <ComboBox fx:id="cmbCourse" layoutX="11.0" layoutY="32.0" prefHeight="25.0" prefWidth="400.0" />
+            <ComboBox fx:id="cmbCourse" layoutX="11.0" layoutY="32.0" prefHeight="26.0" prefWidth="480.0" />
             <Label layoutX="14.0" layoutY="68.0" text="Select Section" />
-            <ComboBox fx:id="cmbSection" layoutX="11.0" layoutY="85.0" prefHeight="25.0" prefWidth="200.0" />
+            <ComboBox fx:id="cmbSection" layoutX="11.0" layoutY="85.0" prefHeight="26.0" prefWidth="240.0" />
             <Label layoutX="14.0" layoutY="122.0" text="Week Day:" />
             <CheckBox fx:id="chkMon" layoutX="14.0" layoutY="148.0" mnemonicParsing="false" text="Monday" />
-            <CheckBox fx:id="chkTue" layoutX="94.0" layoutY="148.0" mnemonicParsing="false" text="Tuesday" />
-            <CheckBox fx:id="chkWed" layoutX="172.0" layoutY="148.0" mnemonicParsing="false" text="Wednesday" />
-            <CheckBox fx:id="chkThu" layoutX="269.0" layoutY="148.0" mnemonicParsing="false" text="Thursday" />
-            <CheckBox fx:id="chkFri" layoutX="354.0" layoutY="148.0" mnemonicParsing="false" text="Friday" />
+            <CheckBox fx:id="chkTue" layoutX="109.0" layoutY="148.0" mnemonicParsing="false" text="Tuesday" />
+            <CheckBox fx:id="chkWed" layoutX="200.0" layoutY="148.0" mnemonicParsing="false" text="Wednesday" />
+            <CheckBox fx:id="chkThu" layoutX="315.0" layoutY="148.0" mnemonicParsing="false" text="Thursday" />
+            <CheckBox fx:id="chkFri" layoutX="414.0" layoutY="148.0" mnemonicParsing="false" text="Friday" />
             <CheckBox fx:id="chkSat" layoutX="13.0" layoutY="174.0" mnemonicParsing="false" text="Saturday" />
-            <CheckBox fx:id="chkSun" layoutX="94.0" layoutY="174.0" mnemonicParsing="false" text="Sunday" />
+            <CheckBox fx:id="chkSun" layoutX="109.0" layoutY="174.0" mnemonicParsing="false" text="Sunday" />
             <Label layoutX="14.0" layoutY="206.0" text="Type:" />
             <RadioButton fx:id="rbtnLec" layoutX="13.0" layoutY="234.0" mnemonicParsing="false" text="Lecture" />
-            <RadioButton fx:id="rbtnLab" layoutX="111.0" layoutY="234.0" mnemonicParsing="false" text="Laboratory" />
-            <RadioButton fx:id="rbtnTut" layoutX="229.0" layoutY="234.0" mnemonicParsing="false" text="Tutorial" />
-            <RadioButton fx:id="rbtnOth" layoutX="331.0" layoutY="234.0" mnemonicParsing="false" text="Other" />
+            <RadioButton fx:id="rbtnLab" layoutX="116.0" layoutY="234.0" mnemonicParsing="false" text="Laboratory" />
+            <RadioButton fx:id="rbtnTut" layoutX="244.0" layoutY="234.0" mnemonicParsing="false" text="Tutorial" />
+            <RadioButton fx:id="rbtnOth" layoutX="350.0" layoutY="234.0" mnemonicParsing="false" text="Other" />
             <Label fx:id="lblClassTime" layoutX="14.0" layoutY="269.0" text="Class Time" />
             <Label fx:id="lblFrom" layoutX="16.0" layoutY="297.0" text="Start" />
             <Spinner fx:id="spinnerStart" layoutX="52.0" layoutY="293.0" />
-            <Label fx:id="lblTo" layoutX="234.0" layoutY="296.0" text="End" />
-            <Spinner fx:id="spinnerEnd" layoutX="256.0" layoutY="293.0" />
+            <Label fx:id="lblTo" layoutX="267.0" layoutY="297.0" text="End" />
+            <Spinner fx:id="spinnerEnd" layoutX="295.0" layoutY="293.0" />
             <Label fx:id="lblTimeError" layoutX="15.0" layoutY="325.0" />
-            <Button fx:id="btnAdd" defaultButton="true" layoutX="136.0" layoutY="355.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Add" />
-            <Button fx:id="btnCancel" cancelButton="true" layoutX="218.0" layoutY="355.0" mnemonicParsing="false" prefHeight="25.0" text="Cancel" />
-            <Separator layoutX="-1.0" layoutY="120.0" prefHeight="1.0" prefWidth="425.0" />
-            <Separator layoutX="1.0" layoutY="265.0" prefHeight="1.0" prefWidth="425.0" />
-            <Separator layoutX="1.0" layoutY="341.0" prefHeight="1.0" prefWidth="425.0" />
-            <Separator layoutX="-2.0" layoutY="201.0" prefHeight="1.0" prefWidth="425.0" />
+            <Button fx:id="btnAdd" defaultButton="true" layoutX="165.0" layoutY="355.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="72.0" text="Add" />
+            <Button fx:id="btnCancel" cancelButton="true" layoutX="269.0" layoutY="355.0" mnemonicParsing="false" prefHeight="25.0" text="Cancel" />
+            <Separator layoutX="-1.0" layoutY="120.0" prefHeight="3.0" prefWidth="500.0" />
+            <Separator layoutX="1.0" layoutY="265.0" prefHeight="3.0" prefWidth="500.0" />
+            <Separator layoutX="1.0" layoutY="341.0" prefHeight="3.0" prefWidth="500.0" />
+            <Separator layoutX="-2.0" layoutY="201.0" prefHeight="3.0" prefWidth="500.0" />
          </children>
       </AnchorPane>
    </children>
