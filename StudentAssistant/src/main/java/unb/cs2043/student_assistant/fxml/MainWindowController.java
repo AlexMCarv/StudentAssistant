@@ -87,7 +87,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
             	if (LoadUNBController!=null) {
             		LoadUNBController.initializeSelects();
             	}
-            	//System.out.println("LOADED!");
+//            	System.out.println("LOADED!");
             }
         });
         service.start();
@@ -266,6 +266,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			AddEditClassTimeController controller = loader.<AddEditClassTimeController>getController();
 			String title = "Add Class Time";
 			
+			boolean focus = false;
 			//Send data if editing
 			TreeItem<Object> treeItem = treeCourseList.getSelectionModel().getSelectedItem();
 			if (event==null && treeItem!=null) {
@@ -281,11 +282,13 @@ public class MainWindowController implements javafx.fxml.Initializable {
 					controller.setSectionToAddTo((Section)treeItem.getParent().getValue());
 					controller.setClassTimeToEdit((ClassTime)treeItem.getValue());
 					title = "Edit Class Time";
+					focus = true;
 				}
 			}
 			
 			Stage stage = setStage(window, title, 425, 500);
 			stage.show();
+			if (focus) controller.setFocus();
 		} catch (IOException e) {
 			e.printStackTrace();
 			windowError();
@@ -296,6 +299,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/fxml/Schedule.fxml"));
+		
+		if (!isScheduleFormatCorrect(App.userSelection)) {
+			return;
+		}
 		
 		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection);
 		ScheduleController controller = new ScheduleController();
@@ -324,6 +331,39 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			windowError();
 			e.printStackTrace();
 		}
+	}
+	
+	//This makes sure the format of the schedule makes sense before putting it through the algorithm
+	private boolean isScheduleFormatCorrect(Schedule schedule) {
+		boolean isCorrect = true;
+		
+		//Make sure schedule has at least one course
+		if (schedule.getSize()<1) {
+			App.showNotification("Course list must contain at least one course.", AlertType.ERROR);
+			isCorrect = false;
+		}
+		
+		for (int i=0; i<schedule.getSize() && isCorrect; i++) {
+			Course course = schedule.getCourse(i);
+			
+			//Make sure each course has a section
+			if (course.getSize()<1) {
+				App.showNotification("Each course must contain at least one section.", AlertType.ERROR);
+				isCorrect = false;
+			}
+			
+			for (int j=0; j<course.getSize() && isCorrect; j++) {
+				Section section = course.getSection(j);
+				
+				//Make sure each section has a class time
+				if (section.getSize()<1) {
+					App.showNotification("Each section must contain at least one class time.", AlertType.ERROR);
+					isCorrect = false;
+				}
+			}
+		}
+		
+		return isCorrect;
 	}
 	
 	//These methods are called when corresponding context menu item its clicked
