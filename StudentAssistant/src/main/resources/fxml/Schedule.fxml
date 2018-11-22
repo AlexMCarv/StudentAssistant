@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="890.0" maxWidth="785.0" minHeight="890.0" minWidth="785.0" prefHeight="890.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="outerContainer" alignment="TOP_CENTER" maxHeight="890.0" maxWidth="785.0" minHeight="890.0" minWidth="785.0" prefHeight="890.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0" />
       <VBox alignment="TOP_CENTER" spacing="5.0" VBox.vgrow="ALWAYS">

@@ -13,18 +13,26 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.Schedule;
 
 public class ScheduleController implements javafx.fxml.Initializable {
     
 	static {GlyphFontRegistry.register("icomoon", HelloGlyphFont.class.getResourceAsStream("icomoon.ttf") , 16);}
+	@FXML private VBox outerContainer;
 	@FXML private StackPane container;
 	@FXML private ToolBar toolbar;
 	@FXML Label lblSchedule;
 	private Schedule[] bestSchedules;
 	private ScheduleDisplay[] displayList;
 	private Button[] buttonList;
+	private int visibleScheduleNum;
 		
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -43,6 +51,26 @@ public class ScheduleController implements javafx.fxml.Initializable {
 		if (displayList.length > 0)
 			displayList[0].setVisible(true);
 		
+		//Keybindings
+		outerContainer.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			KeyCode code = event.getCode();
+			
+			//Close window when pressing Escape
+			if (code ==  KeyCode.ESCAPE) closeWindow();
+			
+			//Switch schedules using arrow keys
+			else if ((code == KeyCode.RIGHT || code == KeyCode.DOWN) 
+					&& visibleScheduleNum+1<buttonList.length) {
+				shiftSelectedSchedule(visibleScheduleNum+1);
+			}
+			else if ((code == KeyCode.LEFT || code == KeyCode.UP) 
+					&& visibleScheduleNum-1>=0) {
+				shiftSelectedSchedule(visibleScheduleNum-1);
+			}
+		});
+		
+		
+		
 	}
 
 	public void setBestSchedules(Schedule[] list) {
@@ -57,7 +85,24 @@ public class ScheduleController implements javafx.fxml.Initializable {
 			if (source.equals(buttonList[i])) {
 				displayList[i].setVisible(true);
 				lblSchedule.setText("Schedule " + (i + 1));
+				visibleScheduleNum = i;
 			}				
 		}
+	}
+	
+	private void shiftSelectedSchedule(int scheduleNum) {
+		for(int i = 0; i < buttonList.length; i++) {
+			displayList[i].setVisible(false);
+			if (i==scheduleNum) {
+				displayList[i].setVisible(true);
+				lblSchedule.setText("Schedule " + (i + 1));
+				visibleScheduleNum = i;
+			}				
+		}
+	}
+	
+	private void closeWindow() {
+		Stage stage = (Stage)container.getScene().getWindow();
+		stage.close();
 	}
 }
