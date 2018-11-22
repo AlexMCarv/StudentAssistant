@@ -82,7 +82,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 		
 		//Check if entered value matches a UNB Course
 		autoTxfName.textProperty().addListener((observable, oldValue, newValue) -> {
-			if (App.isUNBCourse(newValue)) {
+			if (App.isUNBCourse(newValue) && courseToEdit==null) {
 				//Show message
 				UNBCourseMsg.setVisible(true);
 			}
