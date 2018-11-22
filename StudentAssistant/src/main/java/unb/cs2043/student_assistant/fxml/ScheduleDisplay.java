@@ -161,7 +161,9 @@ public class ScheduleDisplay extends SpreadsheetView {
 		return duration;
 	}
 	
-	
+	/*
+	 * This method creates a span on the specified cell by the amount passed in
+	 */
 	private void spanCell(GridBase grid, int row, int col, int span) {
 		grid.getRows().get(row).get(col).getStyleClass().add("span");
         grid.spanRow(span, row, col);

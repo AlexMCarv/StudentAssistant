@@ -2,7 +2,6 @@ package unb.cs2043.student_assistant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 /**@author Tye Shutty*/
 //Allan, this class is your responsibility, change it if you want, I
 //just copied my methods from Course

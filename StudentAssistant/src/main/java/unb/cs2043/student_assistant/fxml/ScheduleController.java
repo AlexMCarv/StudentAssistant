@@ -13,15 +13,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.Schedule;
 
+/**
+ * Controller class for the Schedule.fxml 
+ * @author Alexandre Carvalho
+ */
 public class ScheduleController implements javafx.fxml.Initializable {
     
 	static {GlyphFontRegistry.register("icomoon", HelloGlyphFont.class.getResourceAsStream("icomoon.ttf") , 16);}
@@ -68,9 +70,6 @@ public class ScheduleController implements javafx.fxml.Initializable {
 				shiftSelectedSchedule(visibleScheduleNum-1);
 			}
 		});
-		
-		
-		
 	}
 
 	public void setBestSchedules(Schedule[] list) {
@@ -78,7 +77,6 @@ public class ScheduleController implements javafx.fxml.Initializable {
 	}
 	
 	public void selectSchedule(ActionEvent e) {
-		
 		Button source = (Button) e.getSource();
 		for(int i = 0; i < buttonList.length; i++) {
 			displayList[i].setVisible(false);
