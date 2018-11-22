@@ -139,7 +139,9 @@ public class AddEditClassTimeController implements javafx.fxml.Initializable {
 		spinnerStart.getValueFactory().setValue(startTime);
 		spinnerEnd.getValueFactory().setValue(endTime);
 	}
-
+	public void setFocus() {
+		chkMon.requestFocus();
+	}
 	
 	private void addClassTime(ActionEvent event) {
 		try {
