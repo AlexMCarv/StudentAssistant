@@ -23,6 +23,7 @@
 }
 .spreadsheet-cell.style0 {
     -fx-background-color: #4363D8;
+    -fx-text-fill: #FFFFFF;
 }
 
 /* style1 */
@@ -38,6 +39,7 @@
 /* style2 */
 .spreadsheet-cell.style2:hover {
     -fx-background-color: #988490;
+    
 }
 
 .spreadsheet-cell.style2 {
@@ -52,6 +54,7 @@
 
 .spreadsheet-cell.style3 {
     -fx-background-color: #3CB44B;
+	-fx-text-fill: #FFFFFF;
 }
 
 /* style4 */
@@ -61,6 +64,13 @@
 
 .spreadsheet-cell.style4 {
     -fx-background-color: #F58231;
+    -fx-text-background-color: ladder(
+    -fx-background,
+    -fx-light-text-color 45%,
+    -fx-dark-text-color  46%,
+    -fx-dark-text-color  59%,
+    -fx-mid-text-color   60%
+	);
 }
 
 /* SEPARATOR */

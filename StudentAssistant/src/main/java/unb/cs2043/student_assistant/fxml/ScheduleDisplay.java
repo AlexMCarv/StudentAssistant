@@ -19,6 +19,10 @@ import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
 
+/**
+ * This class represents a schedule component based on SpreadsheetView of ControlFX
+ * @author Alexandre Carvalho
+ */
 public class ScheduleDisplay extends SpreadsheetView {
 	
 	private final int START_HOUR = 7;
@@ -111,7 +115,7 @@ public class ScheduleDisplay extends SpreadsheetView {
 				List<Integer> columnIndex = getColumnIndex(time);
 				int rowIndex = getRowIndex(time);
 				for(Integer col : columnIndex) { 
-					grid.setCellValue(rowIndex, col, course.getName() + "\n" + time.getType());
+					grid.setCellValue(rowIndex, col, course.getName() + "\n" + course.getSection(0) + " - " + time.getType());
 					grid.getRows().get(rowIndex).get(col).getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
 					spanCell(grid, rowIndex, col, getDuration(time));
 				}
