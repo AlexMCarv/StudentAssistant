@@ -286,7 +286,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 				}
 			}
 			
-			Stage stage = setStage(window, title, 425, 500);
+			Stage stage = setStage(window, title, 425, 400);
 			stage.show();
 			if (focus) controller.setFocus();
 		} catch (IOException e) {
