@@ -1,6 +1,7 @@
 package unb.cs2043.student_assistant.fxml;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,9 @@ public class ScheduleDisplay extends SpreadsheetView {
         setRowHeaderWidth(50);
 		setPrefHeight(815); setMaxHeight(815); setMinHeight(815);
 		setPrefWidth(750); setMaxWidth(750); setMinWidth(750);
+		grid.setLocked(true);
+		grid.setResizableRows(new BitSet(ROW_COUNT));
+		lockColumns(true);
 	}
 
 	/*
@@ -173,5 +177,14 @@ public class ScheduleDisplay extends SpreadsheetView {
         grid.spanRow(span, row, col);
         //grid.spanColumn(row, col, span);
 	}
+	
+	/*
+	 * This method locks or unlock the resizing feature for columns
+	 */
+    public void lockColumns(boolean lock) {
+    	for (int i = 0; i < COLUMN_COUNT; i++) {
+    		this.getColumns().get(i).setResizable(!lock);
+    	}
+    }
 }
 
