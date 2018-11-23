@@ -16,6 +16,9 @@ import org.controlsfx.samples.Utils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
@@ -89,7 +92,7 @@ public class ScheduleDisplay extends SpreadsheetView {
             for (int column = 0; column < grid.getColumnCount(); ++column) {
           		
           		SpreadsheetCell cell = SpreadsheetCellType.STRING.createCell(row, column, 1, 1,"");
-            	cell.getStyleClass().add("first-cell");
+          		cell.getStyleClass().add("first-cell");
             	list.add(cell);
             	
             }
@@ -119,8 +122,19 @@ public class ScheduleDisplay extends SpreadsheetView {
 				List<Integer> columnIndex = getColumnIndex(time);
 				int rowIndex = getRowIndex(time);
 				for(Integer col : columnIndex) { 
-					grid.setCellValue(rowIndex, col, course.getName() + "\n" + course.getSection(0) + " - " + time.getType());
-					grid.getRows().get(rowIndex).get(col).getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
+					//grid.setCellValue(rowIndex, col, course.getName() + "\n" + course.getSection(0) + " - " + time.getType());
+					//grid.getRows().get(rowIndex).get(col).getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
+					
+					VBox teste = new VBox();
+					teste.setStyle("spreadsheet.css");
+					teste.getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
+					
+					Label lbl1 = new Label(course.getName() + "\n" + course.getSection(0) + " - " + time.getType());
+					lbl1.getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
+					lbl1.setStyle("spreadsheet.css");
+					teste.getChildren().add(lbl1);
+					
+					grid.getRows().get(rowIndex).get(col).setGraphic(teste);
 					spanCell(grid, rowIndex, col, getDuration(time));
 				}
 			}
