@@ -10,6 +10,7 @@ import java.util.ServiceLoader;
 
 import fxsampler.FXSamplerConfiguration;
 import fxsampler.SampleBase;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -114,6 +115,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		if (result) {
 			Stage stage = (Stage)container.getScene().getWindow();
 		    stage.close();
+		    
+		    //Closes ALL windows (this is to close the schedule result window)
+		    Platform.exit();
 		}
 		return result;
 	}
@@ -304,7 +308,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			return;
 		}
 		
-		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection);
+		//TODO: update
+		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection, 2);
+		
+		
 		ScheduleController controller = new ScheduleController();
 		controller.setBestSchedules(best);
 		loader.setController(controller);

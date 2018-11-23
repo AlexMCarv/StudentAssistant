@@ -26,10 +26,13 @@ public class AutoCompleteTextField extends TextField
   private final SortedSet<String> entries;
   /** The popup used to select an entry. */
   private ContextMenu entriesPopup;
+  /**Determines if the autocomplete is active or not. */
+  private boolean active;
 
   /** Construct a new AutoCompleteTextField. */
   public AutoCompleteTextField(Set<String> values) {
     super();
+    active = true;
     entries = new TreeSet<>();
     entries.addAll(values);
     entriesPopup = new ContextMenu();
@@ -37,7 +40,7 @@ public class AutoCompleteTextField extends TextField
     {
       @Override
       public void changed(ObservableValue<? extends String> observableValue, String s, String s2) {
-        if (getText().length() == 0)
+        if (getText().length() == 0 || !active)
         {
           entriesPopup.hide();
         } else
@@ -103,5 +106,13 @@ public class AutoCompleteTextField extends TextField
     entriesPopup.getItems().clear();
     entriesPopup.getItems().addAll(menuItems);
 
+  }
+  
+  /**
+   * Changes the active state.
+   * @param newActive The new active value.
+   */
+  public void setActive(boolean newActive) {
+	  active = newActive;
   }
 }

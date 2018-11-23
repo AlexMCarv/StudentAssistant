@@ -1,91 +1,88 @@
 package unb.cs2043.student_assistant;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.TreeSet;
 
 /**
- * This class contains the main algorithm of this application 
+ * This class uses the main algorithms of this application to find the best schedule arrangements.
  * which finds the best schedule arrangement(s) given a set of courses.
  * @author Frederic Verret
  */
 public class ScheduleArranger {
 	
+	/**Number of best schedules returned by the algorithm*/
+	public static final int NUM_BEST_SCHEDULES = 6;
+	
 	/**
-	 * Algorithm complexity = O(((s^c)-1)*c!) (approximation)
-	 * s = Average number of sections in each course.
-	 * c = Total number of courses.
-	 * @param courseList
-	 * @return Array containing best schedule arrangements.
+	 * Uses one of two algorithms to find the best schedule arrangements.
+	 * Determines which algorithm to use by calculating the complexity and time estimate of both.
+	 * @param courseList The list of possible courses as a schedule.
+	 * @return Array containing the NUM_BEST_SCHEDULES best schedule arrangements.
 	 */
 	public static Schedule[] getBestSchedules(Schedule courseList) {
-		//Calculate complexity (number of possibilities)
-		long complexity = 0;
+		
+		AlgorithmV1 alg1 = new AlgorithmV1(courseList);
+		
+		//Calculate time estimate
+		double time1 = 0;
 		try {
-			complexity = getComplexity(courseList);
+			time1 = Math.round(alg1.getTimeEstimate()*100.0)/100.0;
+			System.out.println("Time estimate (Algorithm1): "+time1+"s");
 		}
 		catch (ArithmeticException e) {
 			throw new RuntimeException("Complexity (number of possible schedules) is too large.");
 		}
 		
-		//Time estimate (rounded to 2 decimal places)
-		double time = Math.round(getTimeEstimate(complexity)*100.0)/100.0;
-		System.out.println("Time estimate: "+time+"s");
 		
-		//Use a set to prevent duplicates in results
-		TreeSet<Schedule> scheduleArrangements = new TreeSet<>();
-		
-		int numCourses = courseList.getSize();
-		
-		//Each course has an index (indicating what section to add)
-		int[] indexes = new int[numCourses];
-		//Stores the max number for each index (how many sections in each course)
-		int[] maxIndexes = new int[numCourses];
-		//Stores numbers 0 to numCourses-1 (used for permutations)
-		Integer[] courseNums = new Integer[numCourses];
-		//Initialize integer arrays
-		for (int i=0; i<indexes.length; i++) {
-			indexes[i] = 0;
-			maxIndexes[i] = courseList.getCourse(i).getSize()-1;
-			courseNums[i] = i;
+		AlgorithmV2 alg2 = new AlgorithmV2(courseList);
+		//Calculate complexity estimate
+		long complexityMin = 0, complexityAvg=0;
+		try {
+			complexityMin = alg2.getMinComplexity();
+			complexityAvg = alg2.getComplexity();
+			System.out.println("ComplexityMin (Algorithm2): "+complexityMin+"s");
+			System.out.println("ComplexityAvg (Algorithm2): "+complexityAvg+"s");
+		}
+		catch (ArithmeticException e) {
+			throw new RuntimeException("Complexity (number of possible schedules) is too large.");
 		}
 		
+		//Calculate time estimate
+		double time = 0;
+		try {
+			time = Math.round(alg2.getTimeEstimate()*100.0)/100.0;
+			System.out.println("Time estimate (Algorithm2): "+time+"s");
+		}
+		catch (ArithmeticException e) {
+			throw new RuntimeException("Complexity (number of possible schedules) is too large.");
+		}
 		
-    	int numSchedules = 0;
-    	boolean done = false;
-    	//Go through all section combinations (Average#OfSectionsInCourses^#OfCourses possibilities)
-    	while (!done) {
-			
-    		//Go throug all permutations of the courses (#OfCourses! possibilities)
-			Permutations<Integer> perm = new Permutations<Integer>(courseNums);
-		    while(perm.hasNext()){
-		    	numSchedules++;
-		    	
-		    	Integer[] courseIndexes = perm.next();
-		    	
-		    	Schedule currentSchedule = new Schedule("S"+numSchedules);
-		    	
-				for (int i:courseIndexes) {
-					Course currentCourse = courseList.getCourse(i);
-					Section sectionToAdd = currentCourse.getSection(indexes[i]);
-					
-					if (noConflictsBetween(currentSchedule, sectionToAdd)) {
-						//Add section to currentSchedule (need a new course to hold it)
-						Course courseToAdd = new Course(currentCourse.getName());
-						courseToAdd.add(sectionToAdd);
-						currentSchedule.add(courseToAdd);
-					}
-				}
-				
-				scheduleArrangements.add(currentSchedule);
-		    }
-			
-			if (incrementAsCounter(indexes, maxIndexes)) {
-				done = true;
-			}
-			
-    	}
+		return getBestSchedules(courseList, 2);
+	}
+	
+	
+	/**
+	 * Uses the algorithm version specified to find the best schedule arrangements.
+	 * @param courseList The list of possible courses as a schedule.
+	 * @param algVersion The version of the algorithm to use (1 or 2).
+	 * @return Array containing the NUM_BEST_SCHEDULES best schedule arrangements.
+	 */
+	public static Schedule[] getBestSchedules(Schedule courseList, int algVersion) {
 		
-    	
+		TreeSet<Schedule> scheduleArrangements = new TreeSet<>();
+		long startTime=0;
+		if (algVersion==1) {
+			scheduleArrangements = new AlgorithmV1(courseList).findPossibilities();
+		}
+		else if (algVersion==2) {
+			AlgorithmV2 alg2 = new AlgorithmV2(courseList);
+			
+			startTime = System.nanoTime();
+			scheduleArrangements = alg2.findPossibilities();
+		}
+		
 		//Convert the TreeSet to array
 		Schedule[] results = new Schedule[scheduleArrangements.size()];
 		results = scheduleArrangements.toArray(results);
@@ -93,117 +90,17 @@ public class ScheduleArranger {
 		//Print # of schedule possibilities
 		System.out.println("Possibilities: "+results.length);
 		
-		//Restrict to only 4 best schedules
-		if (results.length>4) {
-			Schedule[] bestResults = new Schedule[4];
-			bestResults = Arrays.copyOfRange(results, 0, 4);
+		//Restrict to only NUM_BEST_SCHEDULES best schedules
+		if (results.length>NUM_BEST_SCHEDULES) {
+			Schedule[] bestResults = new Schedule[NUM_BEST_SCHEDULES];
+			bestResults = Arrays.copyOfRange(results, 0, NUM_BEST_SCHEDULES);
 			results = bestResults;
 		}
 		
+		long endTime = System.nanoTime();
+		double duration = (endTime - startTime)/1000000000.0;
+		System.out.println("Time: "+duration+"s");
+		
 		return results;
 	}
-	
-	
-	private static long getComplexity(Schedule schedule) throws ArithmeticException {
-		long result = 1;
-		
-		for (int i=0; i<schedule.getSize(); i++) {
-			Course currentCourse = schedule.getCourse(i);
-			result *= currentCourse.getSize();
-		}
-		result--;
-		
-		result *= factorial(schedule.getSize());
-		
-		if (result<0) {
-			throw new ArithmeticException("Number is too large.");
-		}
-		
-		return result;
-	}
-	
-	
-	public static long factorial(int n) throws ArithmeticException {  
-		long fact=1;
-		for(int i=1; i<=n; i++){
-			fact=fact*i;
-		}
-		
-		if (fact<0) {
-			throw new ArithmeticException("Number is too large.");
-		}
-		
-		return fact;
-	}
-	
-	
-	public static double getTimeEstimate(long complexity) {
-		return complexity/400000.0; //Estimate from tests
-	}
-	
-	
-	/**
-	 * Return false if any section in schedule conflicts with section, true otherwise.
-	 * @param schedule
-	 * @param section
-	 * @return False if any section in schedule conflicts with section, true otherwise.
-	 */
-	public static boolean noConflictsBetween(Schedule schedule, Section section) {
-		boolean noConflicts = true;
-		
-		for (int i=0; i<schedule.getSize() && noConflicts; i++) {
-			Course currentCourse = schedule.getCourse(i);
-			for (int j=0; j<currentCourse.getSize() && noConflicts; j++) {
-				Section currentSection = currentCourse.getSection(j);
-				noConflicts = !currentSection.conflictsWith(section);
-			}
-		}
-		
-		return noConflicts;
-	}
-	
-	
-	/**
-	 * Increments an array of integers in a fashion similar to a counter.
-	 * @param indexes
-	 * @param maxIndexes
-	 * @return False when reached max value of last index (counter is reset).
-	 */
-	public static boolean incrementAsCounter(int[] indexes, int[] maxIndexes) {
-		return incrementRecursive(0, indexes, maxIndexes);
-	}
-	
-	
-	/**
-	 * Recursive method used by incrementAsCounter.
-	 * @param i
-	 * @param indexes
-	 * @param maxIndexes
-	 * @return False when reached max value of last index (counter is reset).
-	 */
-	private static boolean incrementRecursive(int i, int[] indexes, int[] maxIndexes) {
-		boolean reachedMax = false;
-		
-		if (indexes[i]<maxIndexes[i]) {
-			//Increment normally
-			indexes[i]++;
-		}
-		else {
-			//Reached max of this index, reset this index
-			indexes[i] = 0;
-			
-			//Check if this is last index
-			if (i<indexes.length-1) {
-				//Not last index, increment next.
-				reachedMax = incrementRecursive(i+1, indexes, maxIndexes);
-			}
-			else {
-				//Last index has reached max value (counter has completely reset)
-				reachedMax = true;
-			}
-		}
-		
-		return reachedMax;
-	}
-	
 }
