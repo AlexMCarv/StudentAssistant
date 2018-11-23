@@ -48,6 +48,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 	
 	public void setCourseToEdit(Course courseToEdit) {
 		this.courseToEdit = courseToEdit;
+		autoTxfName.setActive(false);
 		autoTxfName.setText(courseToEdit.getName());
 		btnAdd.setText("Modify");
 	}
