@@ -186,5 +186,9 @@ public class ScheduleDisplay extends SpreadsheetView {
     		this.getColumns().get(i).setResizable(!lock);
     	}
     }
+    
+    public int getNumCourses() {
+    	return schedule.getSize();
+    }
 }
 
