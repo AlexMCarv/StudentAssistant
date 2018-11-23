@@ -63,11 +63,11 @@ public class ScheduleController implements javafx.fxml.Initializable {
 			//Switch schedules using arrow keys
 			else if ((code == KeyCode.RIGHT || code == KeyCode.DOWN) 
 					&& visibleScheduleNum+1<buttonList.length) {
-				shiftSelectedSchedule(visibleScheduleNum+1);
+				selectScheduleByNum(visibleScheduleNum+1);
 			}
 			else if ((code == KeyCode.LEFT || code == KeyCode.UP) 
 					&& visibleScheduleNum-1>=0) {
-				shiftSelectedSchedule(visibleScheduleNum-1);
+				selectScheduleByNum(visibleScheduleNum-1);
 			}
 		});
 	}
@@ -78,22 +78,24 @@ public class ScheduleController implements javafx.fxml.Initializable {
 	
 	public void selectSchedule(ActionEvent e) {
 		Button source = (Button) e.getSource();
-		for(int i = 0; i < buttonList.length; i++) {
-			displayList[i].setVisible(false);
+		for (int i=0; i< buttonList.length; i++) {
 			if (source.equals(buttonList[i])) {
-				displayList[i].setVisible(true);
-				lblSchedule.setText("Schedule " + (i + 1));
-				visibleScheduleNum = i;
-			}				
+				selectScheduleByNum(i);
+			}
 		}
 	}
 	
-	private void shiftSelectedSchedule(int scheduleNum) {
+	private void selectScheduleByNum(int scheduleNum) {
+		int numCourses;
+		String plural;
 		for(int i = 0; i < buttonList.length; i++) {
 			displayList[i].setVisible(false);
 			if (i==scheduleNum) {
+				numCourses = displayList[i].getNumCourses();
+				plural = numCourses==1 ? "" : "s";
+				
 				displayList[i].setVisible(true);
-				lblSchedule.setText("Schedule " + (i + 1));
+				lblSchedule.setText("Schedule " + (i + 1)+ " - "+numCourses+" course" + plural);
 				visibleScheduleNum = i;
 			}				
 		}
