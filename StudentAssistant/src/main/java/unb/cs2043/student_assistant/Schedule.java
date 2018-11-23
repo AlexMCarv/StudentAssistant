@@ -3,6 +3,8 @@ package unb.cs2043.student_assistant;
 //package naming convention https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.concurrent.atomic.AtomicLong;
 /**@author Tye Shutty
 * Schedule allows for performing most default operations of ArrayList.
 * Lists can only be of type Course
@@ -10,12 +12,19 @@ import java.util.ArrayList;
 */
 public class Schedule implements Serializable, Comparable<Schedule>{
 //-------Instance Variables--------//
+	private static final AtomicLong NEXT_ID = new AtomicLong(0);
+	private final long id = NEXT_ID.getAndIncrement();
 	private String name;
 	private ArrayList<Course> courses;
 //-------Constructor--------//
 	public Schedule(String name){
 		this.name=name;
 		courses = new ArrayList<Course>();
+	}
+	//Alternate constructor
+	public Schedule(Schedule otherSchedule){
+		this.name=otherSchedule.getName();
+		courses = otherSchedule.copyCourses();
 	}
 //--------Getters---------//
 	public ArrayList<Course> copyCourses(){
@@ -185,10 +194,24 @@ public class Schedule implements Serializable, Comparable<Schedule>{
 		else {
 			result = other.getSize() - this.getSize();
 			if (result==0) {
-				result = 1;
+				//Use unique id when have same number of courses
+				result = other.id - this.id > 0 ? 1:-1;
 			}
 		}
 		
 		return  result;
+	}
+	
+	
+	/**
+	 * Returns true if all courses in this schedule are present in the other schedule.
+	 * Note: Returns false if this and other are equal.
+	 * @param other Other schedule.
+	 * @return True if all courses in this schedule are present in the other schedule.
+	 */
+	public boolean isSubsetOf(Schedule other) {
+		int index=Collections.indexOfSubList(other.copyCourses(), courses);
+		
+		return index>=0 && !this.equals(other) ? true : false;
 	}
 }
