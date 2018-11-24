@@ -12,14 +12,19 @@ public class AlgorithmV1 {
 	
 	private final Schedule courseList;
 	private TreeSet<Schedule> scheduleArrangements;
+	private long startTime;
+	private final int timeout;
 	
 	public AlgorithmV1(Schedule courseList) {
 		this.scheduleArrangements = new TreeSet<>();
 		this.courseList = courseList;
+		timeout = ScheduleArranger.MAX_TIME;
 	}
 	
 	
 	public TreeSet<Schedule> findPossibilities() {
+		startTime = System.nanoTime();
+		
 		int numCourses = courseList.getSize();
 		
 		//Each course has an index (indicating what section to add)
@@ -39,11 +44,11 @@ public class AlgorithmV1 {
 		int numSchedules = 0;
 		boolean done = false;
 		//Go through all section combinations (Average#OfSectionsInCourses^#OfCourses possibilities)
-		while (!done) {
+		while (!done && getRunningTime()<timeout) {
 			
 			//Go throug all permutations of the courses (#OfCourses! possibilities)
 			Permutations<Integer> perm = new Permutations<Integer>(courseNums);
-		    while(perm.hasNext()){
+		    while(perm.hasNext() && getRunningTime()<timeout){
 		    	numSchedules++;
 		    	
 		    	Integer[] courseIndexes = perm.next();
@@ -236,5 +241,10 @@ public class AlgorithmV1 {
 			}
 		}
 		return subSchedules;
+	}
+	
+	
+	private float getRunningTime() {
+		return (System.nanoTime()-startTime)/1000000000;
 	}
 }

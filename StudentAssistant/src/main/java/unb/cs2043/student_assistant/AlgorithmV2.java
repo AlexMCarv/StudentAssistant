@@ -1,6 +1,5 @@
 package unb.cs2043.student_assistant;
 
-import java.util.Arrays;
 import java.util.TreeSet;
 
 /**
@@ -16,6 +15,8 @@ public class AlgorithmV2 {
 	
 	private int minBestScheduleSize;
 	private final int numSections;
+	private final int timeout;
+	private long startTime;
 	
 	public AlgorithmV2 (Schedule courseList) {
 		this.schedules = new TreeSet<Schedule>();
@@ -60,19 +61,24 @@ public class AlgorithmV2 {
 			}
 		}
 		
-		//Print sectionConflictsMap TODO: remove this
-		for (int i=0; i<sectionConflictsMap.length; i++) {
-			System.out.println(Arrays.toString(sectionConflictsMap[i]));
-		}
-		
 		this.sections = sections;
 		this.sectionConflictsMap = sectionConflictsMap;
 		this.courseNames = courseNames;
 		this.numSections = sections.length;
+		
+		
+		//Print sectionConflictsMap TODO: remove this
+//		for (int i=0; i<sectionConflictsMap.length; i++) {
+//			System.out.println(Arrays.toString(sectionConflictsMap[i]));
+//		}
+		System.out.println("Conflict%: "+getConflictPercent());
+		
+		timeout = ScheduleArranger.MAX_TIME;
 	}
 	
 	public TreeSet<Schedule> findPossibilities() {
-		for (int i=0; i<numSections; i++) {
+		startTime = System.nanoTime();
+		for (int i=0; i<numSections && getRunningTime()<timeout; i++) {
 			Schedule sc = new Schedule("S"+i);
 			TreeSet<Integer> currentConflicts = new TreeSet<>();
 			findPossibilitiesRec(i, sc, currentConflicts, 1);
@@ -82,6 +88,10 @@ public class AlgorithmV2 {
 	}
 	
 	private void findPossibilitiesRec(int index, Schedule scheduleInProgress, TreeSet<Integer> currentConflicts, int level) {
+		if (getRunningTime()>timeout) {
+			return;
+		}
+		
 		Schedule tempSchedule = new Schedule(scheduleInProgress);
 		TreeSet<Integer> tempConflicts = new TreeSet<>(currentConflicts);
 		
@@ -152,7 +162,7 @@ public class AlgorithmV2 {
 		long result = 1;
 		
 		for (int i=0; i<sectionConflictsMap.length; i++) {
-			result += factorial(numZerosIn(sectionConflictsMap[i]));
+			result += factorial(getNumZerosIn(sectionConflictsMap[i]));
 		}
 		
 		return result;
@@ -182,7 +192,7 @@ public class AlgorithmV2 {
 	 * @param array The integer array.
 	 * @return The number of 0 in the integer array.
 	 */
-	private int numZerosIn(int[] array) {
+	private int getNumZerosIn(int[] array) {
 		int count = 0;
 		for (int i:array) {
 			if (i==0) count++;
@@ -221,5 +231,25 @@ public class AlgorithmV2 {
 	}
 	public double getTimeEstimate() {
 		return getComplexity()/107460000000000.0; //Estimate from tests
+	}
+	
+	public float getConflictPercent() {
+		int numZeroes = 0;
+		for (int i=0; i<numSections; i++) {
+			numZeroes += getNumZerosIn(sectionConflictsMap[i]);
+		}
+		
+		float result;
+		if (numSections!=0) {
+			result = 1.0f-(numZeroes*1.0f/(numSections*numSections));
+		}
+		else {
+			result = 0;
+		}
+		return result;
+	}
+	
+	private float getRunningTime() {
+		return (System.nanoTime()-startTime)/1000000000;
 	}
 }
