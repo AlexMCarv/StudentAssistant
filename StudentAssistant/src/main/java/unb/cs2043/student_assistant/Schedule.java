@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 * Lists can only be of type Course
 * Saves course name
 */
+@SuppressWarnings("serial")
 public class Schedule implements Serializable, Comparable<Schedule>{
 //-------Instance Variables--------//
 	private static final AtomicLong NEXT_ID = new AtomicLong(0);

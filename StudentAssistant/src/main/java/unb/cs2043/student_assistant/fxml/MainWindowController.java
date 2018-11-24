@@ -308,9 +308,8 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			return;
 		}
 		
-		//TODO: update
-		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection, 2);
-		
+		//TODO: Add a progress bar window
+		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection);
 		
 		ScheduleController controller = new ScheduleController();
 		controller.setBestSchedules(best);
@@ -471,6 +470,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		treeCourseList.setShowRoot(false);
 	}
 	
+	@SuppressWarnings("unused")
 	private String getObjectType(Object item) {
 		String type = null;
 		try {

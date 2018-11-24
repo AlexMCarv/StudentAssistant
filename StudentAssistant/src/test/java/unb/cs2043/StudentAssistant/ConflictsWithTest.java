@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import unb.cs2043.student_assistant.ClassTime;
-import unb.cs2043.student_assistant.Course;
-import unb.cs2043.student_assistant.Schedule;
-import unb.cs2043.student_assistant.ScheduleArranger;
 import unb.cs2043.student_assistant.Section;
 
 /**

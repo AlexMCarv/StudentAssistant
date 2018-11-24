@@ -16,7 +16,6 @@ import org.controlsfx.samples.Utils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import unb.cs2043.student_assistant.ClassTime;

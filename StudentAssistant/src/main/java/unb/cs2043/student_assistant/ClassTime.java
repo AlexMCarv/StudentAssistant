@@ -7,6 +7,7 @@ import java.util.List;
 
 /**@author Allan Boutilier **/
 
+@SuppressWarnings("serial")
 public class ClassTime implements Serializable {
 
 	private ArrayList<String> days;

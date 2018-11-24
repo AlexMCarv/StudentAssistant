@@ -7,6 +7,7 @@ import java.util.ArrayList;
 * Lists can only be of type Section
 * Saves course name
 */
+@SuppressWarnings("serial")
 public class Course implements Serializable{
 //-------Instance Variables--------//
 	private String name;

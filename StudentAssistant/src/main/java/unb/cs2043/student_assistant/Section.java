@@ -6,6 +6,7 @@ import java.util.ArrayList;
 //Allan, this class is your responsibility, change it if you want, I
 //just copied my methods from Course
 //and found and replaced the ArrayList name and class name. -Tye
+@SuppressWarnings("serial")
 public class Section implements Serializable{
 //-------Instance Variables--------//
 	private String name;
