@@ -566,6 +566,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		catch (IOException e) {
 			System.out.println("Error finding file or Error opening stream");
 			e.printStackTrace();
+			App.showNotification("This file is Corrupt! Please choose a valid file type. \n(ending in .schedule)", AlertType.ERROR);
 			return ;
 		}
 		//Read the course list from the file
@@ -594,6 +595,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	@FXML
 	private void saveAs(ActionEvent event) {
+		if(App.userSelection.getSize()<1) {
+			App.showNotification("You Need to have at least 1 course", AlertType.ERROR);
+			return;
+		}
 		// Opens the window allowing the user to set the name and path of the schedule file that is being saved.
 		// It is only creating the reference. A FileInputStream is required to save the file to directory 
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "save");
