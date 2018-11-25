@@ -586,6 +586,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			System.out.println("Error closing stream");
 			e.printStackTrace();
 		}
+		
+		App.userSelection = courseList;
+		refresh();
 		//Implement what needs to happen after the file to load is selected...
 	}
 	
@@ -595,6 +598,8 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		// It is only creating the reference. A FileInputStream is required to save the file to directory 
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "save");
 		File saveAsFile = fileSelector.getFile();
+		String saveAsFileString= saveAsFile.getAbsolutePath(); 
+		saveAsFile = new File(saveAsFileString+".schedule");
 		ObjectOutputStream objectStream = null;
 		
 		try {
