@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="container" prefHeight="100.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unb.cs2043.student_assistant.fxml.ProgressWindowController">
+   <children>
+      <ProgressBar fx:id="progressBar" opacity="0.5" prefHeight="26.0" prefWidth="250.0" progress="0.0" StackPane.alignment="CENTER" />
+      <Label fx:id="label" text="0%" StackPane.alignment="CENTER" />
+   </children>
+</StackPane>

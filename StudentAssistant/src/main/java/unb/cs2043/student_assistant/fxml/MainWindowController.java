@@ -301,15 +301,61 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML private void genSchedule() {
 		if (btnGenSchedule.isDisabled()) return;
 		
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/fxml/Schedule.fxml"));
-		
 		if (!isScheduleFormatCorrect(App.userSelection)) {
 			return;
 		}
 		
-		//TODO: Add a progress bar window
-		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection);
+		Parent window = null;
+		FXMLLoader progressLoader = new FXMLLoader(getClass().getResource("/fxml/ProgressWindow.fxml"));
+		try {window = progressLoader.load();}
+		catch (IOException e1) {
+			e1.printStackTrace();
+			windowError();
+			return;
+		}
+		
+		ProgressWindowController progressController = progressLoader.<ProgressWindowController>getController();
+		String title = "Computation Progress";
+		Stage stage = setStage(window, title, 400, 100);
+		stage.show();
+		progressController.start(ScheduleArranger.MAX_TIME);
+		
+		final long startTime = System.nanoTime();
+		
+		Task<Schedule[]> task = new Task<Schedule[]>() {
+			@Override
+			protected Schedule[] call() throws Exception {
+				return ScheduleArranger.getBestSchedules(App.userSelection);
+			}
+		};
+		
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+			new EventHandler<WorkerStateEvent>() {
+				@Override
+				public void handle(WorkerStateEvent t) {
+					Schedule[] schedules = (Schedule[]) t.getSource().getValue();
+					
+					if (progressController!=null) {
+						progressController.stop();
+					}
+					
+					genScheduleP2(schedules);
+					
+					if ((System.nanoTime()-startTime)/1000000000>=ScheduleArranger.MAX_TIME) {
+						App.showNotification("The computation was stopped manually as it was taking too long. "
+								+ "Therefore the displayed schedules are not guaranteed to be the most efficient. "
+								+ "\nPlease remove some courses/sections and try again.", AlertType.WARNING);
+					}
+				}
+			}
+		);
+		
+		new Thread(task).start();
+	}
+	
+	private void genScheduleP2(Schedule[] best) {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Schedule.fxml"));
 		
 		ScheduleController controller = new ScheduleController();
 		controller.setBestSchedules(best);
@@ -465,7 +511,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		}
 		
 		//TreeView Setup
-		treeCourseList.setCellFactory(e -> new TreeViewGenericCell());
+		treeCourseList.setCellFactory(e -> new TreeViewGenericCell<Object>());
 		treeCourseList.setRoot(rootItem);
 		treeCourseList.setShowRoot(false);
 	}

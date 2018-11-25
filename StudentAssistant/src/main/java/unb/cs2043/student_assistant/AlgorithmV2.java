@@ -78,6 +78,7 @@ public class AlgorithmV2 {
 	
 	public TreeSet<Schedule> findPossibilities() {
 		startTime = System.nanoTime();
+		
 		for (int i=0; i<numSections && getRunningTime()<timeout; i++) {
 			Schedule sc = new Schedule("S"+i);
 			TreeSet<Integer> currentConflicts = new TreeSet<>();
