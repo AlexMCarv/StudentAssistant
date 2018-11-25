@@ -560,7 +560,41 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		// It is only creating the reference. A FileInputStream is required to save the file to directory 
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "save");
 		File saveAsFile = fileSelector.getFile();
+		ObjectOutputStream objectStream = null;
 		
+		try {
+			objectStream = new ObjectOutputStream(new FileOutputStream(saveAsFile));
+		}
+		catch (IOException e) {
+			App.showNotification("Error creating file or Error opening Stream", AlertType.ERROR);
+
+			System.out.println("Error creating file or Error opening stream");
+			e.printStackTrace();
+		}
+		
+		try {
+			objectStream.writeObject(saveAsFile);
+		}
+		catch (IOException e) {
+			App.showNotification("Error writing data", AlertType.ERROR);
+
+			System.out.println("Error writing data");
+			e.printStackTrace();
+			
+			//Try to delete the file:
+			saveAsFile.delete();
+		}
+		
+		//Close the stream
+		try {
+			objectStream.close();
+		}
+		catch (IOException e) {
+			App.showNotification("Error closing stream", AlertType.ERROR);
+
+			//System.out.println("Error closing stream");
+			e.printStackTrace();
+		}
 		//Implement what needs to happen after the file name and path is set ...
 		}
 	
