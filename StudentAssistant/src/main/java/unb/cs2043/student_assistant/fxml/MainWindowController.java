@@ -608,7 +608,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		}
 		
 		try {
-			objectStream.writeObject(saveAsFile);
+			objectStream.writeObject(App.userSelection);
 		}
 		catch (IOException e) {
 			App.showNotification("Error writing data", AlertType.ERROR);
@@ -619,7 +619,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			//Try to delete the file:
 			saveAsFile.delete();
 		}
-		System.out.println("the file type is " + saveAsFile.getClass());
+		System.out.println("the file type is " + App.userSelection.getClass());
 		//Close the stream
 		try {
 			objectStream.close();
