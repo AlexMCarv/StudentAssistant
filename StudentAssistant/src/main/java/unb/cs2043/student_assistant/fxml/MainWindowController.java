@@ -2,11 +2,15 @@
 package unb.cs2043.student_assistant.fxml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
 
 import fxsampler.FXSamplerConfiguration;
 import fxsampler.SampleBase;
@@ -550,7 +554,29 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "open");
 		File fileToLoad = fileSelector.getFile();
 		
+		//Check if file exists
+		if (!fileToLoad.exists()) {
+			return;
+		}
 		
+		ObjectInputStream objectStream = null;
+		try {
+			objectStream = new ObjectInputStream(new FileInputStream(fileToLoad));
+		}
+		catch (IOException e) {
+			System.out.println("Error finding file or Error opening stream");
+			e.printStackTrace();
+			return ;
+		}
+		
+		//Close the stream
+		try {
+			objectStream.close();
+		}
+		catch (IOException e) {
+			System.out.println("Error closing stream");
+			e.printStackTrace();
+		}
 		//Implement what needs to happen after the file to load is selected...
 	}
 	
