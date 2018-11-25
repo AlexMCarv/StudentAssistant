@@ -568,6 +568,15 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			e.printStackTrace();
 			return ;
 		}
+		//Read the course list from the file
+		Schedule courseList = null;
+		try {
+			courseList = (Schedule) objectStream.readObject();
+		}
+		catch (Exception e) {
+			System.out.println("Error reading data");
+			e.printStackTrace();
+		}
 		
 		//Close the stream
 		try {
@@ -610,7 +619,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			//Try to delete the file:
 			saveAsFile.delete();
 		}
-		
+		System.out.println("the file type is " + saveAsFile.getClass());
 		//Close the stream
 		try {
 			objectStream.close();
