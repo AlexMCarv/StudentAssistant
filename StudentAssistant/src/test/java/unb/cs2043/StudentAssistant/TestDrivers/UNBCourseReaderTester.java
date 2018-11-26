@@ -1,4 +1,4 @@
-package unb.cs2043.student_assistant.TestDrivers;
+package unb.cs2043.StudentAssistant.TestDrivers;
 
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.UNBCourseReader;

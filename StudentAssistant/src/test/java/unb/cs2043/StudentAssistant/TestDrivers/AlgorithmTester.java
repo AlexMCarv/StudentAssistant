@@ -1,4 +1,4 @@
-package unb.cs2043.student_assistant.TestDrivers;
+package unb.cs2043.StudentAssistant.TestDrivers;
 /**@author Tye Shutty
 AlgorithmTester tests the ability of the app to return optimal schedules.
 Work in progress.
