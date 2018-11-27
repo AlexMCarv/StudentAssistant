@@ -114,32 +114,42 @@ public class UNBCourseReader {
         //Get rows
         List<HtmlTableRow> rows = table.getRows();
         
-        Matcher m;
-        String courseName="", section="", type="", day="", time="", location="";
-        Course courseObj = null;
         
         //Regex Patterns
         Pattern courseRowPattern = 
-        		Pattern.compile("(\\d{6})\\s"					//Course ID 	(6 digits)
-				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4})\\s"		//Course Name 	(Ex: CS2043)
-				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?).*"		//Section 		(Ex: FR01A)
-				+ "\\s((?:M|T|W|Th|F)+)\\s"						//Days 			(Ex: MWF)
-				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time 			(Ex: 08:30AM-9:20AM)
-				+ "(?:\\s+([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
+        		Pattern.compile("(\\d{6})\\s"					//Course ID 		(6 digits)
+				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4})\\s"		//Course Name 		(Ex: CS2043)
+				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?)"			//Section 			(Ex: FR01A)
+				+ "\\s(.*)\\t"								//Course Full Name 	(Ex: Digital Logic)
+				+ "((?:M|T|W|Th|F)+)\\s"						//Days 				(Ex: MWF)
+				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time 				(Ex: 08:30AM-9:20AM)
+				+ "(?:\\s+([A-Z]+\\d+)\\s)?");					//Location 			(Ex: HC13)
+        /*(\d{6})\s(\w{2,4}(?:\/\w{2,4})?\*\d{4})\s([A-z]{2}\d\d[A-z](?:\/[A-z])?)\s(.*)\t.*\s((?:M|T|W|Th|F)+)\s
+         * (\d\d:\d\d\w\w-\d\d:\d\d\w\w)(?:\s+([A-Z]+\d+)\s)?
+         */
+        
         //Courses with multiple locations
         Pattern multiLocPattern = 
-        		Pattern.compile("(\\d{6})\\s"								//Course ID 	(6 digits)
-				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4})\\s"					//Course Name 	(Ex: CS2043)
-				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?).*"					//Section 		(Ex: FR01A)
-				+ "[ \\t]((?:M|T|W|Th|F)+)(?:\\s+((?:M|T|W|Th|F)+))?\\s"	//Days 			(Ex: MWF)
-				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"				//Time 			(Ex: 08:30AM-9:20AM)
+        		Pattern.compile("(\\d{6})\\s"								//Course ID 		(6 digits)
+				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4})\\s"					//Course Name 		(Ex: CS2043)
+				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?)"						//Section 			(Ex: FR01A)
+				+ "\\s(.*)\\t"											//Course Full Name 	(Ex: Digital Logic)
+				+ "((?:M|T|W|Th|F)+)(?:\\s+((?:M|T|W|Th|F)+))?\\s"	//Days 				(Ex: MWF)
+				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"				//Time 				(Ex: 08:30AM-9:20AM)
 				+ "(?:\\s+(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w))?\\s"	//Times ctnd
-				+ "([A-Z]+\\d+)(?:\\s+([A-Z]+\\d+))?");						//Locations 	(Ex: HC13)
+				+ "([A-Z]+\\d+)(?:\\s+([A-Z]+\\d+))?");						//Locations 		(Ex: HC13)
+        /*(\d{6})\s(\w{2,4}(?:\/\w{2,4})?\*\d{4})\s([A-z]{2}\d\d[A-z](?:\/[A-z])?)\s(.*)\t((?:M|T|W|Th|F)+)
+         * (?:\s+((?:M|T|W|Th|F)+))?\s(\d\d:\d\d\w\w-\d\d:\d\d\w\w)(?:\s+(\d\d:\d\d\w\w-\d\d:\d\d\w\w))?\s([A-Z]+\d+)(?:\s+([A-Z]+\d+))?
+         */
+        
         //Lab courses have days, time, and location on next line (since they don't have any lecture)
         Pattern labCoursePattern = 
-        		Pattern.compile("(\\d{6})\\s"					//Course ID 	(6 digits)
-				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 	(Ex: CS2043)
-				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?)");		//Section 		(Ex: FR01A)
+        		Pattern.compile("(\\d{6})\\s"					//Course ID 		(6 digits)
+				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 		(Ex: CS2043)
+				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?)"			//Section 			(Ex: FR01A)
+        		+ "\\s([^\\t]*)");								//Course Full Name 	(Ex: Digital Logic)
+        //(\d{6})\s(\w{2,4}(?:\/\w{2,4})?\*\d{4}).*([A-z]{2}\d\d[A-z](?:\/[A-z])?)\s([^\t]*)
+        
         //Lab courses with multiple locations
         Pattern multiLocLabCoursePattern =
         		Pattern.compile("(Lab|Tutorial)\\s"							//Type			(Ex: Lab)
@@ -154,6 +164,10 @@ public class UNBCourseReader {
 				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time 			(Ex: 08:30AM-9:20AM)
 				+ "(?:\\s+([A-Z]+\\d+)\\s)?");					//Location 		(Ex: HC13)
         
+        Matcher m;
+        String courseName="", section="", courseFullName="", type="", day="", time="", location="";
+        Course courseObj = null;
+        
         //Loop through each row		
         for (int i=1; i<rows.size(); i++) {
         	//Get current row
@@ -167,6 +181,8 @@ public class UNBCourseReader {
         		nextRow = rows.get(i+1);
         		nextRowText = getText(nextRow, false);
         	}
+        	
+//        	System.out.println("rowText: "+rowText);
         	
         	//Flags for special cases
         	boolean sameCourse = false;
@@ -202,6 +218,7 @@ public class UNBCourseReader {
     				//Get values for this course
     				courseName = row.getCells().get(1).asText();
     				section = m.group(3);
+    				courseFullName = m.group(4);
     				if (labCourse) {
         				//Get values from next row
     					i++;
@@ -233,16 +250,16 @@ public class UNBCourseReader {
     				else if (multiLocation) {
     					//First one
     					type = "Lec";
-	    				day = m.group(4);
-	    				time = m.group(6);
-	    				location = m.group(8);
+	    				day = m.group(5);
+	    				time = m.group(7);
+	    				location = m.group(9);
     				}
     				else {
     					//Normal course
         				type = "Lec";
         				day = row.getCells().get(5).asText();
-        				time = m.group(5);
-        				location = m.group(6);
+        				time = m.group(6);
+        				location = m.group(7);
     				}
     				//If no location, set it as N/A
     				location = location==null?"N/A":location;
@@ -278,6 +295,7 @@ public class UNBCourseReader {
     				else {
     					//Create new course
         				courseObj = new Course(courseName.replace("*", ""));
+        				courseObj.setFullName(courseFullName);
         				courseObj.add(sectionObj);
         				courseList.add(courseObj);
     				}
@@ -436,7 +454,7 @@ public class UNBCourseReader {
 		List<HtmlTableCell> cells = row.getCells();
 		for(int i=0; i<cells.size(); i++) {
 			if (!removeProf || i!=4) {
-				rowText += cells.get(i).asText()+" ";
+				rowText += cells.get(i).asText()+"\t";
 			}
 		}
 		
