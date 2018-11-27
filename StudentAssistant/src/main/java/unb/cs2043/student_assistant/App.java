@@ -26,6 +26,7 @@ public class App extends Application
 	//Need instance variable UNBCourseNames since used a lot for autocompletion.
 	//(To avoid retrieving it from UNBCourseList every single time)
 	private static Set<String> UNBCourseNames;
+	private static Set<String> UNBCourseFullNames;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -64,11 +65,25 @@ public class App extends Application
     		UNBCourseNames = new TreeSet<>();
     		//Using a set to guarantee no duplicate
         	for (Course course: UNBCourseList.copyCourses()) {
-        		UNBCourseNames.add(course.getName()+" - "+course.getFullName());
+        		UNBCourseNames.add(course.getName());
         	}
     	}
     	
     	return UNBCourseNames;
+    }
+    
+    public static Set<String>  getUNBCourseFullNames() {
+    	if (UNBCourseList==null) return null;
+    	
+    	if (UNBCourseFullNames==null) {
+    		UNBCourseFullNames = new TreeSet<>();
+    		//Using a set to guarantee no duplicate
+        	for (Course course: UNBCourseList.copyCourses()) {
+        		UNBCourseFullNames.add(course.getName()+" - "+course.getFullName());
+        	}
+    	}
+    	
+    	return UNBCourseFullNames;
     }
     
     public static boolean showConfirmDialog(String content, AlertType alertType) {

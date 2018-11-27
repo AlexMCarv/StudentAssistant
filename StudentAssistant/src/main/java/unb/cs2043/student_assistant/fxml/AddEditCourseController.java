@@ -57,10 +57,11 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 	private void initializeAutocompleteField() {
 		
 		Set<String> courseList = App.getUNBCourseNames();
+		Set<String> courseFullNames = App.getUNBCourseFullNames();
 		//If no UNBCourses loaded, no autocompletion (empty set)
 		if (courseList==null) courseList = new TreeSet<>();
 		
-		autoTxfName = new AutoCompleteTextField(courseList);
+		autoTxfName = new AutoCompleteTextField(courseList, courseFullNames);
 		autoTxfName.setLayoutX(12.0);
 		autoTxfName.setLayoutY(35.0);
 		autoTxfName.setPrefHeight(25.0);
@@ -102,6 +103,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 			}
 			
 			String courseName = autoTxfName.getText();
+			System.out.println("courseName: "+courseName);
 			
 			//Check if adding or editing
 			if (courseToEdit!=null) {
@@ -118,7 +120,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 					newCourse = App.UNBCourseList.getCourseByName(courseName);
 				}
 				else {
-					newCourse = new Course(autoTxfName.getText());
+					newCourse = new Course(courseName);
 				}
 				App.userSelection.add(newCourse);
 			}
