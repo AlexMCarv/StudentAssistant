@@ -9,6 +9,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
+
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 
@@ -554,8 +557,14 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "open");
 		File fileToLoad = fileSelector.getFile();
 		
-		//Check if file exists
-		if (!fileToLoad.exists()) {
+		//Check if user entered something and file exists
+		if (fileToLoad==null || !fileToLoad.exists()) {
+			return;
+		}
+		
+		//Check if file is valid type
+		if (FilenameUtils.getExtension(fileToLoad.getName())!="schedule") {
+			App.showNotification("Invalid file. Please choose a valid file \nof type '.schedule'.", AlertType.ERROR);
 			return;
 		}
 		
@@ -566,7 +575,6 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		catch (IOException e) {
 			System.out.println("Error finding file or Error opening stream");
 			e.printStackTrace();
-			App.showNotification("This file is Corrupt! Please choose a valid file type. \n(ending in .schedule)", AlertType.ERROR);
 			return ;
 		}
 		//Read the course list from the file
@@ -577,6 +585,16 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		catch (Exception e) {
 			System.out.println("Error reading data");
 			e.printStackTrace();
+			
+			//Close the stream
+			try {
+				objectStream.close();
+			}
+			catch (IOException e2) {
+				System.out.println("Error closing stream");
+				e.printStackTrace();
+			}
+			return;
 		}
 		
 		//Close the stream
@@ -586,24 +604,24 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		catch (IOException e) {
 			System.out.println("Error closing stream");
 			e.printStackTrace();
+			return;
 		}
 		
 		App.userSelection = courseList;
 		refresh();
-		//Implement what needs to happen after the file to load is selected...
 	}
 	
 	@FXML
 	private void saveAs(ActionEvent event) {
 		if(App.userSelection.getSize()<1) {
-			App.showNotification("You Need to have at least 1 course", AlertType.ERROR);
+			App.showNotification("You need to add at least one course to be able to save.", AlertType.ERROR);
 			return;
 		}
 		// Opens the window allowing the user to set the name and path of the schedule file that is being saved.
 		// It is only creating the reference. A FileInputStream is required to save the file to directory 
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "save");
 		File saveAsFile = fileSelector.getFile();
-		String saveAsFileString= saveAsFile.getAbsolutePath(); 
+		String saveAsFileString= saveAsFile.getAbsolutePath();
 		saveAsFile = new File(saveAsFileString+".schedule");
 		ObjectOutputStream objectStream = null;
 		
@@ -622,7 +640,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		}
 		catch (IOException e) {
 			App.showNotification("Error writing data", AlertType.ERROR);
-
+			
 			System.out.println("Error writing data");
 			e.printStackTrace();
 			
@@ -630,6 +648,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			saveAsFile.delete();
 		}
 		System.out.println("the file type is " + App.userSelection.getClass());
+		
 		//Close the stream
 		try {
 			objectStream.close();
@@ -637,11 +656,11 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		catch (IOException e) {
 			App.showNotification("Error closing stream", AlertType.ERROR);
 
-			//System.out.println("Error closing stream");
+			System.out.println("Error closing stream");
 			e.printStackTrace();
 		}
-		//Implement what needs to happen after the file name and path is set ...
-		}
+		
+	}
 	
 	private void refresh() {createCourseList();}
 	

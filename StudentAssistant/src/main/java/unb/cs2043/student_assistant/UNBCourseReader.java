@@ -182,8 +182,6 @@ public class UNBCourseReader {
         		nextRowText = getText(nextRow, false);
         	}
         	
-//        	System.out.println("rowText: "+rowText);
-        	
         	//Flags for special cases
         	boolean sameCourse = false;
         	boolean labCourse = false;
@@ -572,4 +570,6 @@ public class UNBCourseReader {
 		LocalTime date = LocalTime.parse(time, formatter);
 		return date;
 	}
+	
+//	private 
 }
