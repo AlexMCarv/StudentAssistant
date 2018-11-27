@@ -64,7 +64,7 @@ public class App extends Application
     		UNBCourseNames = new TreeSet<>();
     		//Using a set to guarantee no duplicate
         	for (Course course: UNBCourseList.copyCourses()) {
-        		UNBCourseNames.add(course.getName());
+        		UNBCourseNames.add(course.getName()+" - "+course.getFullName());
         	}
     	}
     	
