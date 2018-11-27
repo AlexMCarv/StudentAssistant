@@ -35,7 +35,7 @@ public class App extends Application
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
 		Parent root = loader.load();
 		MainWindowController controller = loader.<MainWindowController>getController();
-        primaryStage.setTitle("Student Schedule Assistant");
+        primaryStage.setTitle("Student Scheduling Assistant");
         primaryStage.setScene(new Scene(root, 525, 360));
         primaryStage.setMinWidth(530+20);
         primaryStage.setMinHeight(360+47);

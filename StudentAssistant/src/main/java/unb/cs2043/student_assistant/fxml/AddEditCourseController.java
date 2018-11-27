@@ -60,6 +60,7 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 		Set<String> courseFullNames = App.getUNBCourseFullNames();
 		//If no UNBCourses loaded, no autocompletion (empty set)
 		if (courseList==null) courseList = new TreeSet<>();
+		if (courseFullNames==null) courseFullNames = new TreeSet<>();
 		
 		autoTxfName = new AutoCompleteTextField(courseList, courseFullNames);
 		autoTxfName.setLayoutX(12.0);

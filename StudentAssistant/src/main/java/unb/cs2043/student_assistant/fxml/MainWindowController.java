@@ -160,15 +160,15 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	private void setKeyBindings() {
 		//Keybindings
-		final KeyCombination ctrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlShiftC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		final KeyCombination ctrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		final KeyCombination ctrlShiftT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		final KeyCombination ctrlShiftG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
 		container.setOnKeyReleased(event -> {
-			if (ctrlC.match(event)) addCourse(null);
-			else if (ctrlS.match(event)) addSection(null);
-			else if (ctrlT.match(event)) addClassTime(null);
-			else if (ctrlG.match(event)) genSchedule();
+			if (ctrlShiftC.match(event)) addCourse(null);
+			else if (ctrlShiftS.match(event)) addSection(null);
+			else if (ctrlShiftT.match(event)) addClassTime(null);
+			else if (ctrlShiftG.match(event)) genSchedule();
 			else if (event.getCode() == KeyCode.DELETE) deleteItem(new ActionEvent());
 		});
 		container.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
@@ -563,7 +563,8 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		}
 		
 		//Check if file is valid type
-		if (FilenameUtils.getExtension(fileToLoad.getName())!="schedule") {
+		if (!FilenameUtils.getExtension(fileToLoad.getName()).equals("schedule")) {
+			System.out.println(FilenameUtils.getExtension(fileToLoad.getName()));
 			App.showNotification("Invalid file. Please choose a valid file \nof type '.schedule'.", AlertType.ERROR);
 			return;
 		}
@@ -621,8 +622,16 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		// It is only creating the reference. A FileInputStream is required to save the file to directory 
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "save");
 		File saveAsFile = fileSelector.getFile();
-		String saveAsFileString= saveAsFile.getAbsolutePath();
-		saveAsFile = new File(saveAsFileString+".schedule");
+		
+		//Make sure user entered something
+		if (saveAsFile==null) {return;}
+		
+		//Add proper extension if necessary
+		if (!FilenameUtils.getExtension(saveAsFile.getName()).equals("schedule")) {
+			String saveAsFileString= saveAsFile.getAbsolutePath();
+			saveAsFile = new File(saveAsFileString+".schedule");
+		}
+		
 		ObjectOutputStream objectStream = null;
 		
 		try {
