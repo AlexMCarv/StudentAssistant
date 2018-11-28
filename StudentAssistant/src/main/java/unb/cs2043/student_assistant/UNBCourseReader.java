@@ -119,8 +119,8 @@ public class UNBCourseReader {
         Pattern courseRowPattern = 
         		Pattern.compile("(\\d{6})\\s"					//Course ID 		(6 digits)
 				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4})\\s"		//Course Name 		(Ex: CS2043)
-				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?)"			//Section 			(Ex: FR01A)
-				+ "\\s(.*)\\t"								//Course Full Name 	(Ex: Digital Logic)
+				+ "([A-z]{2}\\w\\d[A-z](?:\\/[A-z])?)"			//Section 			(Ex: FR01A)
+				+ "\\s(.*)\\t"									//Course Full Name 	(Ex: Digital Logic)
 				+ "((?:M|T|W|Th|F)+)\\s"						//Days 				(Ex: MWF)
 				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"	//Time 				(Ex: 08:30AM-9:20AM)
 				+ "(?:\\s+([A-Z]+\\d+)\\s)?");					//Location 			(Ex: HC13)
@@ -132,9 +132,9 @@ public class UNBCourseReader {
         Pattern multiLocPattern = 
         		Pattern.compile("(\\d{6})\\s"								//Course ID 		(6 digits)
 				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4})\\s"					//Course Name 		(Ex: CS2043)
-				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?)"						//Section 			(Ex: FR01A)
-				+ "\\s(.*)\\t"											//Course Full Name 	(Ex: Digital Logic)
-				+ "((?:M|T|W|Th|F)+)(?:\\s+((?:M|T|W|Th|F)+))?\\s"	//Days 				(Ex: MWF)
+				+ "([A-z]{2}\\w\\d[A-z](?:\\/[A-z])?)"						//Section 			(Ex: FR01A)
+				+ "\\s(.*)\\t"												//Course Full Name 	(Ex: Digital Logic)
+				+ "((?:M|T|W|Th|F)+)(?:\\s+((?:M|T|W|Th|F)+))?\\s"			//Days 				(Ex: MWF)
 				+ "(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w)"				//Time 				(Ex: 08:30AM-9:20AM)
 				+ "(?:\\s+(\\d\\d:\\d\\d\\w\\w-\\d\\d:\\d\\d\\w\\w))?\\s"	//Times ctnd
 				+ "([A-Z]+\\d+)(?:\\s+([A-Z]+\\d+))?");						//Locations 		(Ex: HC13)
@@ -146,7 +146,7 @@ public class UNBCourseReader {
         Pattern labCoursePattern = 
         		Pattern.compile("(\\d{6})\\s"					//Course ID 		(6 digits)
 				+ "(\\w{2,4}(?:\\/\\w{2,4})?\\*\\d{4}).*"		//Course Name 		(Ex: CS2043)
-				+ "([A-z]{2}\\d\\d[A-z](?:\\/[A-z])?)"			//Section 			(Ex: FR01A)
+				+ "([A-z]{2}\\w\\d[A-z](?:\\/[A-z])?)"			//Section 			(Ex: FR01A)
         		+ "\\s([^\\t]*)");								//Course Full Name 	(Ex: Digital Logic)
         //(\d{6})\s(\w{2,4}(?:\/\w{2,4})?\*\d{4}).*([A-z]{2}\d\d[A-z](?:\/[A-z])?)\s([^\t]*)
         
