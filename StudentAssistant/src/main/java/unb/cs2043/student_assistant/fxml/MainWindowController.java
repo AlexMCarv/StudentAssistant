@@ -174,10 +174,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		container.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
 		treeCourseList.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
 		
-		btnAddCourse.setTooltip(new Tooltip("Ctrl+C"));
-		btnAddSection.setTooltip(new Tooltip("Ctrl+S"));
-		btnAddClassTime.setTooltip(new Tooltip("Ctrl+T"));
-		btnGenSchedule.setTooltip(new Tooltip("Ctrl+G"));
+		btnAddCourse.setTooltip(new Tooltip("Ctrl+Shift+C"));
+		btnAddSection.setTooltip(new Tooltip("Ctrl+Shift+S"));
+		btnAddClassTime.setTooltip(new Tooltip("Ctrl+Shift+T"));
+		btnGenSchedule.setTooltip(new Tooltip("Ctrl+Shift+G"));
 	}
 	
 	@FXML
@@ -615,7 +615,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML
 	private void saveAs(ActionEvent event) {
 		if(App.userSelection.getSize()<1) {
-			App.showNotification("You need to add at least one course to be able to save.", AlertType.ERROR);
+			App.showNotification("Course list must contain at least one course to save.", AlertType.ERROR);
 			return;
 		}
 		// Opens the window allowing the user to set the name and path of the schedule file that is being saved.
@@ -656,7 +656,6 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			//Try to delete the file:
 			saveAsFile.delete();
 		}
-		System.out.println("the file type is " + App.userSelection.getClass());
 		
 		//Close the stream
 		try {
@@ -669,6 +668,16 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@FXML
+	private void clear(ActionEvent event) {
+		boolean choice = App.showConfirmDialog("This will clear your course list. All unsaved data will be lost.\n\n"
+				+ "Continue?", AlertType.CONFIRMATION);
+		if (choice) {
+			App.userSelection.clear();
+			refresh();
+		}
 	}
 	
 	private void refresh() {createCourseList();}
