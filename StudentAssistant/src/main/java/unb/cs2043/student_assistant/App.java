@@ -86,6 +86,13 @@ public class App extends Application
     	return UNBCourseFullNames;
     }
     
+    public static void updateUNBCourseNameLists() {
+    	UNBCourseNames=null; 
+    	UNBCourseFullNames=null;
+    	getUNBCourseNames();
+    	getUNBCourseFullNames();
+    }
+    
     public static boolean showConfirmDialog(String content, AlertType alertType) {
         final Alert alert = new Alert(alertType);
         alert.setContentText(content);

@@ -104,7 +104,6 @@ public class AddEditCourseController implements javafx.fxml.Initializable {
 			}
 			
 			String courseName = autoTxfName.getText();
-			System.out.println("courseName: "+courseName);
 			
 			//Check if adding or editing
 			if (courseToEdit!=null) {
