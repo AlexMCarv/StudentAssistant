@@ -99,7 +99,7 @@ public class ScheduleController implements javafx.fxml.Initializable {
 				plural = numCourses==1 ? "" : "s";
 				
 				displayList[i].setVisible(true);
-				lblSchedule.setText("Schedule " + (i + 1)+ " - "+numCourses+" course" + plural);
+				lblSchedule.setText("Schedule " + (i + 1)+ " - "+numCourses+" Course" + plural);
 				visibleScheduleNum = i;
 			}				
 		}
