@@ -52,8 +52,7 @@ public class ScheduleController implements javafx.fxml.Initializable {
 	@FXML private StackPane container;
 	@FXML private ToolBar toolbar;
 	@FXML Label lblSchedule;
-    private ContextMenu contextMenu;
-	private Schedule[] bestSchedules;
+    private Schedule[] bestSchedules;
 	private ScheduleDisplay[] displayList;
 	private Button[] buttonList;
 	private int visibleScheduleNum;
@@ -73,7 +72,7 @@ public class ScheduleController implements javafx.fxml.Initializable {
 		}
 		
 		if (displayList.length > 0)
-			displayList[0].setVisible(true);
+			selectScheduleByNum(0);
 		
 		//Keybindings
 		outerContainer.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
