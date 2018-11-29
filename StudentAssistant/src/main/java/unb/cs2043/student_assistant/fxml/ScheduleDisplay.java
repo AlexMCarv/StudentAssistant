@@ -6,14 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-import static impl.org.controlsfx.i18n.Localization.asKey;
-import static impl.org.controlsfx.i18n.Localization.localize;
-
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 
 import org.controlsfx.control.spreadsheet.GridBase;
@@ -26,35 +18,17 @@ import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.samples.HelloGlyphFont;
 import org.controlsfx.samples.Utils;
 
-import impl.org.controlsfx.spreadsheet.SpreadsheetGridView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.print.PageLayout;
-import javafx.print.PageOrientation;
-import javafx.print.Paper;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
-import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TreeItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.transform.Scale;
-import javafx.stage.FileChooser;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
