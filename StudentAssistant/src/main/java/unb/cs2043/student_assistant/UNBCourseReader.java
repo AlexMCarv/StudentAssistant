@@ -189,7 +189,7 @@ public class UNBCourseReader {
         	
         	//Check if it is first row of a course section
         	if (row.getCell(0).asText().matches("\\d{6}")) {
-				
+        		
         		//Check if it is a lab course
         		if (row.getCell(5).asText().equals("") && i!=numRows-1 &&
         		nextRow.getCell(0).asText().matches("Lab|Tutorial")) {
@@ -236,7 +236,6 @@ public class UNBCourseReader {
     					}
     					else {
     						m = classTimeRowPattern.matcher(nextRowText);
-    		    			
     		    			if (m.find()) {
     		    				type = m.group(1);
     		    				day = m.group(2);
@@ -278,9 +277,9 @@ public class UNBCourseReader {
     					else {
     						//Second one (normal)
         					type = "Lec";
-    	    				day = m.group(5)==null?day:m.group(5);
-    	    				time = m.group(7)==null?time:m.group(7);
-    	    				location = m.group(9)==null?location:m.group(9);
+    	    				day = m.group(6)==null?day:m.group(6);
+    	    				time = m.group(8)==null?time:m.group(8);
+    	    				location = m.group(10)==null?location:m.group(10);
     					}
     					timeObj = createClassTime(type, day, time);
 	    				sectionObj.add(timeObj);
@@ -331,6 +330,12 @@ public class UNBCourseReader {
     			}
         	}
         }
+        
+        //Compress adjacent sections
+        courseList = compressAdjacentSections(courseList);
+       
+        //Compress all sections
+        courseList = compressAllSections(courseList);
         
         //Save to a file
         if(!writeToFile(courseList)) {
@@ -571,5 +576,151 @@ public class UNBCourseReader {
 		return date;
 	}
 	
-//	private 
+	private Schedule compressAdjacentSections(Schedule courseList) {
+		Schedule compressedList = new Schedule(courseList.getName());
+		
+		Section compressedSection;
+		
+		for (int i=0; i<courseList.getSize(); i++) {
+			Course currentCourse = courseList.getCourse(i);
+			Course compressedCourse = new Course(courseList.getCourse(i).getName());
+			compressedCourse.setFullName(currentCourse.getFullName());
+			
+			if (currentCourse.getSize()>1) {
+				
+				for (int j=0; j<currentCourse.getSize(); j++) {
+					compressedSection = new Section(currentCourse.getSection(j));
+					String start = currentCourse.getSection(j).getName();
+					
+					String end = "";
+					boolean stop = false;
+					int k;		
+					for (k=j+1; k<currentCourse.getSize() && !stop; k++) {
+						Section currentSection = currentCourse.getSection(k);
+						if (compressedSection.sameClassTimes(currentCourse.getSection(k))) {
+							end = getSectionNumber(currentSection.getName(), false, true);
+							if (k==currentCourse.getSize()-1) {
+								j = k;
+							}
+						}
+						else {
+							stop = true;
+							j = k-1;
+						}
+					}
+					
+					if (!end.equals("")) {
+						start = getSectionNumber(start, true, false);
+						compressedSection.setName(start+"-"+end);
+					}
+					compressedCourse.add(compressedSection);
+				}
+				
+				compressedList.add(compressedCourse);
+			}
+			else {
+				compressedList.add(currentCourse);
+			}
+		}
+		
+		return compressedList;
+	}
+	
+	private Schedule compressAllSections(Schedule courseList) {
+		Schedule compressedList = new Schedule(courseList.getName());
+		
+		Section compressedSection;
+		for (int i=0; i<courseList.getSize(); i++) {
+			Course currentCourse = courseList.getCourse(i);
+			Course compressedCourse = new Course(courseList.getCourse(i).getName());
+			compressedCourse.setFullName(currentCourse.getFullName());
+			
+			if (currentCourse.getSize()>1) {
+				ArrayList<Integer> addedSections = new ArrayList<>(currentCourse.getSize());
+				for (int j=0; j<currentCourse.getSize() && !addedSections.contains(j); j++) {
+					compressedSection = new Section(currentCourse.getSection(j));
+					String currName = currentCourse.getSection(j).getName();
+					String newName = getSectionNumber(currName, true, false);
+					
+					addedSections.add(j);
+					for (int k=j+1; k<currentCourse.getSize(); k++) {
+						Section currentSection = currentCourse.getSection(k);
+						if (compressedSection.sameClassTimes(currentCourse.getSection(k))) {
+							currName = currentSection.getName();
+							newName += ","+getSectionNumber(currName, false, false);
+							addedSections.add(k);
+						}
+					}
+					
+					if (newName.length()>currName.length()-1) {
+						newName += getSectionLetter(currName);
+						compressedSection.setName(newName);
+					}
+					
+					compressedCourse.add(compressedSection);
+				}
+				
+				compressedList.add(compressedCourse);
+			}
+			else {
+				compressedList.add(currentCourse);
+			}
+		}
+		
+		return compressedList;
+	}
+	
+	private String getSectionNumber(String sectionName, boolean addStart, boolean addEnd) {
+		String result = null;
+		
+		String pattern = "\\d\\d(?:.*\\d\\d)*";
+		pattern = addStart? ".*"+pattern : pattern;
+		pattern = addEnd? pattern+".*" : pattern;
+		
+		Pattern sectionNumber = Pattern.compile(pattern);
+        Matcher m = sectionNumber.matcher(sectionName);
+        
+        if (m.find()) {
+        	result = m.group();
+        }
+        else {
+        	pattern = "\\w\\d(?:.*\\w\\d)*";
+        	pattern = addStart? ".*"+pattern : pattern;
+        	pattern = addEnd? pattern+".*" : pattern;
+        	
+        	sectionNumber = Pattern.compile(pattern);
+        	m = sectionNumber.matcher(sectionName);
+        	
+        	if (m.find()) {
+        		result = m.group();
+        	}
+        }
+        
+        return result;
+	}
+	
+	private String getSectionLetter(String sectionName) {
+		String result = null;
+		
+		String pattern = "\\d\\d(?:.*\\d\\d)*(.*)";
+		
+		Pattern sectionNumber = Pattern.compile(pattern);
+        Matcher m = sectionNumber.matcher(sectionName);
+        
+        if (m.find()) {
+        	result = m.group(1);
+        }
+        else {
+        	pattern = "\\w\\d(?:.*\\w\\d)*(.*)";
+        	
+        	sectionNumber = Pattern.compile(pattern);
+        	m = sectionNumber.matcher(sectionName);
+        	
+        	if (m.find()) {
+        		result = m.group(1);
+        	}
+        }
+        
+        return result;
+	}
 }

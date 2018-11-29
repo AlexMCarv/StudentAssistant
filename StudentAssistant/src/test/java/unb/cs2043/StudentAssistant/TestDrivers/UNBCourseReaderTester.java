@@ -11,7 +11,7 @@ import unb.cs2043.student_assistant.fxml.ComboBoxChoice;
 public class UNBCourseReaderTester {
 
 	public static void main(String[] args) {
-		UNBCourseReader reader = new UNBCourseReader("2019/WI", "UG", "KIN", "FR");
+		UNBCourseReader reader = new UNBCourseReader("2018/FA", "UG", "CS", "FR");
 		
 		boolean success = reader.loadData();
 		
