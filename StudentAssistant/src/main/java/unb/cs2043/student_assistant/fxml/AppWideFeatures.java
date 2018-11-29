@@ -1,6 +1,5 @@
 package unb.cs2043.student_assistant.fxml;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -12,8 +11,8 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.print.JobSettings;
 import javafx.print.PageLayout;
 import javafx.print.PageRange;
-import javafx.print.Printer;
 import javafx.print.PrinterJob;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Region;
@@ -41,7 +40,7 @@ public class AppWideFeatures {
         PrinterJob job = PrinterJob.createPrinterJob();
         JobSettings jobSettings = job.getJobSettings();
         PageLayout pageLayout = jobSettings.getPageLayout();
-        javafx.scene.image.Image image = getSnapshot(node);
+        Image image = getSnapshot(node);
         jobSettings.setPageRanges(new PageRange(1, 1));
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
@@ -60,23 +59,12 @@ public class AppWideFeatures {
         }
     }
 	
-	public static javafx.scene.image.Image getSnapshot(Region layout) {
+	public static Image getSnapshot(Region layout) {
 		WritableImage writableImage = new WritableImage((int)layout.getWidth() + 20,
                 (int)layout.getHeight() + 20);
         layout.snapshot(null, writableImage);
         BufferedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
-        javafx.scene.image.Image image = SwingFXUtils.toFXImage(renderedImage, null);
+        Image image = SwingFXUtils.toFXImage(renderedImage, writableImage);
         return image;
 	}
-	
-	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
-		java.awt.Image tmp = img.getScaledInstance(newW, newH, java.awt.Image.SCALE_SMOOTH);
-	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-
-	    Graphics2D g2d = dimg.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
-	    g2d.dispose();
-
-	    return dimg;
-	}  
 }
