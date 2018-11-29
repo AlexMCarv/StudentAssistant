@@ -16,6 +16,10 @@ public class Section implements Serializable{
 		this.name=name;
 		classTimes = new ArrayList<ClassTime>();
 	}
+	public Section(Section other) {
+		this.name = other.name;
+		classTimes = other.copyClassTimes();
+	}
 //--------Getters---------//
 	public ArrayList<ClassTime> copyClassTimes(){
 		return new ArrayList<ClassTime>(classTimes);
@@ -143,5 +147,22 @@ public class Section implements Serializable{
 		}
 		
 		return conflicting;
+	}
+	
+	//Checks if both sections contains the same classTimes (same days & times)
+	public boolean sameClassTimes(Section other) {
+		boolean sameClassTimes = true;
+		
+		if (this.getSize()!=other.getSize()) {
+			sameClassTimes = false;
+		}
+		
+		for (int i=0; i<this.getSize() && sameClassTimes; i++) {
+			if (!this.getClassTime(i).equivalent(other.getClassTime(i))) {
+				sameClassTimes = false;
+			}
+		}
+		
+		return sameClassTimes;
 	}
 }

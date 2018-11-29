@@ -83,20 +83,19 @@ public class ClassTime implements Serializable {
 	
 	/*********Check if Valid**************/
 	public boolean isValidDay(String dayIn) {
-//		System.out.println("day of week: "+ dayIn);
-		if (dayIn.toLowerCase().equals("m")||
-			dayIn.toLowerCase().equals("t")||
-			dayIn.toLowerCase().equals("w")||
-			dayIn.toLowerCase().equals("th")||
-			dayIn.toLowerCase().equals("f")||
-			dayIn.toLowerCase().equals("sa")||
-			dayIn.toLowerCase().equals("su")) {
-			return true;
+		boolean result = false;
+		String lowerCaseDay = dayIn.toLowerCase();
+		if (lowerCaseDay.equals("m")||
+			lowerCaseDay.equals("t")||
+			lowerCaseDay.equals("w")||
+			lowerCaseDay.equals("th")||
+			lowerCaseDay.equals("f")||
+			lowerCaseDay.equals("sa")||
+			lowerCaseDay.equals("su")) {
+			result = true;
 		}
-	
-		else {
-			return false;
-		}
+		
+		return result;
 	}
 	
 	public boolean conflictsWith(ClassTime other) {
@@ -108,5 +107,12 @@ public class ClassTime implements Serializable {
 		commonDays.retainAll(otherDays);
 		
 		return commonDays.size()!=0 && this.startTime.isBefore(other.endTime) && other.startTime.isBefore(this.endTime);
+	}
+	
+	public boolean equivalent(ClassTime other) {
+		boolean sameType = this.type.equals(other.type);
+		boolean sameDays = this.days.equals(other.days);
+		boolean sameTime = this.startTime.equals(other.startTime) && this.endTime.equals(other.endTime);
+		return  sameType && sameDays && sameTime;
 	}
 }
