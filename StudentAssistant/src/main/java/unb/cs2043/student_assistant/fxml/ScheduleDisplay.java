@@ -18,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
@@ -128,10 +129,14 @@ public class ScheduleDisplay extends SpreadsheetView {
 					teste.setStyle("spreadsheet.css");
 					teste.getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
 					
-					Label lbl1 = new Label(course.getName() + "\n" + course.getSection(0) + " - " + time.getType());
+					String labelText = course.getName() + "\n" + course.getSection(0) + " - " + time.getType();
+					Label lbl1 = new Label(labelText);
 					lbl1.getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
 					lbl1.setStyle("spreadsheet.css");
 					teste.getChildren().add(lbl1);
+					
+					//Add tooltip to be able to see all the text if doesn't fit
+					App.setTooltipWithoutDelay(lbl1, labelText);
 					
 					grid.getRows().get(rowIndex).get(col).setGraphic(teste);
 					spanCell(grid, rowIndex, col, getDuration(time));
