@@ -66,13 +66,6 @@ public class AlgorithmV2 {
 		this.courseNames = courseNames;
 		this.numSections = sections.length;
 		
-		
-		//Print sectionConflictsMap TODO: remove this
-//		for (int i=0; i<sectionConflictsMap.length; i++) {
-//			System.out.println(Arrays.toString(sectionConflictsMap[i]));
-//		}
-		System.out.println("Conflict%: "+getConflictPercent());
-		
 		timeout = ScheduleArranger.MAX_TIME;
 	}
 	
@@ -107,23 +100,9 @@ public class AlgorithmV2 {
 			}
 		}
 		
-		//TODO: remove debug prints
-//		levelPrint("Index: "+index, level);
-		
-//		String tempCon = "";
-//		tempCon += "tempConflicts: [";
-//		for (Integer c: tempConflicts) {
-//			tempCon += c+", ";
-//		}
-//		tempCon += "]";
-//		levelPrint(tempCon, level);
-		
 		if (tempConflicts.size() >= numSections) {
 			//Cannot add any more sections, schedule is complete
 			schedules.add(tempSchedule);
-			
-			//TODO: remove
-//			levelPrint("Adding: \n"+tempSchedule.getFormattedString(), level);
 			
 			//Update minBestScheduleSize
 			if (schedules.size()>=ScheduleArranger.NUM_BEST_SCHEDULES && tempSchedule.getSize()>minBestScheduleSize) {

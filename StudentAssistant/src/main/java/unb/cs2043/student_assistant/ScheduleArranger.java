@@ -33,9 +33,8 @@ public class ScheduleArranger {
 		}
 		catch (ArithmeticException e) {
 			alg1TimeEstimate = "Too long.";
-//			throw new RuntimeException("Complexity (number of possible schedules) is too large.");
 		}
-		System.out.println("Time estimate (Algorithm1): "+alg1TimeEstimate);
+		System.out.println("Time estimate (V1): "+alg1TimeEstimate);
 		
 		AlgorithmV2 alg2 = new AlgorithmV2(courseList);
 		//Get %Conflict of Alg2
@@ -64,6 +63,8 @@ public class ScheduleArranger {
 		}
 		else if (algVersion==2) {
 			AlgorithmV2 alg2 = new AlgorithmV2(courseList);
+			
+			System.out.println("Conflict%: "+alg2.getConflictPercent());
 			
 			startTime = System.nanoTime();
 			scheduleArrangements = alg2.findPossibilities();
