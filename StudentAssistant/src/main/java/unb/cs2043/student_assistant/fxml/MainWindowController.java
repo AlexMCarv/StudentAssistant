@@ -31,7 +31,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
@@ -174,10 +173,10 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		container.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
 		treeCourseList.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
 		
-		btnAddCourse.setTooltip(new Tooltip("Ctrl+Shift+C"));
-		btnAddSection.setTooltip(new Tooltip("Ctrl+Shift+S"));
-		btnAddClassTime.setTooltip(new Tooltip("Ctrl+Shift+T"));
-		btnGenSchedule.setTooltip(new Tooltip("Ctrl+Shift+G"));
+		App.setTooltipWithoutDelay(btnAddCourse, "Ctrl+Shift+C");
+		App.setTooltipWithoutDelay(btnAddSection, "Ctrl+Shift+S");
+		App.setTooltipWithoutDelay(btnAddClassTime, "Ctrl+Shift+T");
+		App.setTooltipWithoutDelay(btnGenSchedule, "Ctrl+Shift+G");
 	}
 	
 	@FXML

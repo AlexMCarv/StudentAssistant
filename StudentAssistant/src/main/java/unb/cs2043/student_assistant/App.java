@@ -5,12 +5,17 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.fxml.MainWindowController;
 /**
@@ -113,5 +118,22 @@ public class App extends Application
         alert.setContentText(content);
         alert.show();
     }
-
+   
+    public static void setTooltipWithoutDelay(Control node, String text) {
+    	Tooltip t = new Tooltip(text);
+    	node.setTooltip(t);
+    	node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+    		@Override
+    	    public void handle(MouseEvent event) {
+    			Point2D p = node.localToScreen(node.getLayoutBounds().getMaxX(), node.getLayoutBounds().getMaxY());
+				t.show(node, p.getX(), p.getY());
+    	    }
+    	});
+    	node.setOnMouseExited(new EventHandler<MouseEvent>() {
+	    	@Override
+    	    public void handle(MouseEvent event) {
+    	        t.hide();
+    	    }
+    	});
+    }
 }
