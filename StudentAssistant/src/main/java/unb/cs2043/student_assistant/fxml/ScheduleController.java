@@ -1,22 +1,43 @@
 package unb.cs2043.student_assistant.fxml;
 
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
 import org.controlsfx.samples.HelloGlyphFont;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Scale;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.Schedule;
 
@@ -31,6 +52,7 @@ public class ScheduleController implements javafx.fxml.Initializable {
 	@FXML private StackPane container;
 	@FXML private ToolBar toolbar;
 	@FXML Label lblSchedule;
+    private ContextMenu contextMenu;
 	private Schedule[] bestSchedules;
 	private ScheduleDisplay[] displayList;
 	private Button[] buttonList;
@@ -70,7 +92,10 @@ public class ScheduleController implements javafx.fxml.Initializable {
 				selectScheduleByNum(visibleScheduleNum-1);
 			}
 		});
+	
 	}
+		
+
 
 	public void setBestSchedules(Schedule[] list) {
 		bestSchedules = list;

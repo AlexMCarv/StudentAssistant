@@ -6,18 +6,55 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
+import static impl.org.controlsfx.i18n.Localization.asKey;
+import static impl.org.controlsfx.i18n.Localization.localize;
+
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
 import org.controlsfx.control.spreadsheet.GridBase;
 import org.controlsfx.control.spreadsheet.SpreadsheetCell;
 import org.controlsfx.control.spreadsheet.SpreadsheetCellType;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+import org.controlsfx.glyphfont.GlyphFontRegistry;
+import org.controlsfx.samples.HelloGlyphFont;
 import org.controlsfx.samples.Utils;
 
+import impl.org.controlsfx.spreadsheet.SpreadsheetGridView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TablePosition;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Scale;
+import javafx.stage.FileChooser;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
@@ -36,7 +73,8 @@ public class ScheduleDisplay extends SpreadsheetView {
 	private final int ROW_COUNT = 31;
 	/** Header at column 1 and other columns represent the days of the week */
 	private final int COLUMN_COUNT = 7;
-    
+	static {GlyphFontRegistry.register("icomoon", HelloGlyphFont.class.getResourceAsStream("icomoon.ttf") , 16);}
+	    
 	public ScheduleDisplay(Schedule schedule) {
 		
 		this.schedule = schedule;
@@ -57,6 +95,7 @@ public class ScheduleDisplay extends SpreadsheetView {
 		grid.setLocked(true);
 		grid.setResizableRows(new BitSet(ROW_COUNT));
 		lockColumns(true);
+		getSpreadsheetViewContextMenu();
 	}
 
 	/*
@@ -80,7 +119,6 @@ public class ScheduleDisplay extends SpreadsheetView {
     
     /**
      * Build the grid.
-     *
      * @param grid
      */
     private void buildGrid(GridBase grid) {
@@ -208,5 +246,35 @@ public class ScheduleDisplay extends SpreadsheetView {
     public int getNumCourses() {
     	return schedule.getSize();
     }
-}
+    
+   
+    public ContextMenu getSpreadsheetViewContextMenu() {
 
+	    final ContextMenu contextMenu = new ContextMenu();
+	    final MenuItem saveAsImg = new MenuItem("Save as image"); 
+	    saveAsImg.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.IMAGE));
+	    saveAsImg.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
+	    ScheduleDisplay displayRef = this;
+	    saveAsImg.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent e) {
+	        	getSelectionModel().clearSelection();
+	        	AppWideFeatures.captureAndSave(displayRef);
+	        }
+	    });
+	    
+	    final MenuItem print = new MenuItem("Print schedule"); 
+	    print.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.PRINT));
+	    print.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN));
+	    print.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent e) {
+	        	getSelectionModel().clearSelection();
+	        	AppWideFeatures.print(displayRef);
+	        }
+	    });
+	
+	    contextMenu.getItems().addAll(saveAsImg, print);
+	    return contextMenu;
+	}
+}  
