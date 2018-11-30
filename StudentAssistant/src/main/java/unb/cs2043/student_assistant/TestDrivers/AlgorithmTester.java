@@ -94,9 +94,9 @@ LocalTime.parse("12:20"), LocalTime.parse("13:20")));
 		testSubjects.get(5).add(courses3.get(x));
 	}
 //------------------Seventh test --------------------------//
-//a test solely about computing a large number of possibilities
+//a test solely about computing a large number of possibilities (21 courses, 0 conflicts)
 
-	testSubjects.add(new Schedule("Seventh test should return 21 Courses, 1 possibilities"));
+	testSubjects.add(new Schedule("Seventh test should return"));
 	ArrayList<ClassTime> classTimes4 = new ArrayList<ClassTime>();
 	ArrayList<Section> sections4 = new ArrayList<Section>();
 	ArrayList<Course> courses4 = new ArrayList<Course>();
@@ -110,20 +110,47 @@ LocalTime.parse("12:20"), LocalTime.parse("13:20")));
 			LocalTime.parse(x+":00"), LocalTime.parse(x+":59")));
 		}
 	}
-	for(int z=0;z<21;z++){
-		for(int x=0;x<42;x++){
-			sections4.add(new Section("section"+x));
-			for(int y=0;y<4;y++){
-				sections4.get(x).add(classTimes4.get((x+42*y)));
-			}
+	for(int x=0;x<42;x++){
+		sections4.add(new Section("section"+x));
+		for(int y=0;y<4;y++){
+			sections4.get(x).add(classTimes4.get((x+42*y)));
 		}
+	}
+	for(int z=0;z<21;z++){
 		courses4.add(new Course("course"+z));
 		courses4.get(z).add(sections4.get(z));
 		courses4.get(z).add(sections4.get(21+z));
 		testSubjects.get(6).add(courses4.get(z));
 	}
+//------------------Eighth test --------------------------//
+//another test solely about computing a large number of possibilities (10 courses, 0 conflicts)
 
-
+	testSubjects.add(new Schedule("Eighth test should return"));
+	ArrayList<ClassTime> classTimes5 = new ArrayList<ClassTime>();
+	ArrayList<Section> sections5 = new ArrayList<Section>();
+	ArrayList<Course> courses5 = new ArrayList<Course>();
+	for(int y=0; y<7;y++){
+		for(int x=0; x<10;x++){
+			classTimes5.add(new ClassTime("regular", new ArrayList<String>(Arrays.asList(days[y])),
+			LocalTime.parse("0"+x+":00"), LocalTime.parse("0"+x+":59")));
+		}
+		for(int x=10; x<24;x++){
+			classTimes5.add(new ClassTime("regular", new ArrayList<String>(Arrays.asList(days[y])),
+			LocalTime.parse(x+":00"), LocalTime.parse(x+":59")));
+		}
+	}
+	for(int x=0;x<42;x++){
+		sections5.add(new Section("section"+x));
+		for(int y=0;y<4;y++){
+			sections5.get(x).add(classTimes5.get((x+42*y)));
+		}
+	}
+	for(int z=0;z<10;z++){
+		courses5.add(new Course("course"+z));
+		courses5.get(z).add(sections5.get(z));
+		courses5.get(z).add(sections5.get(21+z));
+		testSubjects.get(7).add(courses5.get(z));
+	}
 //---------------------General Test Construction----------------------//
 		for(int x=0;x<classTimes.size();x++){
 			sections.add(new Section("section"+x));
@@ -148,10 +175,15 @@ LocalTime.parse("12:20"), LocalTime.parse("13:20")));
 		testSubjects.get(2).getCourse(3).getSection(0).add(classTimes.get(2));
 
 		for(int x=0;x<testSubjects.size();x++){
-			System.out.println(testSubjects.get(x).getFormattedString());
-			printScheduleArray(ScheduleArranger.getBestSchedules(testSubjects.get(x)));
+			if(x<6 || x==7)
+				System.out.println(testSubjects.get(x).getFormattedString());
+			try{
+				printScheduleArray(ScheduleArranger.getBestSchedules(testSubjects.get(x)));
+			}
+			catch(RuntimeException e){
+				System.out.println(e.getMessage());
+			}
 		}
-
 	}
 	public static void printScheduleArray(Schedule[] array) {
 		for (Schedule sc: array) {
