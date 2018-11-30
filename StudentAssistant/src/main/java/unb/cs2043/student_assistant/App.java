@@ -5,12 +5,17 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.fxml.MainWindowController;
 /**
@@ -26,6 +31,7 @@ public class App extends Application
 	//Need instance variable UNBCourseNames since used a lot for autocompletion.
 	//(To avoid retrieving it from UNBCourseList every single time)
 	private static Set<String> UNBCourseNames;
+	private static Set<String> UNBCourseFullNames;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -34,7 +40,7 @@ public class App extends Application
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
 		Parent root = loader.load();
 		MainWindowController controller = loader.<MainWindowController>getController();
-        primaryStage.setTitle("Student Schedule Assistant");
+        primaryStage.setTitle("Student Scheduling Assistant");
         primaryStage.setScene(new Scene(root, 525, 360));
         primaryStage.setMinWidth(530+20);
         primaryStage.setMinHeight(360+47);
@@ -71,6 +77,27 @@ public class App extends Application
     	return UNBCourseNames;
     }
     
+    public static Set<String>  getUNBCourseFullNames() {
+    	if (UNBCourseList==null) return null;
+    	
+    	if (UNBCourseFullNames==null) {
+    		UNBCourseFullNames = new TreeSet<>();
+    		//Using a set to guarantee no duplicate
+        	for (Course course: UNBCourseList.copyCourses()) {
+        		UNBCourseFullNames.add(course.getName()+" - "+course.getFullName());
+        	}
+    	}
+    	
+    	return UNBCourseFullNames;
+    }
+    
+    public static void updateUNBCourseNameLists() {
+    	UNBCourseNames=null; 
+    	UNBCourseFullNames=null;
+    	getUNBCourseNames();
+    	getUNBCourseFullNames();
+    }
+    
     public static boolean showConfirmDialog(String content, AlertType alertType) {
         final Alert alert = new Alert(alertType);
         alert.setContentText(content);
@@ -91,5 +118,22 @@ public class App extends Application
         alert.setContentText(content);
         alert.show();
     }
-
+   
+    public static void setTooltipWithoutDelay(Control node, String text) {
+    	Tooltip t = new Tooltip(text);
+    	node.setTooltip(t);
+    	node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+    		@Override
+    	    public void handle(MouseEvent event) {
+    			Point2D p = node.localToScreen(node.getLayoutBounds().getMaxX(), node.getLayoutBounds().getMaxY());
+				t.show(node, p.getX(), p.getY());
+    	    }
+    	});
+    	node.setOnMouseExited(new EventHandler<MouseEvent>() {
+	    	@Override
+    	    public void handle(MouseEvent event) {
+    	        t.hide();
+    	    }
+    	});
+    }
 }

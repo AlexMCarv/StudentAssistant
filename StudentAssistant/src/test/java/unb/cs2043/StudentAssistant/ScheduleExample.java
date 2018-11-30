@@ -1,4 +1,4 @@
-package unb.cs2043.student_assistant.fxml;
+package unb.cs2043.StudentAssistant;
 
 import java.util.ArrayList;
 import java.util.ServiceLoader;
@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.fxml.HelloSpreadsheetView.SpreadsheetViewExample;
+import unb.cs2043.student_assistant.fxml.ScheduleDisplay;
 
 public class ScheduleExample extends Application {
 	

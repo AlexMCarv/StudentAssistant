@@ -6,6 +6,7 @@ import java.util.ArrayList;
 //Allan, this class is your responsibility, change it if you want, I
 //just copied my methods from Course
 //and found and replaced the ArrayList name and class name. -Tye
+@SuppressWarnings("serial")
 public class Section implements Serializable{
 //-------Instance Variables--------//
 	private String name;
@@ -14,6 +15,10 @@ public class Section implements Serializable{
 	public Section(String name){
 		this.name=name;
 		classTimes = new ArrayList<ClassTime>();
+	}
+	public Section(Section other) {
+		this.name = other.name;
+		classTimes = other.copyClassTimes();
 	}
 //--------Getters---------//
 	public ArrayList<ClassTime> copyClassTimes(){
@@ -142,5 +147,22 @@ public class Section implements Serializable{
 		}
 		
 		return conflicting;
+	}
+	
+	//Checks if both sections contains the same classTimes (same days & times)
+	public boolean sameClassTimes(Section other) {
+		boolean sameClassTimes = true;
+		
+		if (this.getSize()!=other.getSize()) {
+			sameClassTimes = false;
+		}
+		
+		for (int i=0; i<this.getSize() && sameClassTimes; i++) {
+			if (!this.getClassTime(i).equivalent(other.getClassTime(i))) {
+				sameClassTimes = false;
+			}
+		}
+		
+		return sameClassTimes;
 	}
 }

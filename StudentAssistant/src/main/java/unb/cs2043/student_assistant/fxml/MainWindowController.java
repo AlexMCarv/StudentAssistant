@@ -2,11 +2,18 @@
 package unb.cs2043.student_assistant.fxml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
+
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
 
 import fxsampler.FXSamplerConfiguration;
 import fxsampler.SampleBase;
@@ -24,7 +31,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
@@ -153,24 +159,24 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	private void setKeyBindings() {
 		//Keybindings
-		final KeyCombination ctrlC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
-		final KeyCombination ctrlG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN);
+		final KeyCombination ctrlShiftC = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		final KeyCombination ctrlShiftS = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		final KeyCombination ctrlShiftT = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		final KeyCombination ctrlShiftG = new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
 		container.setOnKeyReleased(event -> {
-			if (ctrlC.match(event)) addCourse(null);
-			else if (ctrlS.match(event)) addSection(null);
-			else if (ctrlT.match(event)) addClassTime(null);
-			else if (ctrlG.match(event)) genSchedule();
+			if (ctrlShiftC.match(event)) addCourse(null);
+			else if (ctrlShiftS.match(event)) addSection(null);
+			else if (ctrlShiftT.match(event)) addClassTime(null);
+			else if (ctrlShiftG.match(event)) genSchedule();
 			else if (event.getCode() == KeyCode.DELETE) deleteItem(new ActionEvent());
 		});
 		container.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
 		treeCourseList.setOnKeyPressed(event -> {if (event.getCode() ==  KeyCode.ESCAPE) closeWindow();});
 		
-		btnAddCourse.setTooltip(new Tooltip("Ctrl+C"));
-		btnAddSection.setTooltip(new Tooltip("Ctrl+S"));
-		btnAddClassTime.setTooltip(new Tooltip("Ctrl+T"));
-		btnGenSchedule.setTooltip(new Tooltip("Ctrl+G"));
+		App.setTooltipWithoutDelay(btnAddCourse, "Ctrl+Shift+C");
+		App.setTooltipWithoutDelay(btnAddSection, "Ctrl+Shift+S");
+		App.setTooltipWithoutDelay(btnAddClassTime, "Ctrl+Shift+T");
+		App.setTooltipWithoutDelay(btnGenSchedule, "Ctrl+Shift+G");
 	}
 	
 	@FXML
@@ -301,16 +307,61 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML private void genSchedule() {
 		if (btnGenSchedule.isDisabled()) return;
 		
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/fxml/Schedule.fxml"));
-		
 		if (!isScheduleFormatCorrect(App.userSelection)) {
 			return;
 		}
 		
-		//TODO: update
-		Schedule[] best = ScheduleArranger.getBestSchedules(App.userSelection, 2);
+		Parent window = null;
+		FXMLLoader progressLoader = new FXMLLoader(getClass().getResource("/fxml/ProgressWindow.fxml"));
+		try {window = progressLoader.load();}
+		catch (IOException e1) {
+			e1.printStackTrace();
+			windowError();
+			return;
+		}
 		
+		ProgressWindowController progressController = progressLoader.<ProgressWindowController>getController();
+		String title = "Computation Progress";
+		Stage stage = setStage(window, title, 400, 100);
+		stage.show();
+		progressController.start(ScheduleArranger.MAX_TIME);
+		
+		final long startTime = System.nanoTime();
+		
+		Task<Schedule[]> task = new Task<Schedule[]>() {
+			@Override
+			protected Schedule[] call() throws Exception {
+				return ScheduleArranger.getBestSchedules(App.userSelection);
+			}
+		};
+		
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+			new EventHandler<WorkerStateEvent>() {
+				@Override
+				public void handle(WorkerStateEvent t) {
+					Schedule[] schedules = (Schedule[]) t.getSource().getValue();
+					
+					if (progressController!=null) {
+						progressController.stop();
+					}
+					
+					genScheduleP2(schedules);
+					
+					if ((System.nanoTime()-startTime)/1000000000>=ScheduleArranger.MAX_TIME) {
+						App.showNotification("The computation was stopped manually as it was taking too long. "
+								+ "Therefore the displayed schedules are not guaranteed to be the most efficient. "
+								+ "\nPlease remove some courses/sections and try again.", AlertType.WARNING);
+					}
+				}
+			}
+		);
+		
+		new Thread(task).start();
+	}
+	
+	private void genScheduleP2(Schedule[] best) {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/fxml/Schedule.fxml"));
 		
 		ScheduleController controller = new ScheduleController();
 		controller.setBestSchedules(best);
@@ -466,11 +517,12 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		}
 		
 		//TreeView Setup
-		treeCourseList.setCellFactory(e -> new TreeViewGenericCell());
+		treeCourseList.setCellFactory(e -> new TreeViewGenericCell<Object>());
 		treeCourseList.setRoot(rootItem);
 		treeCourseList.setShowRoot(false);
 	}
 	
+	@SuppressWarnings("unused")
 	private String getObjectType(Object item) {
 		String type = null;
 		try {
@@ -504,19 +556,128 @@ public class MainWindowController implements javafx.fxml.Initializable {
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "open");
 		File fileToLoad = fileSelector.getFile();
 		
+		//Check if user entered something and file exists
+		if (fileToLoad==null || !fileToLoad.exists()) {
+			return;
+		}
 		
-		//Implement what needs to happen after the file to load is selected...
+		//Check if file is valid type
+		if (!FilenameUtils.getExtension(fileToLoad.getName()).equals("schedule")) {
+			System.out.println(FilenameUtils.getExtension(fileToLoad.getName()));
+			App.showNotification("Invalid file. Please choose a valid file \nof type '.schedule'.", AlertType.ERROR);
+			return;
+		}
+		
+		ObjectInputStream objectStream = null;
+		try {
+			objectStream = new ObjectInputStream(new FileInputStream(fileToLoad));
+		}
+		catch (IOException e) {
+			System.out.println("Error finding file or Error opening stream");
+			e.printStackTrace();
+			return ;
+		}
+		//Read the course list from the file
+		Schedule courseList = null;
+		try {
+			courseList = (Schedule) objectStream.readObject();
+		}
+		catch (Exception e) {
+			System.out.println("Error reading data");
+			e.printStackTrace();
+			
+			//Close the stream
+			try {
+				objectStream.close();
+			}
+			catch (IOException e2) {
+				System.out.println("Error closing stream");
+				e.printStackTrace();
+			}
+			return;
+		}
+		
+		//Close the stream
+		try {
+			objectStream.close();
+		}
+		catch (IOException e) {
+			System.out.println("Error closing stream");
+			e.printStackTrace();
+			return;
+		}
+		
+		App.userSelection = courseList;
+		refresh();
 	}
 	
 	@FXML
 	private void saveAs(ActionEvent event) {
+		if(App.userSelection.getSize()<1) {
+			App.showNotification("Course list must contain at least one course to save.", AlertType.ERROR);
+			return;
+		}
 		// Opens the window allowing the user to set the name and path of the schedule file that is being saved.
 		// It is only creating the reference. A FileInputStream is required to save the file to directory 
 		FileSelect fileSelector = new FileSelect(container.getScene().getWindow(), "save");
 		File saveAsFile = fileSelector.getFile();
 		
-		//Implement what needs to happen after the file name and path is set ...
+		//Make sure user entered something
+		if (saveAsFile==null) {return;}
+		
+		//Add proper extension if necessary
+		if (!FilenameUtils.getExtension(saveAsFile.getName()).equals("schedule")) {
+			String saveAsFileString= saveAsFile.getAbsolutePath();
+			saveAsFile = new File(saveAsFileString+".schedule");
 		}
+		
+		ObjectOutputStream objectStream = null;
+		
+		try {
+			objectStream = new ObjectOutputStream(new FileOutputStream(saveAsFile));
+		}
+		catch (IOException e) {
+			App.showNotification("Error creating file or Error opening Stream", AlertType.ERROR);
+
+			System.out.println("Error creating file or Error opening stream");
+			e.printStackTrace();
+		}
+		
+		try {
+			objectStream.writeObject(App.userSelection);
+		}
+		catch (IOException e) {
+			App.showNotification("Error writing data", AlertType.ERROR);
+			
+			System.out.println("Error writing data");
+			e.printStackTrace();
+			
+			//Try to delete the file:
+			saveAsFile.delete();
+		}
+		
+		//Close the stream
+		try {
+			objectStream.close();
+		}
+		catch (IOException e) {
+			App.showNotification("Error closing stream", AlertType.ERROR);
+
+			System.out.println("Error closing stream");
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@FXML
+	private void clear(ActionEvent event) {
+		boolean choice = App.showConfirmDialog("This will clear your course list. All unsaved data will be lost.\n\n"
+				+ "Continue?", AlertType.CONFIRMATION);
+		if (choice) {
+			App.userSelection.clear();
+			refresh();
+		}
+	}
 	
 	private void refresh() {createCourseList();}
 	

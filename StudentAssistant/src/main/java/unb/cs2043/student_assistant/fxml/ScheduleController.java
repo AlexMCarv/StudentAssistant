@@ -1,5 +1,6 @@
 package unb.cs2043.student_assistant.fxml;
 
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -31,7 +32,7 @@ public class ScheduleController implements javafx.fxml.Initializable {
 	@FXML private StackPane container;
 	@FXML private ToolBar toolbar;
 	@FXML Label lblSchedule;
-	private Schedule[] bestSchedules;
+    private Schedule[] bestSchedules;
 	private ScheduleDisplay[] displayList;
 	private Button[] buttonList;
 	private int visibleScheduleNum;
@@ -51,7 +52,7 @@ public class ScheduleController implements javafx.fxml.Initializable {
 		}
 		
 		if (displayList.length > 0)
-			displayList[0].setVisible(true);
+			selectScheduleByNum(0);
 		
 		//Keybindings
 		outerContainer.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -70,7 +71,10 @@ public class ScheduleController implements javafx.fxml.Initializable {
 				selectScheduleByNum(visibleScheduleNum-1);
 			}
 		});
+	
 	}
+		
+
 
 	public void setBestSchedules(Schedule[] list) {
 		bestSchedules = list;
@@ -95,7 +99,7 @@ public class ScheduleController implements javafx.fxml.Initializable {
 				plural = numCourses==1 ? "" : "s";
 				
 				displayList[i].setVisible(true);
-				lblSchedule.setText("Schedule " + (i + 1)+ " - "+numCourses+" course" + plural);
+				lblSchedule.setText("Schedule " + (i + 1)+ " - "+numCourses+" Course" + plural);
 				visibleScheduleNum = i;
 			}				
 		}

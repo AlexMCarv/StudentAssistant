@@ -156,6 +156,8 @@ public class LoadUNBCoursesController implements javafx.fxml.Initializable {
 				
 				//Send courseList to main class
 				App.UNBCourseList = courseList;
+				//Update lists
+				App.updateUNBCourseNameLists();
 				
 				closeWindow(new ActionEvent());
 				alert.show();

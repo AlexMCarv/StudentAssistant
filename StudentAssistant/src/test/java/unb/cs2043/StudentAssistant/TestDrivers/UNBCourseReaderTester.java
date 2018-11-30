@@ -1,4 +1,4 @@
-package unb.cs2043.student_assistant.TestDrivers;
+package unb.cs2043.StudentAssistant.TestDrivers;
 
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.UNBCourseReader;
@@ -35,6 +35,7 @@ public class UNBCourseReaderTester {
 //		print2DChoiceArray(choices);
 	}
 	
+	@SuppressWarnings("unused")
 	private static void print2DChoiceArray(ComboBoxChoice[][] array) {
 		int i=0;
 		for (ComboBoxChoice[] arrayLv2: array) {
@@ -46,6 +47,7 @@ public class UNBCourseReaderTester {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private static void print3DStringArray(String[][][] array) {
 		int i=0;
 		for (String[][] arrayLv2: array) {

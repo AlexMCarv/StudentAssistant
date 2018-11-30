@@ -7,9 +7,11 @@ import java.util.ArrayList;
 * Lists can only be of type Section
 * Saves course name
 */
+@SuppressWarnings("serial")
 public class Course implements Serializable{
 //-------Instance Variables--------//
 	private String name;
+	private String fullName;
 	private ArrayList<Section> sections;
 //-------Constructor--------//
 	public Course(String name){
@@ -39,6 +41,9 @@ public class Course implements Serializable{
 	public String getName(){
 		return name;
 	}
+	public String getFullName(){
+		return fullName;
+	}
 	public int getSize(){
 		return sections.size();
 	}
@@ -63,7 +68,7 @@ public class Course implements Serializable{
 		return sections.isEmpty();
 	}
 	public String getFormattedString(){
-		String description=name+":\n";
+		String description=name+" ("+fullName+"):\n";
 		if(sections.size()==0){
 			description+="   empty\n";
 		}
@@ -80,6 +85,10 @@ public class Course implements Serializable{
 //-----------Setters------------//
 	public boolean setName(String name){
 		this.name=name;
+		return true;
+	}
+	public boolean setFullName(String fullName){
+		this.fullName=fullName;
 		return true;
 	}
 	public void add(Section one){

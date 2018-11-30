@@ -12,13 +12,24 @@ import org.controlsfx.control.spreadsheet.GridBase;
 import org.controlsfx.control.spreadsheet.SpreadsheetCell;
 import org.controlsfx.control.spreadsheet.SpreadsheetCellType;
 import org.controlsfx.control.spreadsheet.SpreadsheetView;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+import org.controlsfx.glyphfont.GlyphFontRegistry;
+import org.controlsfx.samples.HelloGlyphFont;
 import org.controlsfx.samples.Utils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
+import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
@@ -36,7 +47,8 @@ public class ScheduleDisplay extends SpreadsheetView {
 	private final int ROW_COUNT = 31;
 	/** Header at column 1 and other columns represent the days of the week */
 	private final int COLUMN_COUNT = 7;
-    
+	static {GlyphFontRegistry.register("icomoon", HelloGlyphFont.class.getResourceAsStream("icomoon.ttf") , 16);}
+	    
 	public ScheduleDisplay(Schedule schedule) {
 		
 		this.schedule = schedule;
@@ -57,6 +69,7 @@ public class ScheduleDisplay extends SpreadsheetView {
 		grid.setLocked(true);
 		grid.setResizableRows(new BitSet(ROW_COUNT));
 		lockColumns(true);
+		getSpreadsheetViewContextMenu();
 	}
 
 	/*
@@ -80,7 +93,6 @@ public class ScheduleDisplay extends SpreadsheetView {
     
     /**
      * Build the grid.
-     *
      * @param grid
      */
     private void buildGrid(GridBase grid) {
@@ -129,10 +141,14 @@ public class ScheduleDisplay extends SpreadsheetView {
 					teste.setStyle("spreadsheet.css");
 					teste.getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
 					
-					Label lbl1 = new Label(course.getName() + "\n" + course.getSection(0) + " - " + time.getType());
+					String labelText = course.getName() + "\n" + course.getSection(0) + " - " + time.getType();
+					Label lbl1 = new Label(labelText);
 					lbl1.getStyleClass().add("style" + (schedule.copyCourses().indexOf(course)%5));
 					lbl1.setStyle("spreadsheet.css");
 					teste.getChildren().add(lbl1);
+					
+					//Add tooltip to be able to see all the text if doesn't fit
+					App.setTooltipWithoutDelay(lbl1, labelText);
 					
 					grid.getRows().get(rowIndex).get(col).setGraphic(teste);
 					spanCell(grid, rowIndex, col, getDuration(time));
@@ -204,5 +220,35 @@ public class ScheduleDisplay extends SpreadsheetView {
     public int getNumCourses() {
     	return schedule.getSize();
     }
-}
+    
+   
+    public ContextMenu getSpreadsheetViewContextMenu() {
 
+	    final ContextMenu contextMenu = new ContextMenu();
+	    final MenuItem saveAsImg = new MenuItem("Save as image"); 
+	    saveAsImg.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.IMAGE));
+	    saveAsImg.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
+	    ScheduleDisplay displayRef = this;
+	    saveAsImg.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent e) {
+	        	getSelectionModel().clearSelection();
+	        	AppWideFeatures.captureAndSave(displayRef);
+	        }
+	    });
+	    
+	    final MenuItem print = new MenuItem("Print schedule"); 
+	    print.setGraphic(new Glyph("FontAwesome", FontAwesome.Glyph.PRINT));
+	    print.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.SHORTCUT_DOWN));
+	    print.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent e) {
+	        	getSelectionModel().clearSelection();
+	        	AppWideFeatures.print(displayRef);
+	        }
+	    });
+	
+	    contextMenu.getItems().addAll(saveAsImg, print);
+	    return contextMenu;
+	}
+}  
