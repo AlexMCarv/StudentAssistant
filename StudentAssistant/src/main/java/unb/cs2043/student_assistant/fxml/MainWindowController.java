@@ -75,6 +75,7 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	@FXML private MenuItem menuAddSection;
 	@FXML private MenuItem menuAddClassTime;
 	@FXML private MenuItem menuDelete;
+	@FXML private MenuItem menuCollapse;
 	
 	private LoadUNBCoursesController LoadUNBController;
 	
@@ -139,13 +140,13 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			if (treeItem!=null) {
 				String type = getObjectType(treeItem.getValue());
 				if (type.equals("Course")) {
-					contextMenu.getItems().addAll(menuAddSection, menuEditCourse, menuDelete);
+					contextMenu.getItems().addAll(menuAddSection, menuEditCourse, menuDelete, menuCollapse);
 				}
 				else if (type.equals("Section")) {
-					contextMenu.getItems().addAll(menuAddClassTime, menuEditSection, menuDelete);
+					contextMenu.getItems().addAll(menuAddClassTime, menuEditSection, menuDelete, menuCollapse);
 				}
 				else if (type.equals("ClassTime")) {
-					contextMenu.getItems().addAll(menuEditClassTime, menuDelete);
+					contextMenu.getItems().addAll(menuEditClassTime, menuDelete, menuCollapse);
 				}
 			}
 			else {
@@ -465,6 +466,14 @@ public class MainWindowController implements javafx.fxml.Initializable {
 			}
 			treeCourseList.getSelectionModel().clearSelection();
 			refresh();
+		}
+	}
+	
+	@FXML private void collapseTreeView(ActionEvent event){
+		for (int i = 0; i < treeCourseList.getExpandedItemCount(); i++) {
+			TreeItem<?> item = treeCourseList.getTreeItem(i);
+			if(item != null && !item.isLeaf())
+		        item.setExpanded(false);
 		}
 	}
 	

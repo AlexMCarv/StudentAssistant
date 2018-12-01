@@ -75,6 +75,7 @@
                         <MenuItem fx:id="menuAddSection" mnemonicParsing="false" onAction="#menuSectionClicked" text="Add Section" />
                         <MenuItem fx:id="menuAddClassTime" mnemonicParsing="false" onAction="#menuClassTimeClicked" text="Add Class Time" />
                         <MenuItem fx:id="menuDelete" mnemonicParsing="false" onAction="#deleteItem" text="Delete" />
+                        <MenuItem fx:id="menuCollapse" mnemonicParsing="false" onAction="#collapseTreeView" text="Collapse All" />
                     </items>
                   </ContextMenu>
                </contextMenu>
