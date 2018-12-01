@@ -1,10 +1,10 @@
 package unb.cs2043.StudentAssistant.TestDrivers;
 
-import unb.cs2043.student_assistant.ClassTime;
+//see below import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.Section;
-import java.util.ArrayList;
+//see below import java.util.ArrayList;
 import java.util.Scanner;
 /**
 * WARNING: Doesn't work with current ClassTime class
@@ -25,8 +25,8 @@ import java.util.Scanner;
 */
 public class testDriver4{
 	public static void main(String[] args){
-		ArrayList<Section> sections=new ArrayList<Section>();
-		ArrayList<ClassTime> classTimes=new ArrayList<ClassTime>();
+//see below		ArrayList<Section> sections=new ArrayList<Section>();
+//see below		ArrayList<ClassTime> classTimes=new ArrayList<ClassTime>();
 		Scanner Tye = new Scanner(System.in);
 		Schedule one=new Schedule(Tye.nextLine());
 		int numCourses=Tye.nextInt();
@@ -42,11 +42,11 @@ public class testDriver4{
 				Section temp2=new Section(Tye.next());
 				Tye.nextLine();
 				one.getCourse(index).add(temp2);
-				int index2=one.getCourse(index).indexOf(temp2);
+//see below				int index2=one.getCourse(index).indexOf(temp2);
 				int numTimes=Tye.nextInt();
 				Tye.nextLine();
 				for(int z=0;z<numTimes;z++){
-					one.getCourse(index).getSection(index2).add(new ClassTime(Tye.next()));
+//out of date constructor one.getCourse(index).getSection(index2).add(new ClassTime(Tye.next()));
 					Tye.nextLine();
 				}
 			}
@@ -128,5 +128,6 @@ public class testDriver4{
 		System.out.println(courseMax);
 		courseMax.clear();
 		System.out.println(courseMax);
+		Tye.close();
 	}
 }

@@ -2,7 +2,7 @@ package unb.cs2043.student_assistant;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-/**@author Tye Shutty
+/**@author Tye Shutty and others
 * Course allows for performing most default operations of ArrayList.
 * Lists can only be of type Section
 * Saves course name

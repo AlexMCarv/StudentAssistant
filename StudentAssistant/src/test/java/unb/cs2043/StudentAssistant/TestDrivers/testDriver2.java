@@ -13,9 +13,9 @@ public class testDriver2{
 		ArrayList<Course> two=one.copyCourses();
 		Course temp;
 		Section temp1;
-		ClassTime temp2;
+		ClassTime temp2=null;
 		for(int x=0; x< 10; x++){
-			temp2=new ClassTime("Time"+x*x*x);
+//out of date constructortemp2=new ClassTime("Time"+x*x*x);
 			temp1=new Section("Section"+x*x);
 			temp1.add(temp2);
 			temp=new Course("Course"+x);

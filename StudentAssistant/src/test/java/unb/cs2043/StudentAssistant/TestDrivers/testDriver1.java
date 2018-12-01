@@ -14,9 +14,9 @@ public class testDriver1{
 		Schedule one=new Schedule("Jane's Winter 2019");
 		Course temp;
 		Section temp1;
-		ClassTime temp2;
+		ClassTime temp2=null;
 		for(int x=0; x< 10; x++){
-			temp2=new ClassTime("Time"+x*x*x);
+//out of date constructor			temp2=new ClassTime("Time"+x*x*x);
 			temp1=new Section("Section"+x*x);
 			temp1.add(temp2);
 			temp=new Course("Course"+x);
@@ -49,6 +49,7 @@ public class testDriver1{
 			FileInputStream hugo=new FileInputStream(filename);
 			ObjectInputStream dara=new ObjectInputStream(hugo);
 			a=(Schedule)dara.readObject();
+			hugo.close();
 		}
 		catch(FileNotFoundException e){
 			e.printStackTrace();

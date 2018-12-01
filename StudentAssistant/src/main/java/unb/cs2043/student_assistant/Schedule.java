@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicLong;
-/**@author Tye Shutty
+/**@author Tye Shutty and others
 * Schedule allows for performing most default operations of ArrayList.
 * Lists can only be of type Course
 * Saves course name

@@ -5,7 +5,6 @@ import unb.cs2043.student_assistant.Course;
 import unb.cs2043.student_assistant.Schedule;
 import unb.cs2043.student_assistant.Section;
 
-import java.util.ArrayList;
 /**@author Tye Shutty*/
 public class testDriver3{
 	public static void main(String[] args){
@@ -13,11 +12,11 @@ public class testDriver3{
 		Schedule two=new Schedule("empty");
 		Course temp;
 		Section temp1;
-		ClassTime temp2;
+		ClassTime temp2=null;
 		for(int x=0; x< 1; x++){
 			temp1=new Section("Section"+x*x);
 			for(int y=0; y<10;y++){
-				temp2=new ClassTime("Time"+y*y*y);
+//out of date constructortemp2=new ClassTime("Time"+y*y*y);
 				temp1.add(temp2);
 			}
 			temp=new Course("Course"+x);
