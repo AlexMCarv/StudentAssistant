@@ -37,6 +37,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
@@ -57,7 +58,7 @@ import unb.cs2043.student_assistant.FileSelect;
 
 public class MainWindowController implements javafx.fxml.Initializable {
 
-	@FXML private VBox container;
+	@FXML private AnchorPane container;
 	
 	@FXML private TreeView<Object> treeCourseList;
 	@FXML private Button btnAddCourse;

@@ -42,8 +42,8 @@ public class App extends Application
 		MainWindowController controller = loader.<MainWindowController>getController();
         primaryStage.setTitle("Student Scheduling Assistant");
         primaryStage.setScene(new Scene(root, 525, 360));
-        primaryStage.setMinWidth(530+20);
-        primaryStage.setMinHeight(360+47);
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(400);
         primaryStage.setOnCloseRequest(e -> {
         	if (!controller.closeWindow()) {
         		e.consume();
