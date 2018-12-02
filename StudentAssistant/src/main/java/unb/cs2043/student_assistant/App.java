@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -32,10 +33,12 @@ public class App extends Application
 	//(To avoid retrieving it from UNBCourseList every single time)
 	private static Set<String> UNBCourseNames;
 	private static Set<String> UNBCourseFullNames;
+	private static HostServices hostServices;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		UNBCourseList = null; UNBCourseNames = null;
+		hostServices= getHostServices();
 		userSelection = new Schedule("My Schedule");
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainWindow.fxml"));
 		Parent root = loader.load();
@@ -136,4 +139,10 @@ public class App extends Application
     	    }
     	});
     }
+    
+   
+    public static HostServices getHostServ() {
+    	return hostServices;
+    }
+    
 }
