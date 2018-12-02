@@ -140,7 +140,6 @@ public class App extends Application
     	});
     }
     
-   
     public static HostServices getHostServ() {
     	return hostServices;
     }
