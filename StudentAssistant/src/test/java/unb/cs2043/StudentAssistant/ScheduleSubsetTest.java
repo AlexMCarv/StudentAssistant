@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -54,8 +55,8 @@ public class ScheduleSubsetTest {
 		//False - Superset
 		assertFalse(superSchedule.isSubsetOf(schedule));
 		
-		//True - Same schedule
-		assertTrue(schedule.isSubsetOf(schedule));
+		//False - Same schedule
+		assertFalse(schedule.isSubsetOf(schedule));
 	}
 
 }
