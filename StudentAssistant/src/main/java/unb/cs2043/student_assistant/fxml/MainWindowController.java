@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -20,7 +18,6 @@ import java.io.FileOutputStream;
 
 import fxsampler.FXSamplerConfiguration;
 import fxsampler.SampleBase;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -33,7 +30,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
@@ -43,11 +39,9 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.application.HostServices;
 import unb.cs2043.student_assistant.App;
 import unb.cs2043.student_assistant.ClassTime;
 import unb.cs2043.student_assistant.Course;
@@ -703,10 +697,9 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	@FXML
 	private void openDocumentation() {
-		
-		File file = new File("src/main/resources/Guide_for_Student_Scheduling_Assistant.pdf");
-		HostServices hostServices = App.getHostServ();
-		hostServices.showDocument(file.getAbsolutePath());
-	
+		try {
+			Desktop.getDesktop().browse(getClass().getResource("../../../../Guide_for_Student_Scheduling_Assistant.pdf").toURI());
+		} catch (Exception e) {e.printStackTrace();}
+
 	}
 }
