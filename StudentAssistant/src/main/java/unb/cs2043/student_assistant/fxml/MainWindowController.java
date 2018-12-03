@@ -5,8 +5,12 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
@@ -697,9 +701,17 @@ public class MainWindowController implements javafx.fxml.Initializable {
 	
 	@FXML
 	private void openDocumentation() {
+		InputStream documentationStream = getClass().getResourceAsStream("/fxml/Guide_for_Student_Scheduling_Assistant.pdf");
+		Path tempOutput;
 		try {
-			Desktop.getDesktop().browse(getClass().getResource("../../../../Guide_for_Student_Scheduling_Assistant.pdf").toURI());
-		} catch (Exception e) {e.printStackTrace();}
-
+			tempOutput = Files.createTempFile("Documentation", ".pdf");
+	        tempOutput.toFile().deleteOnExit();
+	
+	        Files.copy(documentationStream, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+	        File userManual = new File (tempOutput.toFile().getPath());
+	        if (userManual.exists()) {
+	            Desktop.getDesktop().open(userManual);
+	        }
+		} catch (IOException e) {e.printStackTrace();}
 	}
 }
