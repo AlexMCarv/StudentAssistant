@@ -554,6 +554,10 @@ public class UNBCourseReader {
 		LocalTime startTime = convertToLocalTime(times[0]);
 		LocalTime endTime = convertToLocalTime(times[1]);
 		
+		//Round times to nearest half-hour
+		startTime = roundTo30(startTime);
+		endTime = roundTo30(endTime);
+		
 		//Create object
 		ClassTime timeObj = new ClassTime(type, dayList, startTime, endTime);
 		return timeObj;
@@ -722,5 +726,11 @@ public class UNBCourseReader {
         }
         
         return result;
+	}
+	
+	private LocalTime roundTo30(LocalTime time) {
+		int mod = time.getMinute() % 30;
+        int addMin = mod < 15 ? -mod : 30-mod;
+        return time.plusMinutes(addMin);
 	}
 }
