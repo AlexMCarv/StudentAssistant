@@ -14,3 +14,4 @@ Our program will be fully made using Java, and will function via a GUI made usin
 
 ### To Download
 You can download the Student Scheduling Assistant.jar file and run it on your computer. The only requirement to be able tu run it is to have a Java Runtime Environment (JRE) version 8 or more installed on your computer.
+**Note:** This .jar build has only been slightly tested on different computers/operating systems. If the program doesn't work, there may be other restrictions/requirements that we do not know of. For example, we have had some issues on Linux regarding the display of schedules (after clicking the generate button).
