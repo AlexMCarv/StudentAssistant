@@ -11,3 +11,6 @@ Our program will be fully made using Java, and will function via a GUI made usin
 - **fredy20501** 
 - **AlexMCarv** 
 - **grantaid** 
+
+### To Download
+You can download the Student Scheduling Assistant.jar file and run it on your computer. The only requirement to be able tu run it is to have a Java Runtime Environment (JRE) version 8 or more installed on your computer.
