@@ -1,6 +1,5 @@
 package unb.cs2043.StudentAssistant;
 
-import java.util.ArrayList;
 import java.util.ServiceLoader;
 
 import org.controlsfx.control.spreadsheet.GridBase;
@@ -14,14 +13,11 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import unb.cs2043.student_assistant.Schedule;
-import unb.cs2043.student_assistant.fxml.HelloSpreadsheetView.SpreadsheetViewExample;
 import unb.cs2043.student_assistant.fxml.ScheduleDisplay;
 
 public class ScheduleExample extends Application {
@@ -54,7 +50,7 @@ public class ScheduleExample extends Application {
 	}
 	
 	public Node getPanel(Stage stage) {
-		spreadSheetView1 = new ScheduleDisplay(new Schedule(null));
+		spreadSheetView1 = new ScheduleDisplay(new Schedule(""));
         int rowCount = 30;
         int columnCount = 8;
         GridBase grid = new GridBase(rowCount, columnCount);
